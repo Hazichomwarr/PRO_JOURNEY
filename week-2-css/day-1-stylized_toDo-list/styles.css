@@ -1,12 +1,12 @@
 body {
     background-color: #f0f0f0;
+    padding: 2rem;
+    font-family: Arial, sans-serif;
 }
-a {
-    list-style: none;
-}
-/* h1 {
+
+h1 {
     text-align: center;
-} */
+}
 .todo-list {
     background-color: white;
     box-shadow: 1px 2px greydwwxdsw;
@@ -15,7 +15,8 @@ a {
     border-radius: 6px;
     text-align: center;
     margin: 2px auto;
-    box-shadow: 1px black;
+    box-shadow: 1px 2px 5px grey;
+
     
 }
 .todo-list > li {
@@ -31,9 +32,15 @@ a {
     text-align: left;
     border-radius: 6px;
 }
+.todo-list > li:hover {
+    background-color: #d4e9d4;
+    cursor: pointer;
+}
+
 label {
     line-height: 3;
     font-size: 20px;
+    margin-left: .5rem;
 }
 input[type=checkbox] {
     width: 20px;
