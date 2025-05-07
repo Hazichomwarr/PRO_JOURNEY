@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevConnect - sign up form</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Devconnect sign up form</h1>
+      <form action="#">
+        <fieldset>
+          <legend>Personal Informations</legend>
+          <label for="full-name"
+            >Full name:
+            <input
+              class="infos"
+              type="text"
+              id="full-name"
+              name="full-name"
+              placeholder="first and last name"
+              required
+          /></label>
+          <label for="email"
+            >Email:
+            <input
+              class="infos"
+              type="email"
+              id="email"
+              required
+              minlength="8"
+              placeholder="example@email.com"
+          /></label>
+          <label for="password"
+            >Password:
+            <input
+              class="infos"
+              type="password"
+              id="password"
+              required
+              minlength="10"
+              placeholder="10 characters minimum"
+          /></label>
+        </fieldset>
+        <fieldset>
+          <legend>Choose a level:</legend>
+          <label for="beginner"
+            >Beginner
+            <input type="radio" id="beginner" name="level" value="beginner"
+          /></label>
+          <label for="intermediate"
+            >Intermediate
+            <input
+              type="radio"
+              id="intermediate"
+              name="level"
+              value="intermediate"
+          /></label>
+          <label for="pro"
+            >Pro<input type="radio" id="pro" name="level" value="pro"
+          /></label>
+        </fieldset>
+        <fieldset>
+          <legend>Need(s)? (select all that apply)</legend>
+          <label for="find-mentor"
+            >Find a mentor
+            <input
+              type="checkbox"
+              id="find-mentor"
+              name="interests[]"
+              value="find-mentor"
+          /></label>
+          <label for="mentorship"
+            >Offer Mentorship
+            <input
+              type="checkbox"
+              id="mentorship"
+              name="interests[]"
+              value="mentorship"
+          /></label>
+          <label for="join-project"
+            >Join a Project
+            <input
+              type="checkbox"
+              id="join-project"
+              name="interests[]"
+              value="join-project"
+          /></label>
+        </fieldset>
+        <fieldset>
+          <legend>Stacks</legend>
+          <label for="stacks">What's your preferred stack?</label>
+          <select name="stacks" id="stacks">
+            <option disabled value="no-value" selected>Select an option</option>
+            <option value="front-end">Front-End</option>
+            <option value="back-end">Back-End</option>
+            <option value="full-stack">Full-Stack</option>
+            <option value="mobile">Mobile</option>
+          </select>
+        </fieldset>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>
