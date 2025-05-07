@@ -1,0 +1,69 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: Inter, sans-serif;
+}
+h1 {
+  text-align: center;
+  color: rgb(95, 94, 94);
+}
+.container {
+  width: 400px;
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 12px;
+  border-radius: 15px;
+  box-shadow: 1px 2px 4px grey;
+}
+fieldset {
+  border: 0;
+}
+legend {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: rgb(75, 74, 74);
+}
+.perso-infos-item {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+}
+.level-items {
+  display: flex;
+  justify-content: left;
+}
+#intermediate,
+#pro {
+  margin-left: 1rem;
+}
+.needs-items {
+  display: flex;
+  flex-direction: column;
+}
+.needs-items input {
+  accent-color: grey;
+}
+#stacks {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  border-radius: 6px;
+  margin-top: 7px;
+  font-size: 0.95rem;
+}
+button {
+  width: 99%;
+  padding: 1rem;
+  background-color: rgb(128, 128, 128);
+  color: white;
+  font-size: 1rem;
+  border-radius: 10px;
+  border-style: none;
+}
+button:hover {
+  background-color: rgb(160, 160, 160);
+  cursor: pointer;
+}
