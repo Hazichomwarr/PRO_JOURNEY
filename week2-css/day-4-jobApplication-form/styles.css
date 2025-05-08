@@ -1,59 +1,85 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-size: 16px;
-    background-color: rgb(248, 248, 246);
+  font-size: 16px;
+  background-color: rgb(248, 248, 246);
 }
 h1 {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 2rem;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
 }
 .container {
-    width: 500px;
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 1.5rem;
-    box-shadow: 1px 2px 5px grey;
-    border-radius: 10px;
+  width: 500px;
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  box-shadow: 1px 2px 5px grey;
+  border-radius: 10px;
 }
 
-#name, #email, #position { 
-    display: block;
-    width: 100%;
-    padding: .3rem;
-    border-radius: .3rem;
-    margin-bottom: .5rem;
+#name,
+#email,
+#position {
+  display: block;
+  width: 100%;
+  padding: 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 0.3rem;
+  margin-bottom: 0.5rem;
 }
 .radio-group {
-    padding: .7rem;
-    border-radius: .5rem;
-    margin-bottom: .5rem;
+  padding: 0.7rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
 }
+
 #message {
-    display: block;
-    width: 100%;
-    padding: .5rem;
-    margin-bottom: .5rem;
-    border-radius: .2rem;
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.2rem;
 }
 button {
-    display: block;
-    width: 100%;
-    padding:.7rem;
-    margin: 1rem 0;
-    cursor: pointer;
-    background-color: rgb(3, 132, 3);
-    color: white;
-    border-style: none;
-    border-radius: .5rem;
-    font-size: 1.5rem;
+  display: block;
+  width: 100%;
+  padding: 0.7rem;
+  margin: 1rem 0;
+  cursor: pointer;
+  background-color: rgb(3, 132, 3);
+  color: white;
+  border-style: none;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
 }
 button:hover {
-    background-color:rgb(8, 209, 8);
-    transition: background-color 0.3s ease;
+  background-color: rgb(8, 209, 8);
+  transition: background-color 0.3s ease;
+}
+
+/* The code below does not work. don't know why? */
+.radio-group input[type="radio"]:checked {
+  border-color: green;
+  background-color: green;
+  box-shadow: 1px 2px 5px grey;
+}
+input,
+textarea:focus {
+  border-color: greenyellow;
+}
+
+input,
+select,
+textarea :invalid {
+  border-color: red;
+}
+input,
+select,
+textarea:valid {
+  border-color: green;
 }
