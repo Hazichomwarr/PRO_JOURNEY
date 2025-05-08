@@ -79,12 +79,12 @@ button:hover {
   color: green;
   font-weight: 500;
 }
-/* The codes below don't work. don't know why? */
-input:focus,
+
+/* input:focus,
 select:focus,
 textarea:focus {
-  outline: 2px solid yellow;
-}
+  outline: 2px solid rgb(7, 134, 7);
+} */
 
 input:invalid,
 select:invalid,
