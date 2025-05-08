@@ -43,6 +43,7 @@ h1 {
   width: 100%;
   padding: 0.5rem;
   margin-bottom: 0.5rem;
+  border: 1px solid #ccc;
   border-radius: 0.2rem;
 }
 button {
@@ -62,24 +63,25 @@ button:hover {
   transition: background-color 0.3s ease;
 }
 
-/* The code below does not work. don't know why? */
+/* The codes below don't work. don't know why? */
 .radio-group input[type="radio"]:checked {
-  border-color: green;
-  background-color: green;
-  box-shadow: 1px 2px 5px grey;
+  accent-color: green;
 }
-input,
+input:focus,
 textarea:focus {
-  border-color: greenyellow;
+  border-color: yellow;
 }
 
-input,
-select,
-textarea :invalid {
+input:invalid,
+select:invalid,
+textarea:invalid {
   border-color: red;
 }
-input,
-select,
+input:valid,
+select:valid,
 textarea:valid {
   border-color: green;
+}
+input:first-of-type {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
