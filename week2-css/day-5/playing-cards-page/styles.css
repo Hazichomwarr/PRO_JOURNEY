@@ -1,0 +1,39 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding: 0;
+}
+#playing-cards {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 500px;
+    height: 500px;
+    border: 2px solid blue;
+    margin: 2rem auto;
+    padding: 10px;
+
+}
+.card {
+    width: 99%;
+    margin: 2rem auto;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+.left {
+    align-self: flex-start;
+}
+.middle {
+    display: flex;
+    align-self: center;
+    flex-direction: column;
+}
+.right {
+    align-self: flex-end;
+}
