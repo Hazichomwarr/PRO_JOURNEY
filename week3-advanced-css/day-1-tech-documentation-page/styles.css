@@ -1,0 +1,135 @@
+@media (max-width: 576px) {
+}
+body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  font-family: "Inter", sans-serif;
+}
+#main-doc {
+  width: 100%;
+  overflow: scroll;
+}
+header {
+  font-size: 1.6rem;
+  margin: 1.5rem 0.5rem;
+  text-align: left;
+  color: #363636;
+  line-height: 1;
+}
+#navbar header {
+  text-align: center;
+  margin: 0.5rem;
+}
+ul {
+  width: 50%;
+  margin: 0 auto;
+}
+/* How can I get the <li>s (in the nav) top and bottom borders to not be separated from each other? */
+nav li {
+  margin-bottom: 0.7rem;
+  border-top: 1px solid #363636;
+  text-align: center;
+  list-style: none;
+  text-align: center;
+}
+section li {
+  margin-bottom: 0.7rem;
+}
+.nav-link {
+  font-size: 1rem;
+  text-decoration-line: none;
+  color: #363636;
+  cursor: pointer;
+}
+.nav-link:hover {
+  color: #c69e6d;
+}
+
+code {
+  display: block;
+  padding: 1rem 0;
+  width: 97%;
+  background: #eeeded;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.95em;
+}
+
+@media (min-width: 768px) {
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+  body {
+    font-family: "Inter", sans-serif;
+    font-size: 12.5px;
+    max-width: 600px;
+  }
+  nav header {
+    text-decoration: underline;
+  }
+  #navbar {
+    max-width: 22%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: -35px;
+    bottom: 0;
+    overflow: scroll;
+    border: 1px solid #363636;
+  }
+  #main-doc {
+    width: 60%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 100px;
+    overflow: scroll;
+  }
+  header {
+    font-size: 1.6rem;
+    margin: 1.5rem 0.5rem;
+    text-align: left;
+    color: #363636;
+    line-height: 1;
+  }
+  ul {
+    margin: 1rem;
+    width: 95%;
+  }
+  nav li {
+    padding-bottom: 1.5rem;
+    border-top: none;
+  }
+  section li {
+    margin-bottom: 1.5rem;
+    margin-left: 2rem;
+    border-bottom: none;
+  }
+  .nav-link {
+    display: block;
+    font-size: 1rem;
+    text-decoration-line: none;
+    color: #363636;
+    cursor: pointer;
+    border-bottom: 1px solid #363636;
+    text-align: left;
+  }
+  .nav-link:hover {
+    color: #c69e6d;
+  }
+  code {
+    display: block;
+    padding: 1rem 0;
+    margin: 0.2rem 0;
+    width: 97%;
+    background: #eeeded;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.95em;
+  }
+}
