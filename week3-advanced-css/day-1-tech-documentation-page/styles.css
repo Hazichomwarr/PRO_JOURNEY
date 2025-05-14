@@ -1,5 +1,10 @@
 @media (max-width: 576px) {
 }
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
 body {
   padding: 1rem;
   display: flex;
@@ -9,6 +14,7 @@ body {
 #main-doc {
   width: 100%;
   overflow: scroll;
+  padding: 1px;
 }
 header {
   font-size: 1.6rem;
@@ -17,15 +23,23 @@ header {
   color: #363636;
   line-height: 1;
 }
+#navbar {
+  position: sticky;
+  top: 0;
+  background-color: #fcfcfc;
+  border: none;
+}
 #navbar header {
   text-align: center;
   margin: 0.5rem;
 }
-ul {
-  width: 50%;
-  margin: 0 auto;
+nav ul {
+  width: 100%;
+  padding: 0;
 }
-/* How can I get the <li>s (in the nav) top and bottom borders to not be separated from each other? */
+section p li {
+  list-style: square;
+}
 nav li {
   margin-bottom: 0.7rem;
   border-top: 1px solid #363636;
@@ -33,9 +47,7 @@ nav li {
   list-style: none;
   text-align: center;
 }
-section li {
-  margin-bottom: 0.7rem;
-}
+
 .nav-link {
   font-size: 1rem;
   text-decoration-line: none;
@@ -58,36 +70,26 @@ code {
 }
 
 @media (min-width: 768px) {
-  * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-  }
   body {
-    font-family: "Inter", sans-serif;
-    font-size: 12.5px;
-    max-width: 600px;
+    display: flex;
+    flex-direction: row;
   }
   nav header {
     text-decoration: underline;
   }
   #navbar {
+    flex: 1;
     max-width: 22%;
-    position: fixed;
+    position: sticky;
     top: 0;
-    left: 0;
-    right: -35px;
-    bottom: 0;
+    height: 100vh;
     overflow: scroll;
-    border: 1px solid #363636;
+    border-right: 1px solid #363636;
   }
   #main-doc {
-    width: 60%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 100px;
-    overflow: scroll;
+    flex: 3;
+    padding: 1rem 2rem;
+    overflow-y: auto;
   }
   header {
     font-size: 1.6rem;
@@ -96,19 +98,16 @@ code {
     color: #363636;
     line-height: 1;
   }
-  ul {
-    margin: 1rem;
-    width: 95%;
+  nav ul {
+    width: 100%;
+    margin: 2rem 0;
+    padding: 0;
   }
   nav li {
     padding-bottom: 1.5rem;
     border-top: none;
   }
-  section li {
-    margin-bottom: 1.5rem;
-    margin-left: 2rem;
-    border-bottom: none;
-  }
+
   .nav-link {
     display: block;
     font-size: 1rem;
