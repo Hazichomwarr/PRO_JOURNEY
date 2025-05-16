@@ -45,6 +45,9 @@ section {
     padding: 2.5rem;
     margin-top: 2rem;
 }
+.text {
+    font-family: Helvetica, sans-serif;
+    color: black;}
 .feature-article {
     grid-area: feature-article;
 }
@@ -77,11 +80,25 @@ section {
         transform: translateY(0);
     }
 }
+@keyframes zoomIn {
+    0% {
+        transform: scale(1.05);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.cover-image img {
+    animation: zoomIn .7s ease-out forwards;
+    opacity: 0;
+}
+
 
 .text {
-    font-family: Helvetica, sans-serif;
-    color: black;
-    animation: fadeIn 0.8s ease-out forwards;
+    animation: fadeIn .7s ease-out forwards;
     opacity: 0; /* starts transparent */
 }
 
