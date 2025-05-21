@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hamza Mare's developer portfolio — showcasing front-end projects, HTML/CSS skills, and creative web design with a passion for clean, responsive layouts.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Portfolio page</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+           <div>logo here</div>
+            <ul>
+                <li class="navbar-item"><a href="#hero">Hero</a></li>
+                <li class="navbar-item"><a href="#about">About</a></li>
+                <li class="navbar-item"><a href="#projects">Projects</a></li>
+                <li class="navbar-item"><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="hero">
+            <img class="hero-imag zoom-in" src="./images/logo.webp" alt="portrait of Hamza Mare">
+            <div class="hero-name">
+                <h1 >Hey, I am Hamza</h1>
+                <p class="hero-title">a web developer</p>
+            </div>
+        </section>
+        <section id="about">
+            <p class="about-me">A brief intro about who I am: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum, similique quibusdam. Enim debitis eligendi iste iusto temporibus deleniti, assumenda ad consequuntur provident in laboriosam doloribus dicta atque quam ipsa distinctio!</p>
+            <div class="skills-container">
+                <h2>Technologies I work with</h2>
+                <div class="skill">Html</div>
+                <div class="skill">CSS</div>
+                <div class="skill">JAVASCRIPT</div>
+                <div class="skill">REACT</div>
+                <div class="skill">EXPRESS</div>
+                <div class="skill">PYTHON</div>
+                <div class="skill">FLASK</div>
+                <div class="skill">MONGO_DB</div>
+                <div class="skill">SQL</div>
+            </div>
+        </section>
+        <section id="projects">
+            <div class="projects-cards">
+                <div class="project-card">
+                    <img src="" alt="Screenshot of project">
+                    <h3>Project Title</h3>
+                    <p>Short description</p>
+                    <a href="#">View Project</a>
+                </div>
+                <div class="project-card">
+                    <img src="" alt="Screenshot of project">
+                    <h3>Project Title</h3>
+                    <p>Short description</p>
+                    <a href="#">View Project</a>
+                </div>
+                <div class="project-card">
+                    <img src="" alt="Screenshot of project">
+                    <h3>Project Title</h3>
+                    <p>Short description</p>
+                    <a href="#">View Project</a>
+                </div>  
+            </div>
+        </section>
+        <section id="contact">
+            <form class="contact-form">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required></textarea>
+
+                <button type="submit">Send</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <div class="icons">
+            <a href="https://www.facebook.com/haz.leloup"><i class="fa fa-facebook-official" style="font-size:36px"></i></a>
+            <a href="https://github.com/Hazichomwarr"><i class="fa fa-github" style="font-size:36px"></i></a>
+            <a href="https://www.linkedin.com/in/hamza-mare-430baa223/"><i class="fa fa-linkedin-square" style="font-size:36px"></i></a>
+        </div>
+        <small>Hamza Mare 2025 &copy; all rights reserved</small>
+    </footer>
+</body>
+</html>
