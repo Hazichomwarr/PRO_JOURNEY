@@ -4,7 +4,7 @@ Welcome to my personal portfolio! I'm Hamza Mare, a self-taught front-end develo
 
 ## 🔗 Live Site
 
-Explore the live version of my portfolio: [https://hazichomwarr.github.io/PRO_JOURNEY/week-4-capstone-html-css/](https://hazichomwarr.github.io/PRO_JOURNEY/week-4-capstone-html-css/)
+Explore the live version of my portfolio: [https://hazichomwarr.github.io/PRO_JOURNEY](https://hazichomwarr.github.io/PRO_JOURNEY)
 
 ## 🛠️ Technologies Used
 
