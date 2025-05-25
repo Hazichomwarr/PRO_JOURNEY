@@ -287,7 +287,9 @@ footer .icons {
   #nav-links.active {
     display: flex;
   }
-
+.about-header {
+    font-size: 1.9rem;
+}
   .contact-form {
     width: 90%;
     padding: 2rem;
