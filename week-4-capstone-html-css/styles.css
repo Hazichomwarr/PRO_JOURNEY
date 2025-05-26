@@ -69,7 +69,7 @@ header {
     display: flex;
     justify-content:space-evenly;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 #hero img {
     max-width: 350px;
