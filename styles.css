@@ -1,0 +1,316 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+    
+}
+:root {
+  --background: linear-gradient(to bottom, #1f2937, #4b5563); /* Dark slate to gray */
+  --accent: #facc15;    /* Gold */
+  --text: #f8fafc;       /* Light gray/white */
+  --secondary: #10b981;  /* Teal green */
+}
+
+body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--background);
+    color: var(--text)
+}
+main {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas:
+  "hero hero hero"
+  "about about about"
+  "projects projects projects"
+  "contact contact contact"
+  "footer footer footer";
+}
+header {
+    margin-top: 1rem;
+    padding: 1.5rem;
+    background-color: #040404;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: aliceblue;
+}
+
+#nav-links {
+    display: flex;
+    /* justify-content: space-around;
+    align-items: center; */
+    gap: 1.5rem;
+}
+.hamburger {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+}
+    
+.navbar-item, .icons a {
+    list-style: none;
+    transition: transform 0.7s ease-in-out;
+}
+.navbar-item:hover, .icons > a:hover {
+    cursor: pointer;
+    transform: scale(1.5);
+}
+#hero {
+    grid-area: hero;
+    display: flex;
+    justify-content:space-evenly;
+    align-items: center;
+    height: 100vh;
+}
+#hero img {
+    max-width: 350px;
+    border-radius: 10px;
+}
+.zoom-in {
+  animation: zoom 2s ease forwards;
+}
+@keyframes zoom {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.hero-name {
+    font-family: cursive, sans-serif;
+    font-size: 2rem;
+    text-align: center;
+}
+.hero-name .hero-title {
+   color: var(--accent);
+}
+
+#about {
+    grid-area: about;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+.about-text {
+    font-size: 1.5rem;
+    background-color: white;
+    width: 70%;
+    padding: 3rem;
+    margin: 2rem 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px #0000001a;
+    color: #040404;
+}
+.about-header {
+    text-align: center;
+    font-size: 2.4rem;
+    margin-top: 1rem;
+}
+#about .skills-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+
+}
+h3, .project-title {
+    font-size: 2rem;
+    font-weight: 600;
+    /* color: #8f928f; */
+    color: #d1d5db; /* Tailwind's slate-300 */
+    margin-top: 2rem;
+    text-align: center;
+}
+.skills-container .skill {
+    text-transform: uppercase;
+    font-weight: 600;
+    background-color: #f8fafc;
+  /* background-color: #1e293b; */
+    color: #00388b;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px #0000001a;
+}
+#projects {
+    grid-area: projects;
+    grid-column: 1/-1;
+}
+.projects-cards {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.project-card {
+    flex: 1 1 300px; /* Allows card to grow/shrink with a base width of 300px */
+    max-width: 400px;
+    padding: 1rem;
+    margin: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px #0000001a;
+    background-color: #1a3852;
+    color: whitesmoke;
+}
+a {
+    text-decoration: none;
+    font-size: 1.3rem;
+    color: var(--accent);
+    font-weight: 600;
+}
+a:hover {
+  color: var(--secondary);
+}
+
+#contact {
+    grid-area: contact;
+    grid-column: 1/-1;
+    margin: 3rem auto;
+    width: 100%;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 70%;
+    margin: 1rem auto;
+    background: #1f2937;
+    padding: 2rem;
+    border-radius: 12px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    padding: 0.75rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+.contact-form button {
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    background-color: var(--accent);
+  color: var(--background);
+  border: none;
+  padding: .75rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color -3s ease;
+}
+.contact-form button:hover {
+     background-color: var(--secondary);
+  color: var(--text);
+}
+footer {
+    grid-area: footer;
+    grid-column: 1/-1;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+    margin: 0 auto;
+    padding: 1rem;
+    background-color: #040404;
+    color: white;
+    /* position: sticky;
+    bottom: 0; */
+}
+footer .icons {
+    display: flex;
+    justify-content: space-around;
+    gap: 2rem;
+}
+
+.mobile-only {
+    display: none;
+}
+#hero, #about, #projects, #contact {
+  margin: 2rem 0;
+}
+
+@media (max-width: 768px) {
+  main {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "hero"
+      "about"
+      "projects"
+      "contact"
+      "footer";
+  }
+  header {
+    margin: 0 auto;
+    padding: 1rem;
+    width: 100%;
+    background-color: #040404;
+    position: relative;
+  }
+  
+  #hero {
+    flex-direction: column;
+    text-align: center;
+  }
+  .hamburger {
+    display: block;
+  }
+  #nav-links {
+    display: none;
+    flex-direction: column;
+    background-color: #111;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 100%;
+    text-align: center;
+  }
+  #nav-links.active {
+    display: flex;
+  }
+.about-header {
+    font-size: 1.9rem;
+}
+  .contact-form {
+    width: 90%;
+    padding: 2rem;
+  }
+
+  .projects-cards {
+    flex-direction: column;
+  }
+
+  footer {
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  .mobile-only {
+    display: block;
+    text-align: center;
+    /* margin-top: 1rem; */
+  }
+
+}
+
