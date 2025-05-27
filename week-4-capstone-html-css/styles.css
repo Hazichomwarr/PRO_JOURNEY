@@ -93,6 +93,7 @@ header {
     font-family: cursive, sans-serif;
     font-size: 2rem;
     text-align: center;
+    margin-bottom: 2rem;
 }
 .hero-name .hero-title {
    color: var(--accent);
@@ -310,5 +311,15 @@ footer .icons {
     /* margin-top: 1rem; */
   }
 
+}
+
+@media screen and (max-height: 450px) and (orientation: landscape) {
+  .hero-text {
+    font-size: 1.2rem; /* reduce font size if necessary */
+  }
+
+  .hero {
+    padding-bottom: 4rem; /* increase spacing to avoid overlap */
+  }
 }
 
