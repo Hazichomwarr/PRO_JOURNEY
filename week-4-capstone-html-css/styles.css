@@ -272,6 +272,11 @@ footer .icons {
     flex-direction: column;
     text-align: center;
   }
+  
+  .hero-name {
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+}
   .hamburger {
     display: block;
   }
@@ -313,13 +318,22 @@ footer .icons {
 
 }
 
-@media screen and (max-height: 450px) and (orientation: landscape) {
+@media screen and (max-width: 900px) and (orientation: landscape) {
   .hero-name h1 {
     font-size: 1rem; /* reduce font size if necessary */
   }
+  .hero-name {
+    padding-bottom: 5rem;
+  }
 
   #hero {
+    flex-direction: column-reverse;
     padding-bottom: 4rem; /* increase spacing to avoid overlap */
+    min-height: auto;
   }
+  #about {
+    padding-top: 5rem;
+  }
+
 }
 
