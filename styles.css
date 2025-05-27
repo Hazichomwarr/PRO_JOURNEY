@@ -323,7 +323,6 @@ footer .icons {
   }
 
   #hero {
-    flex-direction: column-reverse;
     padding-bottom: 4rem; /* increase spacing to avoid overlap */
     min-height: auto;
   }
