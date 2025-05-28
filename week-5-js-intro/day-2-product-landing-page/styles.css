@@ -16,33 +16,36 @@ body {
     font-family: "Roboto", sans-serif;
     background-color: var(--background);
 }
-main {
+/* main {
     margin-top: 10rem;
-}
+} */
 #header {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     position: fixed;
     top: 0;
     background-color: var(--background);
-    padding: 0 2.5rem;
-    z-index: 1;
+    padding: 1rem 2rem;
+     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 10;
 }
 #header-img {
-    max-width: 500px;
+    max-width: 250px;
 }
 .nav-links {
     display: flex;
-    align-items: center;
-    gap: 2rem;
+    /* align-items: center; */
+    gap: 1.6rem;
     list-style: none;
+    flex-wrap: wrap;
 }
 .nav-link {
     text-decoration: none;
     color: var(--text);
-    font-size: 1.3rem;
+    /* font-size: 1.3rem; */
     cursor: pointer;
     font-weight: 500;
 }
@@ -55,20 +58,14 @@ main {
 
 article {
     margin-top: 8rem;
+     text-align: center;
+     padding: 2rem;
 }
 article h1 {
-    text-align: center;
-    margin-bottom: 2rem;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
 }
-#form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-}
-#email, #submit {
-    display: block;
-}
+
 #email {
     padding: .7rem;
 }
@@ -88,54 +85,97 @@ article h1 {
     transition: .4s ease;
 }
 #features {
-    width: 70%;
-    margin: 2rem auto;
-    /* border: 1px solid black; */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 3rem 1rem;
+    background-color: #f9f9f9;
 }
 .feature {
-    width: 70%;
     display: flex;
-    gap: 3rem;
-    align-items: center;
-    margin-bottom: 2rem;
+    gap: 1.5rem;
+    align-items: flex-start;
+   max-width: 800px;
+  margin: 0 auto;
 }
 
 .feature-icon {
-    color:  #e4700b;
+    font-size: 2.25rem;
+    flex-shrink: 0;
+    width: 40px;
+    text-align: center;
+    color: #ff9900;
+}
+
+.feature-description h2 {
+    margin: 0 0 0.25rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+.feature-description p {
+    margin: 0;
+    color: #555;
+    line-height: 1.6;
+}
+@media (min-width: 768px) {
+    #features {
+        padding: 4rem 2rem;
+    }
+    .feature-icon {
+        font-size: 2.5rem;
+    }
+    .feature-description h2 {
+        font-size: 1.5rem;
+    }
+    
 }
 
 #how-it-works {
-    width: 60%;
-    margin: 4rem auto;
+    padding: 3rem 1rem;
+    background-color: #fff;
+    text-align: center;
 }
-#how-it-works iframe {
-    width: 85%;
-     height: 500px;
-}
-#how-it-works figcaption {
-    margin: .5rem auto;
-    font-weight: 500;
+#video {
+    width: 100%;
+    max-width: 560px;
+    aspect-ratio: 16/9;
+    border: none;
+    border-radius: .5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 #pricing {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
-    margin-bottom: 2rem;
+    justify-content: center;
+    gap: 2rem;
+    padding: 4rem 2rem;
+    background-color: #f4f4f4;
 }
 .item {
-    width: 15%;
-    border: 1px solid var(--text);
+    background-color: white;
+    border-radius: .5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    padding: 2rem;
+    max-width: 300px;
+    flex: 1 1 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s ease;
+    text-align: center;
+}
+.item:hover {
+    transform: translateY(-5px);
 }
 .item-header {
-    padding: 1.2rem;
-    text-align: center;
-    background-color: var(--secondary);
+    font-size: 1.5rem;
+    margin-bottom: .5rem;
+    color: #333;
 }
 .item-price {
-    text-align: center;
-    font-weight: 700;
-    font-size: 2em;
-    margin: 1rem 0;
+    font-size: 2rem;
+    color: #e07a5f;
+    margin-bottom: 1rem;
 }
 .description-wrapper {
     display: flex;
@@ -157,7 +197,7 @@ footer ul {
     list-style: none;
     padding: 1.5rem;
 }
-@media (max-width: 950px) {
+/* @media (max-width: 950px) {
     body {
         font-size: .9rem;
     }
@@ -171,7 +211,6 @@ footer ul {
     max-width: 250px;
 }
 
-/*Nav-link items not align vertically  */
 .nav-links {
     display: flex;
     flex-direction: column;
@@ -199,4 +238,4 @@ footer ul {
 .item {
     width: 65%;
 }
-}
+} */

@@ -1,0 +1,244 @@
+/* RESET AND BASE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    font-size: 1rem;
+    border-color: #f9f9f9;
+    color: #333;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+ul {
+    list-style: none;
+}
+
+/* === HEADER === */
+#header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+#header-img {
+    max-width: 250px;
+    height: auto;
+}
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+.nav-link {
+    font-weight: 500;
+    color: #333;
+    transition: color 0.2s ease;
+}
+.nav-link:hover {
+  color: #e67e22;
+}
+
+/* === HERO SECTION === */
+article {
+  margin-top: 120px; /* leaves space below fixed navbar */
+  text-align: center;
+  padding: 2rem;
+}
+
+article h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+#form input[type='email'] {
+    padding: .7rem;
+    width: 300px;
+    max-width: 100%;
+    margin-right: 0.5rem;
+    border: 1px solid #ccc; /* nice color for input */
+    border-radius: 4px;
+}
+#form input[type='submit'] {
+    padding: 0.75rem 1.5rem;
+    background-color: #e67e22;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+#form input[type="submit"]:hover {
+    background-color: #cf711f;
+}
+
+/* === FEATURES SECTION === */
+#features {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 3rem 1rem;
+    background-color: #f9f9f9;
+}
+.feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.feature-icon {
+    font-size: 2.25rem;
+    flex-shrink: 0;
+    width: 40px;
+    text-align: center;
+}
+
+.feature-description h2 {
+    margin: 0 0 0.25rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+.feature-description p {
+    margin: 0;
+    color: #555;
+    line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+    #features {
+        padding: 4rem 2rem;
+    }
+    .feature-icon {
+        font-size: 2.5rem;
+    }
+    .feature-description h2 {
+        font-size: 1.5rem;
+    }
+    
+}
+
+/* === HOW IT WORKS SECTION === */
+#how-it-works {
+    padding: 3rem 1rem;
+    background-color: #fff;
+    text-align: center;
+}
+#video {
+    width: 100%;
+    max-width: 560px;
+    aspect-ratio: 16/9;
+    border: none;
+    border-radius: .5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* === PRICING SECTION === */
+#pricing {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    padding: 4rem 2rem;
+    background-color: #f4f4f4;
+}
+.item {
+    background-color: white;
+    border-radius: .5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    padding: 2rem;
+    max-width: 300px;
+    flex: 1 1 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s ease;
+    text-align: center;
+}
+.item:hover {
+    transform: translateY(-5px);
+}
+.item-header {
+    font-size: 1.5rem;
+    margin-bottom: .5rem;
+    color: #333;
+}
+.item-price {
+    font-size: 2rem;
+    color: #e07a5f;
+    margin-bottom: 1rem;
+}
+.description-wrapper {
+    margin: 1rem 0;
+    width: 100%;
+}
+
+.description {
+    text-align: center;
+    margin: 0.5rem 0;
+    color: #555;
+    font-size: 0.95rem;
+}
+.select-button {
+  margin-top: auto;
+  padding: 0.75rem 1.5rem;
+  background-color: #3d405b;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.select-button:hover {
+  background-color: #2b2d42;
+}
+
+/* === FOOTER === */
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 2rem 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+footer ul li a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+footer ul li a:hover {
+  color: #e07a5f; /* matches your theme color */
+}
+#footer p {
+  margin: 0;
+  color: #aaa;
+}
