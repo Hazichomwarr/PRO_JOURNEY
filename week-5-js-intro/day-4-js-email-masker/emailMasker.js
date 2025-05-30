@@ -1,5 +1,5 @@
 function maskEmail (email) {
-    if (email.includes('@') && email.includes(".") && email.length > 10) {
+    if (email.includes('@') && email.includes(".")) {
         const atIndex = email.indexOf('@');
         const partToMask = email.slice(1, (atIndex-1));
         let maskedPart = "*".repeat(partToMask.length);
