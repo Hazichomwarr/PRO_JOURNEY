@@ -58,11 +58,7 @@
     </header>
     <main>
       <section id="hero">
-        <img
-          class="hero-imag zoom-in"
-          src="./images/pic.jpeg"
-          alt="Hamza in a tux"
-        />
+        <img class="hero-imag zoom-in" id="hero-imag" src="" alt="" />
         <div class="hero-name">
           <h1>Hey, I am Hamza</h1>
           <p class="hero-title">a web developer</p>
@@ -88,6 +84,7 @@
             <div class="skill">EXPRESS</div>
             <div class="skill">PYTHON</div>
             <div class="skill">FLASK</div>
+            <div class="skill">DJANGO</div>
             <div class="skill">MONGO_DB</div>
             <div class="skill">SQL</div>
           </div>
@@ -225,6 +222,24 @@
       hamburger.addEventListener("click", () => {
         navLinks.classList.toggle("active");
       });
+
+      window.onload = () => {
+        const imagesArr = [
+          {
+            src: "images/pic-with-son.jpeg",
+            alt: "Hamza and son in traditionnal attires ",
+          },
+          { src: "images/me&kids.jpg", alt: "Hamza at play with kids" },
+          { src: "images/pic.jpeg", alt: "Hamza in a tux" },
+        ];
+
+        let randomIndex = Math.floor(Math.random() * imagesArr.length);
+        let randomImg = imagesArr[randomIndex];
+
+        const headerImg = document.getElementById("hero-imag");
+        headerImg.setAttribute("src", `/${randomImg.src}`);
+        headerImg.setAttribute("alt", `/${randomImg.alt}`);
+      };
     </script>
   </body>
 </html>
