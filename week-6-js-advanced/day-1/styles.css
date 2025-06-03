@@ -1,0 +1,90 @@
+/* === VARIABLES === */
+:root {
+    --primary-clr: #222322;
+    --dark-clr: #333;
+    --light-clr: #f9f9f9;
+    --accent-clr: #058f05;
+    --font-main: "Roboto", sans-serif;
+    --fs-base: 1rem;
+    --space-s: .5rem;
+    --space-m: 1rem;
+    --space-l: 2rem;
+    --box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+}
+
+/* === RESET AND BASE === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html {
+    scroll-behavior: smooth;
+}
+body {
+    font-family: var(--font-main);
+    line-height: 1.65;
+    font-size: var(--fs-base);
+    border-color: var(--light-clr);
+    background-color: var(--primary-clr);
+    color: var(--light-clr);
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+ul {
+    list-style: none;
+}
+
+/* === HEADER === */
+header {
+    width: 100%;
+    padding: var(--space-l);
+    box-shadow: var(--box-shadow);
+    background-color: var(--dark-clr);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+#logo {
+    color: var(--accent-clr);
+}
+
+#nav-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-l);
+}
+.nav-link {
+    font-size: 1.3rem;
+    padding: .5rem;
+    cursor: pointer;
+    display: inline-block; /*bc transform doesn't work on inline elements */
+    transition: transform .7s ease-in-out;
+}
+#nav-links > li:last-of-type {
+    border: 1px solid var(--accent-clr);
+    border-radius: 5px;
+}
+.nav-link:hover {
+    transform: scale(1.1); /*the scale is not working*/
+    color: var(--accent-clr);
+}
+/* === MAIN === */
+#main {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas: 
+    "about"
+    "features"
+    "contact";
+}
