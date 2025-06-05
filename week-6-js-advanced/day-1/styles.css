@@ -2,7 +2,8 @@
 :root {
     --primary-clr: #222322;
     --dark-clr: #333;
-    --light-clr: #f9f9f9;
+    --header-clr: #f9f9f9;
+    --text-clr: #bebdbd;
     --accent-clr: #058f05;
     --font-main: "Roboto", sans-serif;
     --fs-base: 1rem;
@@ -26,9 +27,9 @@ body {
     font-family: var(--font-main);
     line-height: 1.65;
     font-size: var(--fs-base);
-    border-color: var(--light-clr);
-    background-color: var(--primary-clr);
-    color: var(--light-clr);
+    border-color: var(--header-clr);
+    background-image: linear-gradient(var(--primary-clr));
+    color: var(--header-clr);
 }
 a {
     text-decoration: none;
@@ -41,7 +42,9 @@ ul {
 /* === HEADER === */
 header {
     width: 100%;
-    padding: var(--space-l);
+    padding: var(--space-s) var(--space-m);
+    margin-bottom: var(--space-l);
+
     box-shadow: var(--box-shadow);
     background-color: var(--dark-clr);
     display: flex;
@@ -59,15 +62,14 @@ header {
 
 #nav-links {
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
-    gap: var(--space-l);
+    gap: var(--space-s);
 }
 .nav-link {
-    font-size: 1.3rem;
+    font-size: var(--space-m);
     padding: .5rem;
     cursor: pointer;
-    display: inline-block; /*bc transform doesn't work on inline elements */
+    display: inline-block; /*bc 'transform' doesn't work on inline elements */
     transition: transform .7s ease-in-out;
 }
 #nav-links > li:last-of-type {
@@ -75,16 +77,84 @@ header {
     border-radius: 5px;
 }
 .nav-link:hover {
-    transform: scale(1.1); /*the scale is not working*/
+    transform: scale(1.1);
     color: var(--accent-clr);
 }
 /* === MAIN === */
 #main {
+    margin-top: 5rem;
     padding: 1rem;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    row-gap: var(--space-l);
+    grid-template-columns: 1fr;
     grid-template-areas: 
     "about"
     "features"
     "contact";
+}
+#about {
+    grid-area: about;
+}
+.about-wrapper {
+    margin: 2rem auto;
+    text-align: center;
+    grid-column: 1/-1;
+}
+#about h1 {
+    font-size: 2.1rem;
+}
+ .text {
+    color: var(--text-clr);
+    font-size: .8rem;
+ }
+
+.btn {
+   padding: .75rem 1.5rem;
+   margin: var(--space-s);
+   border-radius: 5px;
+   border: none;
+   cursor: pointer;
+   background-color: var(--accent-clr);
+   color: var(--header-clr);
+   transition: background-color 0.3s ease;
+}
+.btn:hover {
+    background-color: #024602;
+}
+.signup-btn {
+    background-color: var(--primary-clr);
+    border: 1px solid var(--accent-clr);
+}
+
+#features {
+    grid-area: features;
+    background-color: var(--dark-clr);
+    padding: var(--space-l);
+
+}
+#features h2 {
+    text-align: center;
+}
+.features-container {
+    margin: var(--space-m) auto;
+    padding: var(--space-s);
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.feature {
+    box-shadow: var(--box-shadow);
+    width: 30%;
+}
+
+
+
+footer {
+    text-align: center;
+}
+
+@media (min-width: 769px) {
+    body {
+        font-size: 1.4rem;
+    }
 }
