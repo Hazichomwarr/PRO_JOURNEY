@@ -9,24 +9,34 @@
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+    <div id="modal-overlay" class="modal-hidden">
+        <div class="modal">
+            <button id="close-modal" class="close-btn">&times;</button>
+            <h2>Sign Up</h2>
+            <form id="signup-form">
+                <input type="text" placeholder="Name" required />
+                <input type="email" placeholder="Email" required />
+                <button type="submit" class="btn">Submit</button>
+            </form>
+        </div>
+    </div>
+
     <header>
-        <div class="logo-wrapper"><i class="fa-brands fa-vaadin fa-3x" id="logo" aria-hidden="true"></i></div>
-        <nav id="nav-bar" role="navigation">
+        <i class="fa-brands fa-vaadin fa-3x" id="brand-logo" aria-hidden="true"></i>
+        <nav id="nav-bar" role="navigation" aria-label="Main navigation">
             <ul id="nav-links">
                 <li><a href="#about" class="nav-link">About</a></li>
                 <li><a href="#features" class="nav-link">Features</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
-                <li><a href="#sign-up" class="nav-link">Sign Up</a></li>
+                <li><a href="#contact" class="nav-link">Sign Up</a></li>
             </ul>
         </nav>
     </header>
     <main id="main">
         <section id="about">
-            <div class="about-wrapper">
                 <h1 class="about-header">Build amazing products</h1>
                 <p class="about-text text">Our platforms help you turn your ideas into reality.</p>
-                <button class="get-started btn" type="button" role="button">Get Started</button>
-            </div>
+                <button class="get-started btn" type="button">Get Started</button>
         </section>
         <section id="features">
             <h2>Features</h2>
@@ -34,27 +44,31 @@
                 <div class="feature">
                     <i class="fa-solid fa-gear feature-logo"></i>
                     <h3 class="sub-header">Feature One</h3>
-                    <p class="description text">Description of this feature and how it helps your customers</p>
+                    <p class="description text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Est amet aliquam dolores voluptatum dignissimos sed voluptatem dicta consequuntur quos nobis Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem iure labore repudiandae.
+                    </p>
                 </div>
                 <div class="feature">
                     <i class="fa-solid fa-bolt feature-logo"></i>
                     <h3 class="sub-header">Feature Two</h3>
-                    <p class="description text">Description of this feature and how it helps your customers</p>
+                    <p class="description text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Est amet aliquam dolores voluptatum dignissimos sed voluptatem dicta consequuntur quos nobis Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem iure labore repudiandae.
+                    </p>
                 </div>
                 <div class="feature">
                     <i class="fa-solid fa-check feature-logo"></i>
                     <h3 class="sub-header">Feature Three</h3>
-                    <p class="description text">Description of this feature and how it helps your customers</p>
+                    <p class="description text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Est amet aliquam dolores voluptatum dignissimos sed voluptatem dicta consequuntur quos nobis Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem iure labore repudiandae.
+                    </p>
                 </div>
-                </div>
+            </div>
         </section>
        <section id="contact">
-        <h2 class="contact-header">Ready to get started ?</h2>
-        <button class="signup-btn btn" type="button" role="button">Sign Up</button>
+            <h2 class="contact-header">Ready to get started ?</h2>
+            <button class="signup-btn btn" type="button">Sign Up</button>
        </section>
     </main>
     <footer>
         <small class="text">&copy; 2024 Startup. All rights reserved.</small>
     </footer>
+    <script src="./script.js"></script>
 </body>
 </html>
