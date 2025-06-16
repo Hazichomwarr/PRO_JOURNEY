@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a38aeadb80.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./styles.css">
+    <title>Pricing Page</title>
+</head>
+<body>
+    <header>
+    <h1>Choose the plan that fits your needs.</h1>
+    <div class="toggle-container">
+      <span>Monthly</span>
+      <label class="switch">
+        <input type="checkbox" id="billing-toggle" />
+        <span class="slider"></span>
+      </label>
+      <span>Yearly</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="pricing-cards">
+      <article class="card">
+        <h2 class="plan-name">Basic</h2>
+        <p class="price" data-monthly="9" data-yearly="90">$9/mo</p>
+        <ul class="features">
+          <li>1 user</li>
+          <li>5GB storage</li>
+          <li>Email support</li>
+        </ul>
+        <button class="btn">Choose Plan</button>
+      </article>
+
+      <article class="card">
+        <div class="badge">Most Popular</div>
+        <h2 class="plan-name">Pro</h2>
+        <p class="price" data-monthly="19" data-yearly="190">$19/mo</p>
+        <ul class="features">
+          <li>5 users</li>
+          <li>50GB storage</li>
+          <li>Priority support</li>
+        </ul>
+        <button class="btn">Choose Plan</button>
+      </article>
+
+      <article class="card">
+        <h2 class="plan-name">Enterprise</h2>
+        <p class="price" data-monthly="49" data-yearly="490">$49/mo</p>
+        <ul class="features">
+          <li>Unlimited users</li>
+          <li>1TB storage</li>
+          <li>24/7 support</li>
+        </ul>
+        <button class="btn">Choose Plan</button>
+      </article>
+    </section>
+    <!-- Testimonial Carousel Section -->
+    <section class="testimonials">
+      <h2>What Our Customers Say</h2>
+      <div class="carousel">
+        <button class="carousel-btn prev" aria-label="Previous testimonial">&#10094;</button>
+        <div class="testimonial-slide active fade">
+          <p>"This service transformed our workflow. Highly recommend!"</p>
+          <h4>— Alex D.</h4>
+        </div>
+
+        <div class="testimonial-slide fade">
+          <p>"Amazing support team and intuitive pricing structure!"</p>
+          <h4>— Bianca K.</h4>
+        </div>
+
+        <div class="testimonial-slide fade">
+          <p>"As a small business, this has been a game-changer for us."</p>
+          <h4>— Jamal R.</h4>
+        </div>
+        <button class="carousel-btn next" aria-label="Next testimonial">&#10095;</button>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2025 YourCompany. All rights reserved.</p>
+  </footer>
+    <script src="./script.js"></script>
+</body>
+</html>

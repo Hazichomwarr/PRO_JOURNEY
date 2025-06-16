@@ -1,0 +1,274 @@
+/* === VARIABLES === */
+:root {
+    --primary-clr: #dddde2;
+    --btn-clr: #39037a;
+    --text-clr: #282828;
+    --deepBlue-clr: #213599;
+    --lightBlue-clr: #9a98cb;
+    --font-main: "Roboto", sans-serif;
+    --fs-base: 1rem;
+    --space-s: .5rem;
+    --space-m: 1rem;
+    --space-l: 2rem;
+    --box-shadow: 0 2px 4px #181818;
+
+}
+
+/* === RESET AND BASE === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html {
+    scroll-behavior: smooth;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: var(--font-main);
+    line-height: 1.65;
+    font-size: var(--fs-base);
+    background-color: var(--primary-clr);
+    color: var(--text-clr);
+}
+main {
+    flex: 1;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+ul {
+    list-style: none;
+}
+
+/* ======== HEADER ================= */
+header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: var(--space-l) var(--space-s);
+}
+h1 {
+    text-align: center;
+    font-size: var(--space-l);
+}
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+    font-weight: 500;
+    /* color: var(--deepBlue-clr); */
+}
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: whitesmoke;
+  border-radius: 50%;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+input:checked + .slider {
+  background-color: var(--lightBlue-clr);
+}
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.pricing-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    margin: var(--space-l) 0;
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-s);
+    border: 1px solid var(--lightBlue-clr);
+    border-radius: 20px;
+    padding: var(--space-l);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+.card ul {
+    list-style-image: url('./assets/checkmark.svg');
+    margin-left: 2rem;
+}
+h2 {
+    font-style: italic;
+    font-size: var(--space-l);
+    color: var(--btn-clr);
+    text-align: center;
+}
+
+.btn {
+   padding: .75rem 1.5rem;
+   border-radius: 25px;
+   border: none;
+   cursor: pointer;
+   background-image: linear-gradient(45deg, #716ecd, #39037a);
+   box-shadow: 0 4px 10px rgba(57, 3, 122, 0.3);
+   color: #fff;
+   font-weight: bold;
+   transition: background-color 0.3s ease;
+}
+.btn:hover {
+  background-image: linear-gradient(45deg, #39037a, #716ecd);
+  box-shadow: 0 6px 15px rgba(57, 3, 122, 0.5);
+}
+/* Featured badge */
+.badge {
+  background-color: #716ecd;
+  color: white;
+  font-weight: bold;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  align-self: flex-start;
+  margin-bottom: 0.5rem;
+}
+/* Featured plan emphasis */
+.card.featured {
+  border: 2px solid var(--btn-clr);
+  background-color: #fff;
+}
+
+.price {
+    font-size: 2.5rem;
+}
+
+/* Carousel*/
+.carousel {
+    width: 100%;
+    position: relative;
+    margin: auto;
+}
+/* Hide the testimonilas by default */
+.testimonial-slide {
+    display: none;
+}
+.testimonial-slide.active {
+    display: block;
+    width: 90%;
+    border: 1px solid var(--lightBlue-clr);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    margin: var(--space-m) auto;
+}
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border: none;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+.prev:hover, .next:hover {
+  background-color: var(--lightBlue-clr);
+}
+.testimonials h4 {
+    /* Caption text */
+.text {
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+}
+
+/* Fading animation */
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+
+/* how to get the footer to the bottom? */
+footer {
+    text-align: center;
+    background-color: whitesmoke;
+    padding: var(--space-l);
+    margin: auto 0;
+}
+@media (min-width: 760px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+    .pricing-cards {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        gap: 0;
+    }
+    .prev, .next {
+        top: 65%;
+    }
+    .footer {
+        padding: var(--space-m);
+    }
+}
