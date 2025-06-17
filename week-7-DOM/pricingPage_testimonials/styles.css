@@ -113,6 +113,10 @@ input:checked + .slider:before {
   -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
+.price.fade {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
 
 .pricing-cards {
     display: flex;
@@ -225,17 +229,6 @@ h2 {
 .prev:hover, .next:hover {
   background-color: var(--lightBlue-clr);
 }
-.testimonials h4 {
-    /* Caption text */
-.text {
-  font-size: 15px;
-  padding: 8px 12px;
-  position: absolute;
-  bottom: 8px;
-  width: 100%;
-  text-align: center;
-}
-}
 
 /* Fading animation */
 .fade {
@@ -247,8 +240,27 @@ h2 {
   from {opacity: .4}
   to {opacity: 1}
 }
+/* Dots */
+.dots {
+    text-align: center;
+    margin-top: 1rem;
+}
+.dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin: 0 6px;
+    background-color: #bbb;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.dot.active-dot {
+  background-color: var(--lightBlue-clr);
+}
 
-/* how to get the footer to the bottom? */
+
+/* ==== Footer ====*/
 footer {
     text-align: center;
     background-color: whitesmoke;
