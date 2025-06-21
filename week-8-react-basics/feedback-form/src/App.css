@@ -57,9 +57,11 @@ textarea {
   text-align: left;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
-
+.feedback h2 {
+  text-align: center;
+}
 .feedback p {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 .feedback span {
   margin-right: 1rem;

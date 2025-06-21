@@ -57,7 +57,7 @@ const handleSubmit = (e) => {
     </form>
 
     <div className='feedback'>
-      <h2> ------------- Feedback Details ---------------</h2>
+      <h2> {"["} ------ Feedback ------ {"]"} </h2>
       <p className='name'><span className='fb-header'>Name:</span>{name.toUpperCase()}</p>
       <p className='rating'><span className='fb-header'>Rating:</span> {rating}</p>
       <p className='feedback'><span className='fb-header'>Message:</span> {message}</p>
