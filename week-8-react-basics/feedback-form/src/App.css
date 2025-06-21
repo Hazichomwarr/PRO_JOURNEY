@@ -1,0 +1,103 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+   background-color: #e8f1f8;
+   font-family: sans-serif;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  height: 100vh;
+}
+
+#form {
+  background-color: #fff;
+  width: 95%;
+  max-width: 500px;
+  padding: 2rem;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  /* box-shadow: 0 4px 12px #0000001a; */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+label {
+  font-weight: 550;
+  text-align: left;
+}
+input, textarea {
+  width: 100%;
+  padding: .5rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-style: 1rem;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* === Feedback Display === */
+.feedback {
+  margin-top: 2rem;
+  background-color: #0789b4;
+  padding: 1.5rem;
+  border-radius: 12px;
+  color: white;
+  width: 100%;
+  max-width: 500px;
+  text-align: left;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.feedback p {
+  margin-top: 0.5rem;
+}
+.feedback span {
+  margin-right: 1rem;
+}
+
+.fb-header {
+  font-weight: bold;
+  color: #ffe;
+}
+
+
+ .btn {
+  padding: .8rem;
+  font-size: 1rem;
+  width: 100%;
+  border-radius: 10px;
+  border-style: none;
+  background-image: linear-gradient(to right, #040462, #1515b4);
+  color: white;
+  cursor: pointer;
+  transition: background .5s ease;
+ }
+
+ .btn:hover {
+  background-image: linear-gradient(to right, #1515b4, #040462);
+ }
+
+ .btn:disabled {
+  cursor: not-allowed;
+  color: gray;
+}
+
+.thanks-banner {
+  background-color: #4caf50;
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: bold;
+}
