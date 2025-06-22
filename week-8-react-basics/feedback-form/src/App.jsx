@@ -7,17 +7,26 @@ function App() {
   const [name, setName] = useState('')
   const [rating, setRating] = useState(5)
   const [message, setMessage] = useState('')
-  const [outline, setOutline] = useState('') //new code
+  const [outline, setOutline] = useState('') 
+  const [charThresholdMsg, setCharThresholdMsg] = useState('')
 
   const [showThanks, setShowThanks] = useState(false);
 
-  // New code: to handle message and the outline color
   const handleText = (e) => {
     const input = e.target.value.slice(0, MAX_LENGTH)
     setMessage(input)
-    if (message.length <= MAX_LENGTH*45/100) setOutline('green')
-    else if (message.length <= MAX_LENGTH*80/100) setOutline('orange')
-    else setOutline('red')
+    if (message.length <= MAX_LENGTH*0.45) {
+      setOutline('green')
+      setCharThresholdMsg('') //setting the msg threshold msg
+    }
+    else if (message.length <= MAX_LENGTH*0.8) {
+      setOutline('orange');
+      setCharThresholdMsg('Limit warning..')
+    }
+    else  {
+      setOutline('red')
+      setCharThresholdMsg('Limit reached')
+    }
   }
 
   const handleSubmit = (e) => {
@@ -29,6 +38,9 @@ function App() {
       setName('');
       setRating(5);
       setMessage('');
+      setOutline('');
+      setCharThresholdMsg('');
+
     }, 3000);
   };
 
@@ -61,7 +73,7 @@ function App() {
       required></textarea>
       <div className='char-container'>
         <p className="counter-class">Char: {message.length} / {MAX_LENGTH}</p>
-        {message.length <= MAX_LENGTH*80/100 && <p className='counter-class'>reaching limit</p>}
+        <p className='counter-class' style={{color: outline}}>{charThresholdMsg}</p>
       </div>
 
       <button disabled={!(name.trim()) || !(message.trim())} 

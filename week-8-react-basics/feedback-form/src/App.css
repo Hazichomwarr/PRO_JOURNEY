@@ -43,6 +43,8 @@ input, textarea {
 
 textarea {
   resize: vertical;
+  transition: outline 0.3s ease-in-out;
+
 }
 .char-container {
   display: flex;
@@ -54,6 +56,10 @@ textarea {
   color: grey;
   text-align: right;
   margin-bottom: 2rem;
+}
+.counter-class:last-child {
+  font-style: italic;
+  font-size: 0.85rem;
 }
 
 /* === Feedback Display === */
