@@ -1,30 +1,36 @@
 import { useState } from 'react'
 import './App.css'
 
+const MAX_LENGTH = 25;
+
 function App() {
   const [name, setName] = useState('')
   const [rating, setRating] = useState(5)
   const [message, setMessage] = useState('')
+  const [outline, setOutline] = useState('') //new code
 
   const [showThanks, setShowThanks] = useState(false);
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  setShowThanks(true);
+  // New code: to handle message and the outline color
+  const handleText = (e) => {
+    const input = e.target.value.slice(0, MAX_LENGTH)
+    setMessage(input)
+    if (message.length <= MAX_LENGTH*45/100) setOutline('green')
+    else if (message.length <= MAX_LENGTH*80/100) setOutline('orange')
+    else setOutline('red')
+  }
 
-  setTimeout(() => {
-    setShowThanks(false);
-    setName('');
-    setRating(5);
-    setMessage('');
-  }, 3000);
-};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setShowThanks(true);
 
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   alert(`Thanks for your feddback ${name.toUpperCase()}!`)
-  // }
+    setTimeout(() => {
+      setShowThanks(false);
+      setName('');
+      setRating(5);
+      setMessage('');
+    }, 3000);
+  };
 
   return (
     <main>
@@ -45,12 +51,19 @@ const handleSubmit = (e) => {
         onChange={({target: {value}}) => setRating(Number((value)))} />
       
       <label htmlFor="message">Enter your message: </label>
+
       <textarea name="message" 
+      style={{outline: `2px solid ${outline}`}}
       id="message" 
       rows={4}
       value={message} 
-      onChange={({target: {value}}) => setMessage(value)}
+      onChange={handleText} //the handleText works fine
       required></textarea>
+      <div className='char-container'>
+        <p className="counter-class">Char: {message.length} / {MAX_LENGTH}</p>
+        {message.length <= MAX_LENGTH*80/100 && <p className='counter-class'>reaching limit</p>}
+      </div>
+
       <button disabled={!(name.trim()) || !(message.trim())} 
       type='submit' 
       className="btn">Submit Feedback</button>

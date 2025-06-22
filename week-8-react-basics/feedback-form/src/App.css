@@ -44,6 +44,17 @@ input, textarea {
 textarea {
   resize: vertical;
 }
+.char-container {
+  display: flex;
+  justify-content: space-between;
+}
+/* Character class */
+.counter-class {
+  font-size: small;
+  color: grey;
+  text-align: right;
+  margin-bottom: 2rem;
+}
 
 /* === Feedback Display === */
 .feedback {
@@ -71,7 +82,6 @@ textarea {
   font-weight: bold;
   color: #ffe;
 }
-
 
  .btn {
   padding: .8rem;
