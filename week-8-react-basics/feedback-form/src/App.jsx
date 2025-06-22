@@ -14,18 +14,21 @@ function App() {
 
   const handleText = (e) => {
     const input = e.target.value.slice(0, MAX_LENGTH)
+    const length = input.length;
     setMessage(input)
-    if (message.length <= MAX_LENGTH*0.45) {
+    if (length <= MAX_LENGTH*0.45) {
       setOutline('green')
       setCharThresholdMsg('') //setting the msg threshold msg
     }
-    else if (message.length <= MAX_LENGTH*0.8) {
+    else if (length <= MAX_LENGTH*0.8) {
       setOutline('orange');
       setCharThresholdMsg('Limit warning..')
     }
     else  {
       setOutline('red')
-      setCharThresholdMsg('Limit reached')
+      if (length === MAX_LENGTH-1) {
+        setCharThresholdMsg('Limit reached')
+      }
     }
   }
 
@@ -33,6 +36,7 @@ function App() {
     e.preventDefault();
     setShowThanks(true);
 
+    // wait 3s before executing the below code
     setTimeout(() => {
       setShowThanks(false);
       setName('');
@@ -46,9 +50,9 @@ function App() {
 
   return (
     <main>
-       {showThanks && (
-  <div className="thanks-banner">Thanks for your feedback, {name.toUpperCase()}!</div>
-)}
+      {showThanks && (
+        <div className="thanks-banner">Thanks for your feedback, {name.toUpperCase()}!</div>
+      )}
     <form id='form' onSubmit={handleSubmit}>
       <label htmlFor="name">Name: </label>
       <input type="text" id="name" 
@@ -72,7 +76,7 @@ function App() {
       onChange={handleText} //the handleText works fine
       required></textarea>
       <div className='char-container'>
-        <p className="counter-class">Char: {message.length} / {MAX_LENGTH}</p>
+        <p className="counter-class">Char: {length} / {MAX_LENGTH}</p>
         <p className='counter-class' style={{color: outline}}>{charThresholdMsg}</p>
       </div>
 
