@@ -55,21 +55,22 @@ function App() {
   //   setNumAttendees(0);
   //   setDietPref('');
   //   setIsWithGuest(false);
-  //   setIsError(false)
   // }
-
+  const isFormReady = () => {
+    const isNameValid = name.trim().length >= MIN_NAME_LENGHT;
+    const isEmailValid = validateEmail(email.trim());
+    const isDietTextValid = dietPref.trim().length >= MIN_TEXT_LENGHT;
+    const result = isNameValid && isEmailValid && isDietTextValid;
+    return result;
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (
-      !name.length >= MIN_NAME_LENGHT &&
-      !validateEmail(email) &&
-      !dietPref.length >= MIN_TEXT_LENGHT
-    ) {
-      setIsFormSubmitted(false);
-    } else {
+    if (isFormReady() === true) {
       setIsFormSubmitted(true);
-      // clearFields();
+      return;
     }
+    setIsFormSubmitted(false);
+    return;
   };
 
   return (
@@ -83,7 +84,8 @@ function App() {
         <input
           type="text"
           id="name"
-          style={errorMsgName ? { outline: "1px solid red" } : {}}
+          className={`${errorMsgName ? "input-error" : ""} 
+          ${name.length >= MIN_NAME_LENGHT ? "input-valid" : ""}`}
           value={name}
           onBlur={handleBlur}
           onChange={(e) => setName(e.target.value)}
@@ -97,7 +99,8 @@ function App() {
         <input
           type="email"
           id="email"
-          style={errorMsgEmail ? { outline: "1px solid red" } : {}}
+          className={`${errorMsgEmail ? "input-error" : ""} 
+          ${validateEmail(email) ? "input-valid" : ""}`}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           onBlur={handleBlur}
@@ -124,7 +127,9 @@ function App() {
           rows={4}
           id="dietPref"
           value={dietPref}
-          style={errorMsgText ? { outline: "1px solid red" } : {}}
+          className={`${errorMsgText ? "input-error" : ""} ${
+            dietPref.length >= MIN_TEXT_LENGHT ? "input-valid" : ""
+          }`}
           onChange={(e) => setDietPref(e.target.value)}
           onBlur={handleBlur}
           required
@@ -136,30 +141,37 @@ function App() {
             type="checkbox"
             id="xtraGuest"
             value={isWithGuest}
-            onChange={(e) => setIsWithGuest(e.target.value)}
+            onChange={(e) => setIsWithGuest(e.target.checked)}
           />
         </div>
-        <button className="btn" type="submit">
+        <button className="btn" type="submit" disabled={!isFormReady()}>
           Submit RSVP
         </button>
       </form>
+
       {isFormSubmitted && (
         <div className="feedback-container">
           <h2>RSVP Submitted!</h2>
           <p>
-            <span className="fb-header">{name}:</span>
+            <span className="fb-header">Name: </span>
+            {name}
           </p>
           <p>
-            <span className="fb-header">{email}:</span>
+            <span className="fb-header">Email: </span>
+            {email}
           </p>
           <p>
-            <span className="fb-header">{numAttendees}:</span>
+            <span className="fb-header">No Attendees: </span>
+            {numAttendees}
           </p>
           <p>
-            <span className="fb-header">{dietPref}:</span>
+            <span className="fb-header">Dietary Preferences: </span>
+            {dietPref}
           </p>
           <p>
-            <span className="fb-header">{isWithGuest ? "Yes" : "No"}:</span>
+            <span className="fb-header">
+              Coming accompanied? {isWithGuest ? "Yes" : "No"}:
+            </span>
           </p>
         </div>
       )}
@@ -168,3 +180,7 @@ function App() {
 }
 
 export default App;
+
+// <div className={`static-class ${condition1 ? 'class-if-true1' : ''} ${condition2 ? 'class-if-true2' : ''}`}>
+//     {/* Component content */}
+// </div>
