@@ -140,7 +140,7 @@ function App() {
           <input
             type="checkbox"
             id="xtraGuest"
-            value={isWithGuest}
+            checked={isWithGuest}
             onChange={(e) => setIsWithGuest(e.target.checked)}
           />
         </div>
@@ -169,9 +169,8 @@ function App() {
             {dietPref}
           </p>
           <p>
-            <span className="fb-header">
-              Coming accompanied? {isWithGuest ? "Yes" : "No"}:
-            </span>
+            <span className="fb-header">Coming accompanied? </span>
+            {isWithGuest ? "Yes" : "No"}
           </p>
         </div>
       )}
@@ -180,7 +179,3 @@ function App() {
 }
 
 export default App;
-
-// <div className={`static-class ${condition1 ? 'class-if-true1' : ''} ${condition2 ? 'class-if-true2' : ''}`}>
-//     {/* Component content */}
-// </div>
