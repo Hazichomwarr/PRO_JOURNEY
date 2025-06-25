@@ -1,0 +1,30 @@
+body {
+  font-family: arial-sans-serif;
+  line-height: 1.5;
+  color: #f5efe3;
+  background-color: black;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-weight: bold;
+  margin: 2rem auto;
+  width: 60%;
+  max-width: 450px;
+  padding: 2rem;
+  background-color: #6a6acf;
+  border-radius: 10px;
+}
+input,
+select {
+  margin-bottom: 1.5rem;
+  padding: 0.3rem;
+  font-size: 1.1rem;
+  border-radius: 15px;
+  border: none;
+}
+.result {
+  color: gold;
+  font-size: 1.5rem;
+}
