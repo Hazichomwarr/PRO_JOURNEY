@@ -1,0 +1,72 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+main {
+  width: 100%;
+  max-width: 400px;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.message,
+.reset-btn {
+  margin: 0.9rem auto;
+  font-size: 1.5rem;
+  padding: 1rem;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.square {
+  width: 100%;
+  aspect-ratio: 1 / 1; /* keep square shape */
+  font-size: 2.5rem;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 7px;
+  cursor: pointer;
+}
+@media (max-width: 700px) {
+  .board {
+    width: 300px;
+    margin: 0 auto;
+  }
+}
+.reset-btn {
+  border-radius: 7px;
+  border-style: none;
+  box-shadow: 0 1px 3px gray;
+}
+.reset-btn:hover {
+  cursor: pointer;
+  background-color: #bebcbc;
+}
+.reset-btn:active {
+  background-color: #eae8e8;
+  animation: bounce 0.5s ease-in-out, deepen 0.3s ease-in-out;
+}
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+@keyframes deepen {
+  0%,
+  100% {
+    box-shadow: none; /* No shadow initially */
+  }
+  50% {
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3); /* Add shadow at the deepest point */
+  }
+}

@@ -14,7 +14,7 @@ export function CurrencyConverter() {
   const [amount, setAmount] = useState(1);
 
   const conversionResult = () =>
-    (amount * (targetCurrencyValue / startCurrencyValue)).toFixed(4);
+    (amount * (targetCurrencyValue / startCurrencyValue)).toFixed(2);
 
   const handleChangeStart = (e) => {
     const selectedValue = parseFloat(e.target.value);
