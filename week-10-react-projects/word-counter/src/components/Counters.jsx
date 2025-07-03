@@ -13,8 +13,8 @@ export const Counters = ({ reset, wordCount, text, charCount, time }) => {
         <span className="count">{text.trim().replace(/\s+/g, "").length}</span>)
       </p>
       <p className="reading-time">
-        Reading Time: ~ <span className="count">{time.minutes}</span> min{" "}
-        <span className="count">{time.seconds}</span> sec
+        Reading Time: ~ <span className="count">{time[0]}</span> min{" "}
+        <span className="count">{time[1]}</span> sec
       </p>
       <button className=" w-full btn my-3" onClick={reset}>
         Reset
