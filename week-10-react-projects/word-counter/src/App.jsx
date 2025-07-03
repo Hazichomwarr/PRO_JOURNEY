@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useMemo } from "react";
+import { useState} from "react";
 import { Header } from "./components/Header";
 import { TextInput } from "./components/TextInput";
 import { Counters } from "./components/Counters";
