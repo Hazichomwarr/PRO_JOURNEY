@@ -1,5 +1,11 @@
-// You can use this to abstract label + input logic
-export function InputField({ label, name, value, onChange, error, type="text", }) {
+export function InputField({
+  label,
+  name,
+  value,
+  onChange,
+  error,
+  type = "text",
+}) {
   return (
     <div className="mb-4">
       <label htmlFor={name} className="font-semibold mb-1 block">
@@ -17,4 +23,3 @@ export function InputField({ label, name, value, onChange, error, type="text", }
     </div>
   );
 }
-
