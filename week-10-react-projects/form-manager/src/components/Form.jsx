@@ -1,48 +1,46 @@
-import React from "react";
-import { useState } from "react";
 import { InputField } from "./InputField";
+import { useForm } from "../hooks/useform";
 
 export const Form = () => {
-  const [formData, setFormData] = useState({ name: "", email: "", age: "" });
-  const [errors, setErrors] = useState({});
+  const initialValues = ({ name: "", email: "", age: "" });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newErrors = {}; //defining the errors object to store them
-
-    // validations rules
-    if (!formData.name.trim()) {
+  // validations rules
+  const validate = (values) => {
+    const newErrors = {}
+    if (!values.name.trim()) {
       newErrors.name = "Name is required";
     }
-    if (!formData.email.includes("@") && !formData.email.includes(".")) {
+    if (!/^\S+@\S+\.\S+$/.test(values.email)) {
       newErrors.email = "Email must be valid";
     }
-    if (!formData.age || isNaN(formData.age)) {
+    if (!values.age || isNaN(values.age)) {
       newErrors.age = "Age must be a number";
     }
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return; //stop if errors
+    
+      return newErrors;
     }
 
-    //no errors - do something
-    console.log("Submitted", formData);
-    alert("Form submitted successfully ✅");
-  };
+    const onSubmit = (data) => {
+      console.log("Submitted", data);
+      // alert("Form submitted successfully ✅");
+    }
+    
+    const { formData, errors, touched,handleChange, handleBlur, handleSubmit, isSubmitted} =
+  useForm(initialValues, validate, onSubmit);
 
   return (
-    <>
+    <form
+        onSubmit={handleSubmit}
+        className="max-w-md mx-auto p-4 border bg-white rounded"
+      >
       <InputField
         label="Name"
         name="name"
         type="text"
         value={formData.name}
         onChange={handleChange}
+        onBlur={handleBlur}
+        error={errors.name || touched.name}
       />
       <InputField
         label="Email"
@@ -50,6 +48,8 @@ export const Form = () => {
         type="email"
         value={formData.email}
         onChange={handleChange}
+        onBlur={handleBlur}
+        error={errors.email || touched.email}
       />
       <InputField
         label="Age"
@@ -57,10 +57,17 @@ export const Form = () => {
         type="number"
         value={formData.age}
         onChange={handleChange}
+       onBlur={handleBlur}
+        error={errors.age || touched.age}
       />
-      <button onClick={() => console.log(formData)} className="btn mt-4">
+      <button onClick={() => console.log(formData)} className="btn mt-4" disabled={isSubmitted}>
         Submit
       </button>
-    </>
+      {isSubmitted && (
+        <p className="text-green-600 font-semibold text-center mt-4">
+          ✅ Form submitted successfully!
+        </p>
+      )}
+    </form>
   );
 };
