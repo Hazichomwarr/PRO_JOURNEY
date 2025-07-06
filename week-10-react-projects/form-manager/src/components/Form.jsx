@@ -1,15 +1,14 @@
 import { InputField } from "./InputField";
 import { useForm } from "../hooks/useform";
+import { DropdownField } from "./DropdownField";
 
 function containsSpecialChars(str) {
-  // The backslashes before some characters like \-, \[, \], \{, \}, \\, \|, \. are for escaping them
-  // because they have special meaning in regular expressions.
   const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
   return specialChars.test(str);
 }
 
 export const Form = () => {
-  const initialValues = ({ name: "", email: "", age: "" , password: ""});
+  const initialValues = { name: "", email: "", age: "" , password: "", color: ""};
 
   // validations rules
   const validate = (values) => {
@@ -20,12 +19,16 @@ export const Form = () => {
     if (!/^\S+@\S+\.\S+$/.test(values.email)) {
       newErrors.email = "Email must be valid";
     }
-    if (!values.age || isNaN(values.age) || !values.age <= 0) {
+    if (!values.age || isNaN(values.age) || values.age <= 0) {
       newErrors.age = "Age must be a number and greater than zero";
     }
-    if ((!values.password.trim().length >= 6) || (!/\d/.test(values.password)) || (!containsSpecialChars(values.password))) {
+    if ((values.password.length < 6) || (!/\d/.test(values.password)) || (!containsSpecialChars(values.password))) {
       newErrors.password = `Password must be at least 6 chars with at least one number and at least one special character`
     }
+    if (!values.color) {
+      errors.color = "Please select your favorite color";
+    }
+
     
       return newErrors;
     }
@@ -35,7 +38,7 @@ export const Form = () => {
       // alert("Form submitted successfully ✅");
     }
     
-    const { formData, errors, touched,handleChange, handleBlur, handleSubmit, isSubmitted, formIsValid} =
+    const { formData, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitted, formIsValid} =
   useForm(initialValues, validate, onSubmit);
 
   return (
@@ -51,7 +54,6 @@ export const Form = () => {
         onChange={handleChange}
         onBlur={handleBlur}
         error={errors.name}
-        touched={touched.name}
       />
       <InputField
         label="Email"
@@ -61,7 +63,6 @@ export const Form = () => {
         onChange={handleChange}
         onBlur={handleBlur}
         error={errors.email}
-        touched={touched.email}
       />
       <InputField
         label="Age"
@@ -69,9 +70,8 @@ export const Form = () => {
         type="number"
         value={formData.age}
         onChange={handleChange}
-       onBlur={handleBlur}
+        onBlur={handleBlur}
         error={errors.age}
-        touched={touched.age}
       />
       <InputField
         label="Password"
@@ -81,7 +81,14 @@ export const Form = () => {
         onChange={handleChange}
         onBlur={handleBlur}
         error={errors.password}
-        touched={touched.password}
+      />
+      <DropdownField 
+        label="Favorite Color"
+        name="color"
+        value={formData.color}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        error={errors.color}
       />
       <button className={`btn mt-4 ${!formIsValid ? 'opacity-50 cursor-not-allowed text-stone-900' : ''}`} disabled={!formIsValid}>
        Submit

@@ -2,14 +2,24 @@ import { useState, useEffect } from "react";
 
 export function useForm(initialValues, validate, onSubmit) {
     const [formData, setFormData] = useState(initialValues)
-
     const [errors, setErrors] = useState({});
     const [touched, setTouched] = useState({})
     const [isSubmitted, setIsSubmitted] = useState(false)
 
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-        setFormData( prev => ({...prev, [name]: value}))
+    //the useEffect is acting up: it shows every field red at once so I commented it out
+    useEffect(() => {
+        const validationErrors = validate(formData);
+        const touchedErrors = Object.keys(validationErrors)
+            .filter(key => touched[key])
+            .reduce((acc, key) => ({ ...acc, [key]: validationErrors[key] }), {});
+        setErrors(touchedErrors);
+    }, [formData, touched]);
+
+
+    function handleChange(e) {
+        const { name } = e.target;
+        const value = e.target.value.trimStart()
+        setFormData(prev => ({ ...prev, [name]: value }));
     }
 
     const handleBlur = (e) => {
@@ -25,19 +35,14 @@ export function useForm(initialValues, validate, onSubmit) {
             setIsSubmitted(true);
             onSubmit(formData)
             setFormData(initialValues)
+            setTouched({});
+            setErrors({});
+
         }else {
             setErrors(validationErrors);
             setIsSubmitted(false)
         }
     }
-    
-
-    // useEffect(() => {
-    //     if (Object.keys(touched).length > 0) {
-    //         const validationErrors = validate(formData);
-    //         setErrors(validationErrors);
-    //     }
-    // }, [formData]);
 
     const formIsValid = Object.keys(errors).length === 0 && Object.values(formData).every(Boolean)
 
