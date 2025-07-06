@@ -3,7 +3,9 @@ export function InputField({
   name,
   value,
   onChange,
+  onBlur,
   error,
+  touched,
   type = "text",
 }) {
   return (
@@ -17,7 +19,8 @@ export function InputField({
         type={type}
         value={value}
         onChange={onChange}
-        className="border rounded p-2 w-full"
+        onBlur={onBlur}
+        className={`border rounded p-2 w-full ${touched ? 'border-red-200' : 'border-gray-300'}`}
       />
       {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>

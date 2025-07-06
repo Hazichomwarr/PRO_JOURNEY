@@ -22,22 +22,24 @@ export function useForm(initialValues, validate, onSubmit) {
         setErrors(validationErrors);
 
         if (Object.keys(validationErrors).length === 0) {
-             setIsSubmitted(true);
+            setIsSubmitted(true);
             onSubmit(formData)
-            // setFormData(initialValues)
-        } else {
+            setFormData(initialValues)
+        }else {
             setErrors(validationErrors);
-            setIsSubmitted(false);
+            setIsSubmitted(false)
         }
     }
+    
 
-    useEffect(() => {
-  if (Object.keys(touched).length > 0) {
-    const validationErrors = validate(formData);
-    setErrors(validationErrors);
-  }
-}, [formData]);
+    // useEffect(() => {
+    //     if (Object.keys(touched).length > 0) {
+    //         const validationErrors = validate(formData);
+    //         setErrors(validationErrors);
+    //     }
+    // }, [formData]);
 
+    const formIsValid = Object.keys(errors).length === 0 && Object.values(formData).every(Boolean)
 
     return {
         formData,
@@ -47,5 +49,6 @@ export function useForm(initialValues, validate, onSubmit) {
         handleBlur,
         handleSubmit,
         isSubmitted,
-};
+        formIsValid,
+    };
 }
