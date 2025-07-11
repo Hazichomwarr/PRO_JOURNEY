@@ -20,7 +20,7 @@ export const Blog = () => {
               key={post.id}
               to={`${post.id}`}
               className="list-item hover:underline"
-              state={{ title: post.title, content: post.content }}
+              // state={{ title: post.title, content: post.content }}
             >
               "{post.title}" (Read more...)
             </Link>
