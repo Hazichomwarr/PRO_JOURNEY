@@ -8,11 +8,17 @@ function containsSpecialChars(str) {
 }
 
 export const Form = () => {
-  const initialValues = { name: "", email: "", age: "" , password: "", color: ""};
+  const initialValues = {
+    name: "",
+    email: "",
+    age: "",
+    password: "",
+    color: "",
+  };
 
   // validations rules
   const validate = (values) => {
-    const newErrors = {}
+    const newErrors = {};
     if (!values.name.trim()) {
       newErrors.name = "Name is required";
     }
@@ -22,30 +28,41 @@ export const Form = () => {
     if (!values.age || isNaN(values.age) || values.age <= 0) {
       newErrors.age = "Age must be a number and greater than zero";
     }
-    if ((values.password.length < 6) || (!/\d/.test(values.password)) || (!containsSpecialChars(values.password))) {
-      newErrors.password = `Password must be at least 6 chars with at least one number and at least one special character`
+    if (
+      values.password.length < 6 ||
+      !/\d/.test(values.password) ||
+      !containsSpecialChars(values.password)
+    ) {
+      newErrors.password = `Password must be at least 6 chars with at least one number and at least one special character`;
     }
     if (!values.color) {
       errors.color = "Please select your favorite color";
     }
 
-    
-      return newErrors;
-    }
+    return newErrors;
+  };
 
-    const onSubmit = (data) => {
-      console.log("Submitted", data);
-      // alert("Form submitted successfully ✅");
-    }
-    
-    const { formData, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitted, formIsValid} =
-  useForm(initialValues, validate, onSubmit);
+  const onSubmit = (data) => {
+    console.log("Submitted", data);
+    // alert("Form submitted successfully ✅");
+  };
+
+  const {
+    formData,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    isSubmitted,
+    formIsValid,
+  } = useForm(initialValues, validate, onSubmit);
 
   return (
     <form
-        onSubmit={handleSubmit}
-        className="max-w-md mx-auto p-4 border bg-white rounded"
-      >
+      onSubmit={handleSubmit}
+      className="max-w-md mx-auto p-4 border bg-white rounded"
+    >
       <InputField
         label="Name"
         name="name"
@@ -82,7 +99,7 @@ export const Form = () => {
         onBlur={handleBlur}
         error={errors.password}
       />
-      <DropdownField 
+      <DropdownField
         label="Favorite Color"
         name="color"
         value={formData.color}
@@ -90,8 +107,13 @@ export const Form = () => {
         onBlur={handleBlur}
         error={errors.color}
       />
-      <button className={`btn mt-4 ${!formIsValid ? 'opacity-50 cursor-not-allowed text-stone-900' : ''}`} disabled={!formIsValid}>
-       Submit
+      <button
+        className={`btn mt-4 ${
+          !formIsValid ? "opacity-50 cursor-not-allowed text-stone-900" : ""
+        }`}
+        disabled={!formIsValid}
+      >
+        Submit
       </button>
       {isSubmitted && (
         <p className="text-green-600 font-semibold text-center mt-4">
