@@ -1,4 +1,12 @@
-export const RadioField = ({ label, value, name, checked, onChange, type }) => {
+export const RadioField = ({
+  label,
+  value,
+  name,
+  checked,
+  onChange,
+  onBlur,
+  type,
+}) => {
   return (
     <>
       <label htmlFor={name} className="m-2 font-medium">
@@ -12,6 +20,7 @@ export const RadioField = ({ label, value, name, checked, onChange, type }) => {
         name={name}
         checked={checked}
         onChange={onChange}
+        onBlur={onBlur}
       />
     </>
   );
