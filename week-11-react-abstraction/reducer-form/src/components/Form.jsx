@@ -1,4 +1,3 @@
-import { InputField } from "./InputField";
 import { useFormReducer } from "../hooks/useFormReducer";
 import { CheckboxField } from "./CheckboxField";
 import { RadioField } from "./RadioField";
@@ -8,6 +7,8 @@ import { formReducer, initialState } from "../reducers/formreducer";
 import { validate } from "../utils/validation";
 import { stepLabels, getSteps } from "../utils/steps";
 import { ProgressTracker } from "./ProgressTracker";
+import { ContactInfoFields } from "./ContactInfoFields";
+import { ValidationSummary } from "./ValidationSummary";
 
 export const Form = () => {
   const {
@@ -19,8 +20,9 @@ export const Form = () => {
     canProceedToNextStep,
   } = useFormReducer(formReducer, initialState, validate);
 
-  const step = formState.currentStep;
   const steps = getSteps(formState);
+  const step = formState.currentStep;
+  const currentFields = steps[step];
 
   return (
     <form
@@ -41,76 +43,49 @@ export const Form = () => {
         currentStep={formState.currentStep}
         labels={stepLabels}
       />
-
-      {step === 0 && (
-        <>
-          <InputField
-            label="Full Name"
-            name="name"
-            type="text"
-            value={formState.fields.name}
-            onChange={(e) => handleChange(e, "name")}
-            onBlur={(e) => handleBlur(e, "name")}
-            error={formState.errors.name}
-            isTouched={formState.touched.name}
-          />
-          <InputField
-            label="Email"
-            name="email"
-            type="email"
-            value={formState.fields.email}
-            onChange={(e) => handleChange(e, "email")}
-            onBlur={(e) => handleBlur(e, "email")}
-            error={formState.errors.email}
-            isTouched={formState.touched.email}
-          />
-          <InputField
-            label="Phone"
+      <ValidationSummary errors={formState.errors} />
+      {currentFields.some((f) => ["name", "email", "phone"].includes(f)) && (
+        <ContactInfoFields
+          fields={formState.fields}
+          errors={formState.errors}
+          touched={formState.touched}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
+      )}
+      {currentFields.includes("isSubscribe") && (
+        <CheckboxField
+          label="Subscribe to newsletter?"
+          name="isSubscribe"
+          type="checkbox"
+          checked={formState.fields.isSubscribe}
+          onChange={(e) => handleChange(e, "isSubscribe")}
+          onBlur={(e) => handleBlur(e, "isSubscribe")}
+        />
+      )}
+      {currentFields.includes("contactMethod") && (
+        <RadioFieldWrapper error={formState.errors.contactMethod}>
+          <RadioField
+            label="phone"
             name="phone"
-            type="text"
-            value={formState.fields.phone}
-            onChange={(e) => handleChange(e, "phone")}
-            onBlur={(e) => handleBlur(e, "phone")}
-            error={formState.errors.phone}
-            isTouched={formState.touched.phone}
+            type="radio"
+            value="phone"
+            checked={formState.fields.contactMethod === "phone"}
+            onChange={(e) => handleChange(e, "contactMethod")}
+            onBlur={(e) => handleBlur(e, "contactMethod")}
           />
-        </>
-      )}
-
-      {step === 1 && (
-        <>
-          <CheckboxField
-            label="Subscribe to newsletter?"
-            name="isSubscribe"
-            type="checkbox"
-            checked={formState.fields.isSubscribe}
-            onChange={(e) => handleChange(e, "isSubscribe")}
-            onBlur={(e) => handleBlur(e, "isSubscribe")}
+          <RadioField
+            label="email"
+            name="email"
+            type="radio"
+            value="email"
+            checked={formState.fields.contactMethod === "email"}
+            onChange={(e) => handleChange(e, "contactMethod")}
+            onBlur={(e) => handleBlur(e, "contactMethod")}
           />
-          <RadioFieldWrapper error={formState.errors.contactMethod}>
-            <RadioField
-              label="phone"
-              name="phone"
-              type="radio"
-              value="phone"
-              checked={formState.fields.contactMethod === "phone"}
-              onChange={(e) => handleChange(e, "contactMethod")}
-              onBlur={(e) => handleBlur(e, "contactMethod")}
-            />
-            <RadioField
-              label="email"
-              name="email"
-              type="radio"
-              value="email"
-              checked={formState.fields.contactMethod === "email"}
-              onChange={(e) => handleChange(e, "contactMethod")}
-              onBlur={(e) => handleBlur(e, "contactMethod")}
-            />
-          </RadioFieldWrapper>
-        </>
+        </RadioFieldWrapper>
       )}
-
-      {step === 2 && (
+      {currentFields.includes("message") && (
         <TextAreaField
           label="Message"
           name="message"
@@ -121,7 +96,6 @@ export const Form = () => {
           isTouched={formState.touched.message}
         />
       )}
-
       <div className="flex justify-between mt-6">
         {step > 0 && (
           <button

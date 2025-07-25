@@ -7,6 +7,7 @@ export const InputField = ({
   name,
   type,
   error,
+  pattern,
 }) => {
   const hasError = isTouched && !!error;
 
@@ -25,6 +26,7 @@ export const InputField = ({
         onChange={onChange}
         onBlur={onBlur}
         name={name}
+        pattern={pattern}
       />
       {hasError && <p className="text-red-400 font-medium">{error}</p>}
     </>

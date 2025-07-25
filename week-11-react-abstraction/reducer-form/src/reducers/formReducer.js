@@ -10,6 +10,7 @@ export const initialState = {
   errors: {},
   touched: {},
   isFormReady: false,
+  submitAttempted: false,
   currentStep: 0,
 };
 
@@ -50,6 +51,7 @@ export const formReducer = (state, action) => {
         ...state,
         isFormReady: false,
         errors: action.payload.errors,
+        submitAttempted: true,
       };
 
     case "ready":

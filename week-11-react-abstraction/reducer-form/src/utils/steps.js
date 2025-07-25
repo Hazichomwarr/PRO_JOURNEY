@@ -1,8 +1,3 @@
-// export const steps = [
-//   ["name", "email", "phone"], // Step 1
-//   ["isSubscribe", "contactMethod"], // Step 2
-//   ["message"], // Step 3
-// ];
 export const getSteps = (formState) => {
   const steps = [
     ["name", "email", "phone"], // Step 1
