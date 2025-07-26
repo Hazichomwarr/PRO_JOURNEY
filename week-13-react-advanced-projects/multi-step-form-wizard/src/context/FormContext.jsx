@@ -21,7 +21,7 @@ const initializer = () => {
 };
 
 //4. Provider Component
-export const FormProvider = () => {
+export const FormProvider = ({ children }) => {
   const navigate = useNavigate();
   const [formState, dispatch] = useReducer(formReducer, undefined, initializer);
 
@@ -29,5 +29,48 @@ export const FormProvider = () => {
   useEffect(() => {
     localStorage.setItem("formData", JSON.stringify(formState));
   }, [formState]);
-  return <div>FormContext</div>;
+
+  //6. Step Helpers
+  const goToNextStep = useCallback(
+    (stepFields = [], validate) => {
+      const errors = validate(formState.fields);
+      let hasError = false;
+
+      stepFields.forEach((field) => {
+        dispatch({ type: "touch", payload: { field } });
+        const error = errors[field] || "";
+        if (error) hasError = true;
+
+        dispatch({
+          type: "validateField",
+          payload: { field, error },
+        });
+      });
+      if (!hasError) {
+        const next = formState.currentStep + 1;
+        dispatch({ type: "goToStep", payload: next });
+        navigate(`/form/step-${next}`);
+      }
+    },
+    [formState, navigate]
+  );
+
+  const goToPrevStep = () => {
+    const prev = formState.currentStep - 1;
+    dispatch({ type: "goToStep", payload: prev });
+    navigate(`/form/step-${prev}`);
+  };
+
+  const resetForm = () => {
+    dispatch({ type: "reset" });
+    navigate("/form/step-1");
+  };
+
+  return (
+    <FormContext.Provider
+      value={{ formState, dispatch, goToNextStep, goToPrevStep, resetForm }}
+    >
+      {children}
+    </FormContext.Provider>
+  );
 };
