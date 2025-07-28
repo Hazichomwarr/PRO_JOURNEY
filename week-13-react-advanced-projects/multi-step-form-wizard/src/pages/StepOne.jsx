@@ -21,8 +21,8 @@ export const StepOne = () => {
         name="name"
         type="text"
         value={fields.name}
-        onChange={(e) => handleChange(e, "name", dispatch)}
-        onBlur={(e) => handleBlur(e, "name", dispatch, fields, validation)}
+        onChange={(e) => handleChange(e, dispatch)}
+        onBlur={(e) => handleBlur(e, dispatch, validation, fields)}
         error={errors.name}
         isTouched={touched.name}
       />
@@ -32,8 +32,8 @@ export const StepOne = () => {
         name="email"
         type="email"
         value={fields.email}
-        onChange={(e) => handleChange(e, "email", dispatch)}
-        onBlur={(e) => handleBlur(e, "email", dispatch, fields, validation)}
+        onChange={(e) => handleChange(e, dispatch)}
+        onBlur={(e) => handleBlur(e, dispatch, validation, fields)}
         error={errors.email}
         isTouched={touched.email}
       />
@@ -43,8 +43,8 @@ export const StepOne = () => {
         name="phone"
         type="text"
         value={fields.phone}
-        onChange={(e) => handleChange(e, "phone", dispatch)}
-        onBlur={(e) => handleBlur(e, "phone", dispatch, fields, validation)}
+        onChange={(e) => handleChange(e, dispatch)}
+        onBlur={(e) => handleBlur(e, dispatch, validation, fields)}
         error={errors.phone}
         isTouched={touched.phone}
       />

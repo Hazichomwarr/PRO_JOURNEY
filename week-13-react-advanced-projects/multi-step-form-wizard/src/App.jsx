@@ -11,8 +11,7 @@ function App() {
   return (
     <Routes>
       <Route path="/form" element={<FormLayout />}>
-        <Route index element={<StepOne />} />
-        <Route path="setp-1" element={<StepOne />} />
+        <Route path="step-1" element={<StepOne />} />
         <Route path="step-2" element={<StepTwo />} />
         <Route path="step-3" element={<StepThree />} />
         <Route path="review" element={<Review />} />
