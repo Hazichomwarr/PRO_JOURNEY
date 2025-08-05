@@ -66,9 +66,39 @@ export const FormProvider = ({ children }) => {
     navigate("/form/step-1");
   };
 
+  const handleNextClick = (stepFields, validateFn) => {
+    const errors = validateFn(formState.fields);
+    let stepHasError = false;
+
+    stepFields.forEach((field) => {
+      dispatch({ type: "touch", payload: { field } });
+      const error = errors[field] || "";
+      if (error) stepHasError = true;
+      dispatch({ type: "validateField", payload: { field, error } });
+    });
+
+    if (stepHasError) {
+      return; // later, we can trigger shake
+    }
+
+    dispatch({ type: "startLoading" });
+
+    setTimeout(() => {
+      dispatch({ type: "next" });
+      dispatch({ type: "stopLoading" });
+    }, 800); // simulate delay
+  };
+
   return (
     <FormContext.Provider
-      value={{ formState, dispatch, goToNextStep, goToPrevStep, resetForm }}
+      value={{
+        formState,
+        dispatch,
+        goToNextStep,
+        goToPrevStep,
+        resetForm,
+        handleNextClick,
+      }}
     >
       {children}
     </FormContext.Provider>

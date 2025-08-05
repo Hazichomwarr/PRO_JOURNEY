@@ -12,6 +12,7 @@ export const initialState = {
   touched: {},
   currentStep: 1,
   isFormReady: false,
+  loading: false,
 };
 
 export function formReducer(state, action) {
@@ -23,7 +24,6 @@ export function formReducer(state, action) {
         fields: { ...state.fields, [field]: value },
       };
     }
-
     case "touch": {
       const { field } = action;
       return {
@@ -31,7 +31,6 @@ export function formReducer(state, action) {
         touched: { ...state.touched, [field]: true },
       };
     }
-
     case "validateField": {
       const { field, error } = action;
       return {
@@ -39,28 +38,24 @@ export function formReducer(state, action) {
         errors: { ...state.errors, [field]: error },
       };
     }
-
     case "next": {
       return {
         ...state,
         currentStep: state.currentStep + 1,
       };
     }
-
     case "back": {
       return {
         ...state,
         currentStep: state.currentStep - 1,
       };
     }
-
     case "ready": {
       return {
         ...state,
         isFormReady: true,
       };
     }
-
     case "error": {
       return {
         ...state,
@@ -68,6 +63,11 @@ export function formReducer(state, action) {
         errors: action.payload,
       };
     }
+    case "startLoading":
+      return { ...state, loading: true };
+
+    case "stopLoading":
+      return { ...state, loading: false };
 
     case "reset": {
       return initialState;

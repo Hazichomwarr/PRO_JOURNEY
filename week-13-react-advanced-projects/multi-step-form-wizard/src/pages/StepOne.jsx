@@ -2,6 +2,7 @@ import { InputField } from "../components/InputField";
 import { useForm } from "../context/FormContext";
 import { handleChange, handleBlur } from "../utils/handlers";
 import { validation, steps } from "../utils/steps";
+import { motion } from "framer-motion";
 
 export const StepOne = () => {
   const { formState, dispatch, goToNextStep } = useForm();
@@ -50,12 +51,28 @@ export const StepOne = () => {
       />
 
       <div className="mt-6 flex justify-end">
-        <button
+        {/* <button
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           onClick={() => goToNextStep(stepFields, validation)}
         >
           Next
-        </button>
+        </button> */}
+        <motion.button
+          key={"next-btn"}
+          onClick={() => handleNextClick(stepFields, validation)}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          disabled={formState.loading}
+          whileTap={{ scale: 0.95 }}
+        >
+          {formState.loading ? (
+            <motion.span
+              key={"spinner"}
+              className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5 mx-auto"
+            />
+          ) : (
+            "Next"
+          )}
+        </motion.button>
       </div>
     </div>
   );
