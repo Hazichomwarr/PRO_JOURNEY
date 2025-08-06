@@ -26,7 +26,7 @@ export const useFormContext = () => {
 
       //Mark all as touched
       Object.keys(formState.fields).forEach((field) => {
-        dispatch({ type: Touch, payload: { field } });
+        dispatch({ type: "touch", payload: { field } });
       });
     }
   };

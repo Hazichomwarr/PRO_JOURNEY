@@ -17,7 +17,7 @@ export const useForm = () => useContext(FormContext);
 // 3. Initializer for localStorage sync
 const initializer = () => {
   const stored = localStorage.getItem("formData");
-  return stored ? JSON.parse(stored) : initialState;
+  return stored ? JSON.parse(stored) : { ...initialState, fields: {} };
 };
 
 //4. Provider Component
@@ -31,6 +31,7 @@ export const FormProvider = ({ children }) => {
   }, [formState]);
 
   //6. Step Helpers
+  // Inside FormContext.jsx
   const goToNextStep = useCallback(
     (stepFields = [], validate) => {
       const errors = validate(formState.fields);
@@ -46,6 +47,7 @@ export const FormProvider = ({ children }) => {
           payload: { field, error },
         });
       });
+
       if (!hasError) {
         const next = formState.currentStep + 1;
         dispatch({ type: "goToStep", payload: next });

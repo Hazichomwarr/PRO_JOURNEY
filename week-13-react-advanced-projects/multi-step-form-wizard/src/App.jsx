@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { FormLayout } from "./layouts/FormLayout";
 import { NotFound } from "./pages/NotFound";
 import { StepOne } from "./pages/StepOne";
@@ -11,6 +11,8 @@ function App() {
   return (
     <Routes>
       <Route path="/form" element={<FormLayout />}>
+        <Route index element={<Navigate to="step-1" />} />{" "}
+        {/* Default redirect to step-1 */}
         <Route path="step-1" element={<StepOne />} />
         <Route path="step-2" element={<StepTwo />} />
         <Route path="step-3" element={<StepThree />} />

@@ -59,9 +59,9 @@ export const StepOne = () => {
         </button> */}
         <motion.button
           key={"next-btn"}
-          onClick={() => handleNextClick(stepFields, validation)}
+          onClick={() => goToNextStep(stepFields, validation)}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          disabled={formState.loading}
+          disabled={formState.loading || Object.keys(errors).length > 0}
           whileTap={{ scale: 0.95 }}
         >
           {formState.loading ? (
