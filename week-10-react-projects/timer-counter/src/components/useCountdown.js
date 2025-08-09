@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 
 export function useCountdown(initialSeconds) {
   const [isRunning, setIsRunning] = useState(false);
+
   const [seconds, setSeconds] = useState(initialSeconds);
   const intervalRef = useRef(null);
 
