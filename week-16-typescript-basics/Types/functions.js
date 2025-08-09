@@ -1,58 +1,55 @@
-function square(num: number) {
+function square(num) {
   return num * num;
 }
-
 //multiple params
-const doSomething = (person: string, age: number, isFunny: boolean) => {
+var doSomething = function (person, age, isFunny) {
   return person + " has " + age + isFunny;
 };
-
 //default param annotation
-function greet(person: string = "stranger"): string {
-  return `Hi there, ${person}!`;
+function greet(person) {
+  if (person === void 0) {
+    person = "stranger";
+  }
+  return "Hi there, ".concat(person, "!");
 }
 //void if no return and ty[e]
-function addition(num: number) {
+function addition(num) {
   num + num;
 }
-
 addition(2);
-
 //Union types -> typescript can infer the return types(s)
-function rando(num: number) {
+function rando(num) {
   if (Math.random() < 0.5) return num.toString();
   return num;
 }
-
 //Void type -> function that returns anything
-function printTwice(msg: string): void {
+function printTwice(msg) {
   console.log(msg);
   console.log(msg);
   //return "hi"; <- will yell at you bc fx not supposed to return something
 }
-
 //Never type: A function that doesn't finish running or a fx that throws an exception
-const neverStop = (): never => {
+var neverStop = function () {
   while (true) {
     console.log("I'm still going!");
   }
 };
-
-const giveError = (msg: string) => {
+var giveError = function (msg) {
   throw new Error(msg);
 };
-
 //Functions Exercise
-function twoFer(name: string = "you"): string {
-  return `One for ${name}, one for me`;
+function twoFer(name) {
+  if (name === void 0) {
+    name = "you";
+  }
+  return "One for ".concat(name, ", one for me");
 }
-twoFer();
-twoFer("Issa");
-
-const isLeapYear = (year: number): boolean => {
+console.log(twoFer());
+console.log(twoFer("Issa"));
+var isLeapYear = function (year) {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 };
-isLeapYear(2013);
-isLeapYear(2024);
-isLeapYear(2000);
-isLeapYear(1900);
+console.log(isLeapYear(2013));
+console.log(isLeapYear(2024));
+console.log(isLeapYear(2000));
+console.log(isLeapYear(1900));
