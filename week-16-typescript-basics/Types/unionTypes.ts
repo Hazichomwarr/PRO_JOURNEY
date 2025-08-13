@@ -37,10 +37,10 @@ let today: DayOfWeek = "Wednesday";
 
 //******************* Exercise ************************** */
 //1.Create a variable called 'highScore' that can be a number OR a boolean
-const highScore: number | boolean;
+const highScore: number | boolean = 9;
 
 //2.Create an array called 'things' numbers OR strings
-const things: number[] | string[];
+const things: number[] | string[] = [];
 
 //3.Create literal type called 'SkillLevel'
 type SkillLevel = "Beginner" | "Intermediate" | "Advanced" | "Expert";
@@ -70,3 +70,7 @@ const greet = (name: string | string[]): void => {
       console.log("Hello", el);
     });
 };
+
+//Type Assertion
+let mystery: unknown = "Hello World!!!!";
+const numChars = (mystery as string).length; //telling typescript i know more than you
