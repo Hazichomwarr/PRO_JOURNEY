@@ -4,10 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mini-project</title>
+    <style>
+      .completed {
+        text-decoration: line-through;
+      }
+      main {
+        width: fit-content;
+        margin: 4rem auto;
+      }
+      li {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+    </style>
   </head>
   <body>
-    <input id="todo" type="text" placeholder="Enter a task todo..." />
-    <button id="btn">Click me</button>
+    <main>
+      <ul id="todo-list"></ul>
+      <form action="" id="todo-form">
+        <input id="todo" type="text" placeholder="Enter a task todo..." />
+        <button id="btn" type="submit">Click me</button>
+      </form>
+    </main>
     <script type="module" src="./dist/index.js"></script>
   </body>
 </html>
