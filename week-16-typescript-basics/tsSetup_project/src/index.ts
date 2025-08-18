@@ -49,22 +49,25 @@ function handleSubmit(e: SubmitEvent): void {
 function createNewTodo(todo: Todo): void {
   const newLi = document.createElement("li");
   const checkbox = document.createElement("input");
-
   checkbox.type = "checkbox";
+  checkbox.checked = todo.completed;
+
   newLi.append(todo.text);
   newLi.append(checkbox);
   ul?.append(newLi);
-
-  checkbox.addEventListener("change", () => {
-    todo.completed = checkbox.checked;
-    if (todo.completed) {
-      newLi.classList.add("completed");
-    } else {
-      newLi.classList.remove("completed");
-    }
-    saveToLocalStorage();
-  });
 }
 
-//document.addEventListener("DOMContentLoaded", () => displayTodos(todos));
+// checkbox.addEventListener("change", () => {
+//     todo.completed = checkbox.checked;
+//     if (todo.completed) {
+//       newLi.classList.add("completed");
+//     } else {
+//       newLi.classList.remove("completed");
+//     }
+//     saveToLocalStorage();
+//   });
+
+// document.addEventListener("DOMContentLoaded", () => {
+
+// });
 form.addEventListener("submit", handleSubmit);
