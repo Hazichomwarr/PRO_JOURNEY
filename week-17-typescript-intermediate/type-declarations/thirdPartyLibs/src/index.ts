@@ -1,4 +1,5 @@
 import axios from "axios";
+import _ from "lodash"; //npm install --save-dev @types/lodash
 
 const url = "https://jsonplaceholder.typicode.com/users/1";
 

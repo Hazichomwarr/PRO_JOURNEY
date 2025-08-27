@@ -1,5 +1,5 @@
 {
-  "name": "thirdpartylibs",
+  "name": "modules",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -9,12 +9,5 @@
   "author": "",
   "license": "ISC",
   "description": "",
-  "dependencies": {
-    "axios": "^1.11.0",
-    "lodash": "^4.17.21"
-  },
-  "type": "module",
-  "devDependencies": {
-    "@types/lodash": "^4.17.20"
-  }
+  "type": "module"
 }
