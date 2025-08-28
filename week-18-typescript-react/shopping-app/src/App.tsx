@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import Greeter from "./components/Greeter";
 import ShoppingList from "./components/ShoppingList";
-import type { Item } from "../models/item";
+import type { Item } from "../models/item"; //outlines red(error:Cannot find module '../models/item' or its corresponding type declarations.) but works fine
 import ShoppingListForm from "./components/ShoppingListForm";
 
 function App() {
@@ -16,7 +16,6 @@ function App() {
   return (
     <div className="flex flex-col items-center gap-2">
       <Greeter person="Hamza" />
-      <Greeter person="Abdiel" />
       <Greeter person="Issa" />
 
       <ShoppingList items={items} />
