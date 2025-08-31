@@ -1,51 +1,25 @@
-import { useState } from "react";
 import type { Guest } from "../models/guest";
-import type { FormErrors } from "../models/errors";
+import useForm from "../hooks/useForm";
+import InputField from "./InputField";
+import { formInitialValues, validateForm } from "../forms/formConfig";
+import CheckboxField from "./CheckboxField";
+import SelectField from "./SelectField";
+import { MEALS } from "../models/meal";
 
 interface RSVPFormProps {
   onAddGuest: (guest: Guest) => void;
 }
 
 export default function RSVPForm({ onAddGuest }: RSVPFormProps) {
-  const [name, setName] = useState("");
-  const [attending, setAttending] = useState(false);
-  const [email, setEmail] = useState("");
-  const [meal, setMeal] = useState<Guest["meal"]>("chicken");
+  const { values, errors, handleSubmit, handleChange } = useForm<Guest>({
+    initialValues: formInitialValues,
+    validate: validateForm,
+    onSubmit: (values) => {
+      onAddGuest({ ...values, id: Date.now() });
+    },
+  });
 
-  const [errors, setErrors] = useState<FormErrors>({});
-
-  function getNewErrors(): FormErrors {
-    const newErrors: FormErrors = {};
-    if (!name.trim()) newErrors.name = "Name is required.";
-    if (!email.includes("@") && !email.includes("."))
-      newErrors.email = "Valid email is required.";
-    if (!meal) newErrors.meal = "Meal choice is required.";
-
-    return newErrors;
-  }
-
-  function resetForm() {
-    setName("");
-    setEmail("");
-    setMeal("chicken");
-    setAttending(false);
-    setErrors({});
-  }
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const validationErrors = getNewErrors();
-    setErrors(validationErrors);
-
-    //stop if errors exist
-    if (Object.keys(validationErrors).length > 0) return;
-
-    const newGuest: Guest = { id: Date.now(), name, attending, email, meal };
-    onAddGuest(newGuest);
-
-    //reset form
-    resetForm();
-  }
+  const { name, email, meal, attending } = values;
 
   return (
     <form
@@ -53,48 +27,41 @@ export default function RSVPForm({ onAddGuest }: RSVPFormProps) {
       className="flex flex-col gap-3 border p-4 rounded-lg shadow-md"
     >
       {/* NAME */}
-      <input
-        className="input"
-        type="text"
-        placeholder="Enter name"
+      <InputField
+        label="Name"
+        name="name"
         value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
+        onChange={handleChange}
+        error={errors.name}
       />
-      {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
 
       {/* EMAIL */}
-      <input
-        type="email"
-        className="input"
-        placeholder="Enter email"
+      <InputField
+        label="Email"
+        name="email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={handleChange}
+        error={errors.email}
       />
-      {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
 
       {/* SELECT */}
-      <select
-        id="meal"
-        className="input"
+      <SelectField
+        label="Meal"
+        name="meal"
         value={meal}
-        onChange={(e) => setMeal(e.target.value as Guest["meal"])}
-      >
-        <option value="chicken">Chicken</option>
-        <option value="beef">Beef</option>
-        <option value="vegetarian">Vegetarian</option>
-      </select>
-      {errors.meal && <p className="text-red-500 text-sm">{errors.meal}</p>}
+        onChange={handleChange}
+        error={errors.meal}
+        options={MEALS}
+      />
 
       {/* CHECKBOX */}
-      <label className="flex items-center gap-2 text-xl">
-        <input
-          type="checkbox"
-          checked={attending}
-          onChange={(e) => setAttending(e.target.checked)}
-        />{" "}
-        Attending?
-      </label>
+      <CheckboxField
+        label="Attending?"
+        name="attending"
+        checked={attending}
+        onChange={handleChange}
+        error={errors.attending}
+      />
 
       {/* BUTTON */}
       <button
