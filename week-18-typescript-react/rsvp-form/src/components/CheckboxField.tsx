@@ -16,7 +16,7 @@ export default function CheckboxField({
 }: CheboxFieldProps) {
   return (
     <div className="flex flex-col gap-1">
-      <label className="flex items-center gap-2 text-gray-700">
+      <label className="flex items-center justify-center gap-2 text-gray-700 input">
         <input
           type="checkbox"
           name={name}

@@ -41,5 +41,5 @@ export default function useForm<T>({
     }
   }
 
-  return { values, errors, handleChange, handleSubmit, setValues };
+  return { values, errors, setErrors, handleChange, handleSubmit, setValues };
 }
