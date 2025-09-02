@@ -5,24 +5,24 @@ import RSVPForm from "./components/RSVPForm";
 
 //step 1 -> Guest type (Extracted in models/guest)
 
-const MOCK_GUESTS: Guest[] = [
-  {
-    id: 1,
-    name: "Alice",
-    attending: true,
-    email: "alice@mail.com",
-    meal: "chicken",
-  },
-  { id: 2, name: "Bob", attending: false, email: "bob@mail.com", meal: "beef" },
-];
-
 export default function App() {
   //step 2 -> State types with Guest[]
-  const [guests, setGuests] = useState<Guest[]>(MOCK_GUESTS);
+  const [guests, setGuests] = useState<Guest[]>(() => {
+    const saved = localStorage.getItem("guests");
+    return saved ? JSON.parse(saved) : [];
+  });
 
   //step 3 -> Handle form submit(extracted) only adding guest here
   function addGuest(newGuest: Guest) {
-    setGuests([...guests, newGuest]);
+    const updatedGuests = [...guests, newGuest];
+    setGuests(updatedGuests);
+    localStorage.setItem("guests", JSON.stringify(updatedGuests));
+  }
+
+  function removeGuest(toRemoveGuest: Guest) {
+    const updated = guests.filter((guest) => guest.id !== toRemoveGuest.id);
+    setGuests(updated);
+    localStorage.setItem("guests", JSON.stringify(updated));
   }
 
   return (
@@ -33,7 +33,7 @@ export default function App() {
       <RSVPForm onAddGuest={addGuest} />
 
       {/* Guest List component */}
-      <GuestList guests={guests} />
+      <GuestList guests={guests} onRemoveGuest={removeGuest} />
     </div>
   );
 }

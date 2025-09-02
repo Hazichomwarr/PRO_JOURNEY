@@ -6,10 +6,14 @@ import CheckboxField from "./CheckboxField";
 import SelectField from "./SelectField";
 import { MEALS } from "../models/meal";
 import { useState } from "react";
+import ContactInfoFields from "./ContactInfoFields";
+import MealPreferenceField from "./MealPreferenceField";
 
 interface RSVPFormProps {
   onAddGuest: (guest: Guest) => void;
 }
+
+// type FormField = "name" | "email" | "meal" | "attending"
 
 export default function RSVPForm({ onAddGuest }: RSVPFormProps) {
   const { values, errors, setErrors, handleSubmit, handleChange } =
@@ -17,6 +21,16 @@ export default function RSVPForm({ onAddGuest }: RSVPFormProps) {
       initialValues: formInitialValues,
       validate: validateForm,
       onSubmit: (values) => {
+        //get current guests list from localStorage
+        const existing = JSON.parse(localStorage.getItem("guests") || "[]");
+
+        //Add new Guest
+        const updated = [...existing, { ...values, id: Date.now() }];
+
+        //Save back
+        localStorage.setItem("guests", JSON.stringify(updated));
+
+        //call parent callback
         onAddGuest({ ...values, id: Date.now() });
       },
     });
@@ -41,11 +55,15 @@ export default function RSVPForm({ onAddGuest }: RSVPFormProps) {
     setErrors(stepErrors);
 
     if (Object.keys(stepErrors).length === 0) {
-      setStep(step + 1);
+      let nextStep = step + 1;
+
+      //skip Meal step if not attending
+      if (nextStep === 2 && values.attending === false) {
+        nextStep = 3; //but the default value of attending is false, so we'll always skip
+      }
+      setStep(nextStep);
     }
   }
-
-  const { name, email, meal, attending } = values;
 
   return (
     <form
@@ -68,54 +86,37 @@ export default function RSVPForm({ onAddGuest }: RSVPFormProps) {
       {/* steps labels */}
       <div className="flex justify-between text-sm mb-2">
         <span className={step >= 1 ? "font-bold" : ""}>Info</span>
-        <span className={step >= 2 ? "font-bold" : ""}>Meal</span>
-        <span className={step >= 3 ? "font-bold" : ""}>Attending</span>
+        <span className={step >= 2 ? "font-bold" : ""}>Attending</span>
+        <span className={step >= 3 ? "font-bold" : ""}>Meal</span>
       </div>
 
       {step === 1 && (
         // Name, Email
-        <>
-          <InputField
-            label="Name"
-            name="name"
-            value={name}
-            onChange={handleChange}
-            error={errors.name}
-          />
-
-          <InputField
-            label="Email"
-            name="email"
-            value={email}
-            onChange={handleChange}
-            error={errors.email}
-          />
-        </>
+        <ContactInfoFields
+          values={values}
+          errors={errors}
+          onChange={handleChange}
+        />
       )}
 
       {step === 2 && (
         <>
-          <SelectField
-            label="Meal"
-            name="meal"
-            value={meal}
+          <CheckboxField
+            label="Attending?"
+            name="attending"
+            checked={values.attending ?? false}
             onChange={handleChange}
-            error={errors.meal}
-            options={MEALS}
+            error={errors.attending}
           />
         </>
       )}
 
       {step === 3 && (
-        <>
-          <CheckboxField
-            label="Attending?"
-            name="attending"
-            checked={attending}
-            onChange={handleChange}
-            error={errors.attending}
-          />
-        </>
+        <MealPreferenceField
+          values={values}
+          errors={errors}
+          onChange={handleChange}
+        />
       )}
 
       {/* NAVIGATION BUTTONS */}
@@ -141,6 +142,18 @@ export default function RSVPForm({ onAddGuest }: RSVPFormProps) {
           >
             Next
           </button>
+        )}
+
+        {Object.keys(errors).length > 0 && (
+          <div>
+            <p>Please fix the followinf:</p>
+            <ul className="list-disc ml-5">
+              {Object.keys(errors).map(([field, msg]) => (
+                <li key={field}>{msg}</li>
+              ))}
+              ;
+            </ul>
+          </div>
         )}
 
         {step === 3 && (

@@ -5,7 +5,7 @@ export const formInitialValues: Guest = {
   id: Date.now(),
   name: "",
   email: "",
-  attending: false,
+  attending: null as unknown as boolean,
   meal: "chicken",
 };
 
