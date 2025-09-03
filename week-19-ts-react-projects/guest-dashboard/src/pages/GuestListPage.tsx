@@ -1,11 +1,9 @@
-import { useState } from "react";
 import type { Guest } from "../models/guest";
-import { MOCK_DATA } from "../utils/mockData";
 import { useNavigate } from "react-router-dom";
+import { useGuestContext } from "../context/useGuestContext";
 
 export default function GuestListPage() {
-  const [guests, setGuests] = useState<Guest[]>(MOCK_DATA);
-
+  const { guests, removeGuest } = useGuestContext();
   const navigation = useNavigate();
 
   function handleClick() {
@@ -20,7 +18,7 @@ export default function GuestListPage() {
     <div className="flex flex-col items-center gap-3">
       <h2 className="font-medium ">All Attendees</h2>
       <ul className="flex items-center gap-3">
-        {guests.map((guest) => (
+        {guests.map((guest: Guest) => (
           <li
             key={guest.id}
             className=" flex gap-4 items-center border-b-2 mb-2 p-4 shadow-md bg-gray-100"
@@ -45,7 +43,10 @@ export default function GuestListPage() {
               >
                 Edit
               </button>
-              <button className="text-sm text-white rounded-md bg-red-500 hover:bg-red-700 active:bg-red-300 px-2 py-1">
+              <button
+                className="text-sm text-white rounded-md bg-red-500 hover:bg-red-700 active:bg-red-300 px-2 py-1"
+                onClick={() => removeGuest(guest.id)}
+              >
                 Remove
               </button>
             </div>

@@ -4,10 +4,11 @@ import GuestListPage from "./pages/GuestListPage";
 import GuestFormPage from "./pages/GuestFormPage";
 import GuestEditPage from "./pages/GuestEditPage";
 import Navbar from "./components/Navbar";
+import GuestProvider from "./context/GuestProvider";
 
 export default function App() {
   return (
-    <>
+    <GuestProvider>
       <Navbar />
       <Routes>
         <Route index element={<GuestListPage />} />
@@ -19,6 +20,6 @@ export default function App() {
           element={<React.Fragment>Page Not found</React.Fragment>}
         />
       </Routes>
-    </>
+    </GuestProvider>
   );
 }
