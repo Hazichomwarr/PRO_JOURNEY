@@ -1,140 +1,112 @@
-import { useGuestContext } from "../context/useGuestContext";
+// components/GuestForm.tsx
 import { formInitialValues, validateForm } from "../forms/formConfig";
 import useForm from "../hooks/useGuestForm";
-import type { Guest } from "../models/guest";
+import {
+  CATEGORIES,
+  MEALS,
+  type Guest,
+  type GuestFormValues,
+} from "../models/guest";
+import CheckboxField from "./CheckboxField";
+import InputField from "./InputField";
+import RadioField from "./RadioField";
+import SelectField from "./SelectField";
 
 interface GuestFormProps {
-  onAddGuest: (guest: Guest) => void;
+  onAddGuest?: (guest: Guest) => void;
+  onUpdate?: (guest: Guest) => void;
+  guest?: Guest;
 }
 
-export default function GuestForm({ onAddGuest }: GuestFormProps) {
-  const { addGuest, setGuests, guests } = useGuestContext();
-  const { values, errors, setErrors, handleChange, handleSubmit } =
-    useForm<Guest>({
-      initialValues: formInitialValues,
+export default function GuestForm({
+  onAddGuest,
+  onUpdate,
+  guest,
+}: GuestFormProps) {
+  const { values, errors, handleChange, handleSubmit } =
+    useForm<GuestFormValues>({
+      initialValues: guest ?? formInitialValues,
       validate: validateForm,
       onSubmit: (values) => {
-        onAddGuest({ ...values, id: Date.now() });
+        if (guest && onUpdate) {
+          //Edit Guest
+          onUpdate({ ...guest, ...values });
+        } else if (onAddGuest) {
+          //Add Guest
+          onAddGuest({ ...values, id: Date.now() });
+        }
       },
     });
 
   return (
     <form
-      className="flex flex-col items-center gap-3 border p-4 rounded-lg shadow-md"
+      className="w-full max-w-2xl mx-auto space-y-6 bg-white p-6 rounded-2xl shadow-md"
       onSubmit={handleSubmit}
     >
-      <div className="flex flex-col gap-1 w-[25%]">
-        {/* NAME */}
-        <label htmlFor="name" className="font-medium">
-          Name
-        </label>
-        <input
-          className="input"
-          id="name"
-          type="text"
+      <h2 className="text-2xl font-semibold text-gray-800 text-center">
+        {guest ? "Edit Guest" : "Add New Guest"}
+      </h2>
+
+      {/* NAME + EMAIL */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <InputField
+          label="Name"
+          name="name"
           value={values.name}
+          error={errors.name}
           onChange={handleChange}
         />
-
-        {/* EMAIL */}
-        <label htmlFor="name" className="font-medium">
-          Email
-        </label>
-        <input
-          className="input"
-          id="email"
-          type="email"
+        <InputField
+          label="Email"
+          name="email"
           value={values.email}
+          error={errors.email}
           onChange={handleChange}
         />
-
-        {/* PHONE */}
-        <label htmlFor="phone" className="font-medium">
-          Phone
-        </label>
-        <input
-          className="input"
-          id="phone"
-          type="text"
-          value={values.phone}
-          onChange={handleChange}
-        />
-
-        {/* ATTENDING */}
-        <label className="flex items-center justify-center gap-2 text-gray-700 input">
-          <input
-            type="checkbox"
-            id="attending"
-            checked={values.attending}
-            onChange={handleChange}
-            className="block"
-          />
-          Attending?
-        </label>
-
-        {/* CATEGORY */}
-        <p className="font-medium">Category</p>
-        <div className="flex justify-between input">
-          <label
-            htmlFor="hr"
-            className="font-medium text-sm text-gray-700 block"
-          >
-            HR
-          </label>
-          <input
-            type="radio"
-            id="hr"
-            name="category"
-            value="HR"
-            onChange={handleChange}
-            className="block"
-          />
-          <label htmlFor="it" className="font-medium text-sm text-gray-700">
-            IT
-          </label>
-          <input
-            type="radio"
-            id="it"
-            name="category"
-            value="IT"
-            onChange={handleChange}
-            className="block"
-          />
-          <label htmlFor="sales" className="font-medium text-sm text-gray-700">
-            SALES
-          </label>
-          <input
-            type="radio"
-            id="sales"
-            name="category"
-            value="SALES"
-            onChange={handleChange}
-            className="block"
-          />
-        </div>
-
-        {/* MEAL */}
-        <label htmlFor="meal" className="font-medium text-sm text-gray-700">
-          Meal Options
-        </label>
-        <select
-          name="meal"
-          id="meal"
-          value={values.meal}
-          onChange={handleChange}
-          className="input"
-        >
-          <option value="chicken">Chicken</option>
-          <option value="beef">Beef</option>
-          <option value="vegetarian">vegetarian</option>
-        </select>
       </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+        {/* PHONE */}
+        <InputField
+          label="Phone"
+          name="phone"
+          value={values.phone}
+          error={errors.phone}
+          onChange={handleChange}
+        />
+        {/* ATTENDING */}
+        <CheckboxField
+          label="Attending?"
+          name="attending"
+          checked={values.attending}
+          onChange={handleChange}
+          error={errors.attending}
+        />
+      </div>
+
+      {/* CATEGORY */}
+      <RadioField
+        name="category"
+        value={values.category}
+        categories={CATEGORIES}
+        onChange={handleChange}
+      />
+
+      {/* MEAL OPTIONS */}
+      <SelectField
+        label="Meal Options"
+        name="meal"
+        value={values.meal}
+        options={MEALS}
+        onChange={handleChange}
+        error={errors.meal}
+      />
 
       <button
         type="submit"
-        className=" w-[25%] px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        className="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 active:scale-[0.98] transition"
       >
-        Add Guest
+        {guest ? "Update Guest" : "Add Guest"}
       </button>
     </form>
   );

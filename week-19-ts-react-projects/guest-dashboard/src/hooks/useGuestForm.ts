@@ -1,4 +1,7 @@
+// hooks/useGuestForm.ts
 import React, { useState } from "react";
+import type { FormErrors } from "../models/errors";
+import { useNavigate } from "react-router-dom";
 
 interface UseFormOptions<T> {
   initialValues: T;
@@ -12,7 +15,9 @@ export default function useForm<T>({
   onSubmit,
 }: UseFormOptions<T>) {
   const [values, setValues] = useState<T>(initialValues);
-  const [errors, setErrors] = useState<Partial<Record<keyof T, string>>>({});
+  const [errors, setErrors] = useState<FormErrors>({});
+
+  const navigation = useNavigate();
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -29,7 +34,7 @@ export default function useForm<T>({
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    let validationErrors: Partial<Record<keyof T, string>> = {};
+    let validationErrors: FormErrors = {};
     if (validate) {
       validationErrors = validate(values);
       setErrors(validationErrors);
@@ -38,6 +43,7 @@ export default function useForm<T>({
     if (!validate || Object.keys(validationErrors).length === 0) {
       onSubmit(values);
       setValues(initialValues);
+      navigation("/");
     }
   }
 

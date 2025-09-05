@@ -1,23 +1,28 @@
+// forms/formConfig.ts
 import type { FormErrors } from "../models/errors";
-import type { Guest } from "../models/guest";
+import type { GuestFormValues } from "../models/guest";
 
-export const formInitialValues: Guest = {
-  id: Date.now(),
+export const formInitialValues: GuestFormValues = {
   name: "",
   email: "",
-  phone: "" as unknown as number,
-  attending: true,
+  phone: "",
+  attending: false,
   meal: "Chicken",
   category: "HR",
 };
 
-export function validateForm(values: Guest): FormErrors {
+export function validateForm(values: GuestFormValues): FormErrors {
   const errors: FormErrors = {};
   if (!values.name.trim()) errors.name = "Name is required.";
-  if (!values.email.includes("@") && !values.email.includes(".")) {
-    errors.email = "Valid email is required.";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
+    errors.email = "Please enter a valid email.";
   }
-  if (typeof values.phone !== "number") errors.phone = "Invalid Phone number.";
+  if (!/^\d{4,15}$/.test(values.phone)) {
+    errors.phone = "Phone must be 4 digits."; //min 4 digits for now
+  }
+  if (values.attending === null || values.attending === undefined) {
+    errors.attending = "Please confirm if you're attending.";
+  }
 
   return errors;
 }

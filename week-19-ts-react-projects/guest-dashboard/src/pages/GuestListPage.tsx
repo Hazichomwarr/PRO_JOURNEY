@@ -17,6 +17,13 @@ export default function GuestListPage() {
   return (
     <div className="flex flex-col items-center gap-3">
       <h2 className="font-medium ">All Attendees</h2>
+
+      {/* if No guests */}
+      {guests.length === 0 && (
+        <p className="text-gray-500 mt-4">No guests yet. Register</p>
+      )}
+
+      {/* if Guests */}
       <ul className="flex items-center gap-3">
         {guests.map((guest: Guest) => (
           <li
@@ -28,7 +35,7 @@ export default function GuestListPage() {
 
               <span>Email: {guest.email}</span>
               <span>Tel: {guest.phone} </span>
-              <span>Attending ? {guest.attending ? "Yes" : "No"}</span>
+              <span>Attending ? {guest.attending ? " ✅ Yes" : " ❌ No"}</span>
               {guest.attending && (
                 <>
                   <span>Category: {guest.category}</span>

@@ -22,7 +22,7 @@ export default function GuestProvider({ children }: { children: ReactNode }) {
   }
 
   function removeGuest(id: number) {
-    setGuests((prev) => prev.filter((g) => g.id === id));
+    setGuests((prev) => prev.filter((g) => g.id !== id));
   }
 
   const value: GuestContextType = {

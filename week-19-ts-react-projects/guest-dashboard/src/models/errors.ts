@@ -1,8 +1,3 @@
-export interface FormErrors {
-  id?: string;
-  name?: string;
-  email?: string;
-  phone?: string;
-  meal?: string;
-  attending?: string;
-}
+import type { Guest } from "./guest";
+
+export type FormErrors = Partial<Record<Exclude<keyof Guest, "id">, string>>;

@@ -1,11 +1,17 @@
-export type category = "HR" | "IT" | "Sales";
-export type meal = "Chicken" | "Beef" | "vegetarian";
+export const CATEGORIES = ["HR", "IT", "Sales"];
+export type category = (typeof CATEGORIES)[number];
+
+export const MEALS = ["Chicken", "Beef", "Vegetarian"] as const;
+export type meal = (typeof MEALS)[number];
+
 export interface Guest {
   id: number;
   name: string;
   email: string;
-  phone: number;
+  phone: string;
   attending: boolean;
   category: category;
   meal: meal;
 }
+
+export type GuestFormValues = Omit<Guest, "id">;
