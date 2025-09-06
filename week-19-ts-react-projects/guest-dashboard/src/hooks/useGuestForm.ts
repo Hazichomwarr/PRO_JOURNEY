@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import type { FormErrors } from "../models/errors";
 import { useNavigate } from "react-router-dom";
+import { formatPhone } from "../forms/formConfig";
 
 interface UseFormOptions<T> {
   initialValues: T;
@@ -25,9 +26,12 @@ export default function useForm<T>({
     const { name, type, value } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
 
+    let newValue: string | boolean = value;
+    if (name === "phone") newValue = formatPhone(value);
+
     setValues((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === "checkbox" ? checked : newValue,
     }));
   }
 

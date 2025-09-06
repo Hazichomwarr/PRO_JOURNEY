@@ -17,12 +17,21 @@ export function validateForm(values: GuestFormValues): FormErrors {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
     errors.email = "Please enter a valid email.";
   }
-  if (!/^\d{4,15}$/.test(values.phone)) {
-    errors.phone = "Phone must be 4 digits."; //min 4 digits for now
+  // 🔑 Extract digits only for validation
+  const digitsOnly = values.phone.replace(/\D/g, "");
+
+  if (digitsOnly.length !== 10) {
+    errors.phone = "Phone must be 10 digits.";
   }
   if (values.attending === null || values.attending === undefined) {
     errors.attending = "Please confirm if you're attending.";
   }
 
   return errors;
+}
+
+export function formatPhone(value: string): string {
+  const digits = value.replace(/\D/g, "").slice(0, 10);
+  const parts = digits.match(/(\d{0,3})(\d{0,3})(\d{0,4})/) || [];
+  return [parts[1], parts[2], parts[3]].filter(Boolean).join("-");
 }
