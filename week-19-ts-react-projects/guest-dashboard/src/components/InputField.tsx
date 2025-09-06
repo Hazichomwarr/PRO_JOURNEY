@@ -30,6 +30,7 @@ export default function InputField({
         type={type}
         value={value}
         onChange={onChange}
+        placeholder={name === "phone" ? "000-000-0000" : ""}
       />
       {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>

@@ -11,9 +11,9 @@ export default function GuestEditPage() {
 
   if (!guestToUpdate)
     return (
-      <p className="text-lg font-medium text-gray-300 text-center">
-        Guest not found
-      </p>
+      <div className="flex justify-center items-center h-64">
+        <p className="text-lg font-medium text-gray-500">Guest not found</p>
+      </div>
     );
 
   return <GuestForm onUpdate={updateGuest} guest={guestToUpdate} />;

@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { navLinkClass } from "../utils/navlinkClass";
 
 export default function Navbar() {
   return (
@@ -6,17 +7,14 @@ export default function Navbar() {
       <ul className="flex items-center justify-end gap-6 text-lg">
         <NavLink
           to="/guests"
-          className={({ isActive }) =>
-            isActive ? "bg-orange-600 font-medium px-2 py-1 rounded" : ""
-          }
+          end
+          className={({ isActive }) => navLinkClass(isActive)}
         >
           Home
         </NavLink>
         <NavLink
           to="/guests/new"
-          className={({ isActive }) =>
-            isActive ? "bg-orange-600 font-medium px-2 py-1 rounded" : ""
-          }
+          className={({ isActive }) => navLinkClass(isActive)}
         >
           Register
         </NavLink>
