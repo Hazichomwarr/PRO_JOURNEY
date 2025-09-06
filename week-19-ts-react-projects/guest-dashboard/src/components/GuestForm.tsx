@@ -11,6 +11,7 @@ import CheckboxField from "./CheckboxField";
 import InputField from "./InputField";
 import RadioField from "./RadioField";
 import SelectField from "./SelectField";
+import ValidationSummaryPanel from "./ValidationSummaryPanel";
 
 interface GuestFormProps {
   onAddGuest?: (guest: Guest) => void;
@@ -46,6 +47,9 @@ export default function GuestForm({
       <h2 className="text-2xl font-semibold text-gray-800 text-center">
         {guest ? "Edit Guest" : "Add New Guest"}
       </h2>
+
+      {/* Show summary panel if errors exist */}
+      <ValidationSummaryPanel errors={errors} />
 
       {/* NAME + EMAIL */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
