@@ -12,26 +12,33 @@ export default function App() {
   const location = useLocation();
 
   return (
-    <GuestProvider>
-      <Navbar />
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route index element={WithPageTransition(GuestListPage)()} />
-          <Route path="/guests" element={WithPageTransition(GuestListPage)()} />
-          <Route
-            path="/guests/new"
-            element={WithPageTransition(GuestFormPage)()}
-          />
-          <Route
-            path="/guests/:id/update"
-            element={WithPageTransition(GuestEditPage)()}
-          />
-          <Route
-            path="*"
-            element={<div className="text-center text-lg">Page Not found</div>}
-          />
-        </Routes>
-      </AnimatePresence>
-    </GuestProvider>
+    <div className="bg-slate-50">
+      <GuestProvider>
+        <Navbar />
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route index element={WithPageTransition(GuestListPage)()} />
+            <Route
+              path="/guests"
+              element={WithPageTransition(GuestListPage)()}
+            />
+            <Route
+              path="/guests/new"
+              element={WithPageTransition(GuestFormPage)()}
+            />
+            <Route
+              path="/guests/:id/update"
+              element={WithPageTransition(GuestEditPage)()}
+            />
+            <Route
+              path="*"
+              element={
+                <div className="text-center text-lg">Page Not found</div>
+              }
+            />
+          </Routes>
+        </AnimatePresence>
+      </GuestProvider>
+    </div>
   );
 }

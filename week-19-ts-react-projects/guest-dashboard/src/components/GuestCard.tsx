@@ -13,7 +13,7 @@ export default function GuestCard({ guest, onDelete, onEdit }: GuestCardProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <li className="mb-4 border rounded-lg shadow-md p-4 w-full md:w-[45%] lg:w-[30%] bg-stone-50">
+    <li className="mb-4 border rounded-lg shadow-md p-4 w-[90%] bg-stone-50">
       {/* Header */}
       <div
         className="flex justify-between items-center cursor-pointer"
