@@ -49,7 +49,7 @@ export default function GuestForm({
       </h2>
 
       {/* Show summary panel if errors exist */}
-      <ValidationSummaryPanel errors={errors} />
+      <ValidationSummaryPanel errors={errors} variant="warning" />
 
       {/* NAME + EMAIL */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
