@@ -4,7 +4,7 @@ import type { FormErrors } from "../models/errors";
 export const formInitialValues: FormValues = {
   name: "",
   email: "",
-  attending: null as unknown as boolean,
+  attending: true,
   meal: "chicken",
 };
 

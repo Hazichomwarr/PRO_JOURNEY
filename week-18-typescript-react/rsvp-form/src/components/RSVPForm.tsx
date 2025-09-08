@@ -46,7 +46,7 @@ export default function RSVPForm({ onAddGuest }: RSVPFormProps) {
     const currentStepFields = stepFields[step];
     const stepErrors: FormErrors = {};
     currentStepFields.forEach((field) => {
-      if (allErrors[field]) stepErrors[field] = allErrors[field]; //typescript outlines this code in red saying: Element implicitly has an 'any' type because expression of type 'keyof Guest' can't be used to index type 'FormErrors<Guest>'.Property 'id' does not exist on type 'FormErrors<Guest>'.
+      if (allErrors[field]) stepErrors[field] = allErrors[field];
     });
     setErrors(stepErrors);
 
