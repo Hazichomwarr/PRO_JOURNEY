@@ -2,19 +2,7 @@ import { useState } from "react";
 import type { Guest } from "../models/guest";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react"; // 👈 arrow icon
-
-// 👇 shadcn/ui imports
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "../components/ui/alert-dialog";
+import DeleteButton from "./DeleteButton";
 
 interface GuestCardProps {
   guest: Guest;
@@ -74,43 +62,8 @@ export default function GuestCard({ guest, onDelete, onEdit }: GuestCardProps) {
                     Edit
                   </button>
                 )}
-                {/* {onDelete && (
-                  <button
-                    className="text-sm text-white rounded-md bg-red-500 hover:bg-red-700 active:bg-red-300 px-2 py-1"
-                    onClick={() => onDelete(guest.id)}
-                  >
-                    Remove
-                  </button>
-                )} */}
-                {onDelete && (
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <button className="text-sm text-white rounded-md bg-red-500 hover:bg-red-700 active:bg-red-300 px-2 py-1">
-                        Remove
-                      </button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          Remove {guest.name}?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          This action cannot be undone. The guest will be
-                          permanently removed from your list.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                          className="bg-red-500 hover:bg-red-600 text-white"
-                          onClick={() => onDelete(guest.id)}
-                        >
-                          Yes, Remove
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                )}
+
+                {onDelete && <DeleteButton guest={guest} onDelete={onDelete} />}
               </div>
             </div>
           </motion.div>
