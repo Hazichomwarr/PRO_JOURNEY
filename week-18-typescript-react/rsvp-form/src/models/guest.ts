@@ -7,3 +7,5 @@ export interface Guest {
   email: string;
   meal: Meal;
 }
+
+export type FormValues = Omit<Guest, "id">;

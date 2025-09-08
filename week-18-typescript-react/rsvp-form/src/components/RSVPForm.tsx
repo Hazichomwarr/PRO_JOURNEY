@@ -1,23 +1,19 @@
-import type { Guest } from "../models/guest";
+import type { FormValues, Guest } from "../models/guest";
 import useForm from "../hooks/useForm";
-import InputField from "./InputField";
 import { formInitialValues, validateForm } from "../forms/formConfig";
 import CheckboxField from "./CheckboxField";
-import SelectField from "./SelectField";
-import { MEALS } from "../models/meal";
 import { useState } from "react";
 import ContactInfoFields from "./ContactInfoFields";
 import MealPreferenceField from "./MealPreferenceField";
+import type { FormErrors } from "../models/errors";
 
 interface RSVPFormProps {
   onAddGuest: (guest: Guest) => void;
 }
 
-// type FormField = "name" | "email" | "meal" | "attending"
-
 export default function RSVPForm({ onAddGuest }: RSVPFormProps) {
   const { values, errors, setErrors, handleSubmit, handleChange } =
-    useForm<Guest>({
+    useForm<FormValues>({
       initialValues: formInitialValues,
       validate: validateForm,
       onSubmit: (values) => {
@@ -37,7 +33,7 @@ export default function RSVPForm({ onAddGuest }: RSVPFormProps) {
 
   const [step, setStep] = useState<number>(1);
 
-  const stepFields: Record<number, (keyof Guest)[]> = {
+  const stepFields: Record<number, (keyof FormValues)[]> = {
     1: ["name", "email"],
     2: ["meal"],
     3: ["attending"],
@@ -48,7 +44,7 @@ export default function RSVPForm({ onAddGuest }: RSVPFormProps) {
 
     //only keep errors for this step
     const currentStepFields = stepFields[step];
-    const stepErrors: Partial<Record<keyof Guest, string>> = {};
+    const stepErrors: FormErrors = {};
     currentStepFields.forEach((field) => {
       if (allErrors[field]) stepErrors[field] = allErrors[field]; //typescript outlines this code in red saying: Element implicitly has an 'any' type because expression of type 'keyof Guest' can't be used to index type 'FormErrors<Guest>'.Property 'id' does not exist on type 'FormErrors<Guest>'.
     });
