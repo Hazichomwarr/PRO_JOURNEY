@@ -1,20 +1,16 @@
 // components/GuestForm.tsx
-import { useState } from "react";
+import { useState, type JSX } from "react";
 import { formInitialValues, validateForm } from "../forms/formConfig";
 import useForm from "../hooks/useGuestForm";
-import {
-  CATEGORIES,
-  MEALS,
-  type Guest,
-  type GuestFormValues,
-} from "../models/guest";
-import CheckboxField from "./CheckboxField";
-import InputField from "./InputField";
-import RadioField from "./RadioField";
-import SelectField from "./SelectField";
+import { type Guest, type GuestFormValues } from "../models/guest";
 import ValidationSummaryPanel from "./ValidationSummaryPanel";
 import type { FormErrors } from "../models/errors";
 import { v4 as uuidv4 } from "uuid";
+import ContactFields from "./ContactFields";
+import AttendanceField from "./AttendanceField";
+import CategoryField from "./CategoryField";
+import MealPreferenceField from "./MealPreferenceField";
+import FormNavigation from "./FormNavigation";
 
 interface GuestFormProps {
   onAddGuest?: (guest: Guest) => void;
@@ -22,7 +18,7 @@ interface GuestFormProps {
   guest?: Guest;
 }
 
-type Step = 1 | 2 | 3 | 4;
+export type Step = 1 | 2 | 3 | 4;
 
 const stepFields: Record<number, (keyof GuestFormValues)[]> = {
   1: ["name", "email", "phone"],
@@ -53,13 +49,13 @@ export default function GuestForm({
           onUpdate({ ...guest, ...values });
         } else if (onAddGuest) {
           //Add Guest
-          onAddGuest({ ...values, id: Number(uuidv4()) });
+          onAddGuest({ ...values, id: uuidv4() });
         }
       },
     });
 
   // Multi-step-actions
-  const [step, setStep] = useState<number>(1);
+  const [step, setStep] = useState<Step>(1);
   const stepFields_lentgh = Object.keys(stepFields).length;
 
   function handleNext() {
@@ -84,6 +80,28 @@ export default function GuestForm({
     }
   }
 
+  //Map steps to Components
+  const stepComponents: Record<Step, JSX.Element> = {
+    1: (
+      <ContactFields values={values} errors={errors} onChange={handleChange} />
+    ),
+    2: (
+      <AttendanceField
+        values={values}
+        errors={errors}
+        onChange={handleChange}
+      />
+    ),
+    3: <CategoryField values={values} onChange={handleChange} />,
+    4: (
+      <MealPreferenceField
+        values={values}
+        errors={errors}
+        onChange={handleChange}
+      />
+    ),
+  };
+
   return (
     <form
       className="w-full max-w-2xl mx-auto space-y-6 bg-white p-6 rounded-2xl shadow-md"
@@ -106,7 +124,13 @@ export default function GuestForm({
       </div>
 
       {/* Horizontal Progress Bar */}
-      <div className="w-full rounded-full h-2 bg-gray-200">
+      <div
+        className="w-full rounded-full h-2 bg-gray-200"
+        role="progressbar"
+        aria-valuenow={step}
+        aria-valuemin={1}
+        aria-valuemax={stepFields_lentgh}
+      >
         <div
           className=" bg-blue-500 h-2 rounded-full transition-all duration-300"
           style={{ width: `${(step / stepFields_lentgh) * 100}%` }}
@@ -118,120 +142,29 @@ export default function GuestForm({
         {Object.entries(stepLabels).map(([key, label]) => (
           <span
             key={key}
+            aria-current={Number(key) === step ? "step" : undefined}
             className={Number(key) <= step ? "font-bold text-blue-600" : ""}
           >
             {label}
           </span>
         ))}
       </div>
-      {/* <div className="flex justify-between text-sm mb-2">
-        <span className={step >= 1 ? "font-bold" : ""}>Info</span>
-        <span className={step >= 2 ? "font-bold" : ""}>Attending</span>
-        <span className={step >= 3 ? "font-bold" : ""}>Category</span>
-        <span className={step >= 4 ? "font-bold" : ""}>Meal</span>
-      </div> */}
 
       {/* Show summary panel if errors exist */}
       <ValidationSummaryPanel errors={errors} variant="warning" />
 
-      {/* Step 1: Info */}
-      {step === 1 && (
-        <>
-          <div className="w-full grid grid-cols-2 gap-2 justify-items-center">
-            <InputField
-              label="Name"
-              name="name"
-              value={values.name}
-              error={errors.name}
-              onChange={handleChange}
-            />
-            <InputField
-              label="Email"
-              name="email"
-              value={values.email}
-              error={errors.email}
-              onChange={handleChange}
-            />
-            <InputField
-              label="Phone"
-              name="phone"
-              value={values.phone}
-              error={errors.phone}
-              onChange={handleChange}
-            />
-          </div>
-        </>
-      )}
+      {/* Dynamic Step Rendering */}
+      {stepComponents[step]}
 
-      {/* Step 2: Attending */}
-      {step === 2 && (
-        <div className="w-full grid grid-cols-1 gap-4 justify-items-center">
-          {/* ATTENDING */}
-          <CheckboxField
-            label="Attending?"
-            name="attending"
-            checked={values.attending}
-            onChange={handleChange}
-            error={errors.attending}
-          />
-        </div>
-      )}
-
-      {/* Step 3: Category */}
-      {step === 3 && (
-        <RadioField
-          name="category"
-          value={values.category}
-          categories={CATEGORIES}
-          onChange={handleChange}
-        />
-      )}
-
-      {/* Step 4: Meal */}
-      {step === 4 && (
-        <SelectField
-          label="Meal Options"
-          name="meal"
-          value={values.meal}
-          options={MEALS}
-          onChange={handleChange}
-          error={errors.meal}
-        />
-      )}
-
-      {/* NAVOGATION BUTTONS */}
-      <div className="flex justify-between gap-4 mt-4">
-        {step > 1 && (
-          <button
-            type="button"
-            onClick={() => {
-              setErrors({});
-              setStep((step - 1) as Step);
-            }}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 active:bg-blue-500"
-          >
-            Back
-          </button>
-        )}
-        {step < stepFields_lentgh && (
-          <button
-            type="button"
-            onClick={handleNext}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 active:bg-blue-500"
-          >
-            Next
-          </button>
-        )}
-      </div>
-
-      {step === stepFields_lentgh && (
-        <button
-          type="submit"
-          className="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 active:scale-[0.98] transition disabled:cursor-not-allowed disabled:bg-gray-400"
-        >
-          {guest ? "Update Guest" : "Add Guest"}
-        </button>
-      )}
+      {/* NAVIGATION BUTTONS */}
+      <FormNavigation
+        step={step}
+        setStep={setStep}
+        onNext={handleNext}
+        setErrors={setErrors}
+        stepCount={stepFields_lentgh}
+        isEditing={!!guest} //same as Boolean(guest)
+      />
     </form>
   );
 }

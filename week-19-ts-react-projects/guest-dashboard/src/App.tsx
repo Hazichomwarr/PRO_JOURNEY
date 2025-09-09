@@ -12,7 +12,7 @@ export default function App() {
   const location = useLocation();
 
   return (
-    <div className="bg-slate-50">
+    <div className="bg-slate-50 h-screen">
       <GuestProvider>
         <Navbar />
         <AnimatePresence mode="wait">

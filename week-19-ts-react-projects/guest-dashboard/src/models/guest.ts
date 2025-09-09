@@ -5,7 +5,7 @@ export const MEALS = ["Chicken", "Beef", "Vegetarian"] as const;
 export type meal = (typeof MEALS)[number];
 
 export interface Guest {
-  id: number;
+  id: string;
   name: string;
   email: string;
   phone: string;
