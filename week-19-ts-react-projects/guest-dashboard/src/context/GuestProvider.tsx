@@ -1,5 +1,9 @@
 //context/GuestProvider.tsx
-import { GuestContext, type GuestContextType } from "./GuestContext";
+import {
+  GuestContext,
+  type Flash,
+  type GuestContextType,
+} from "./GuestContext";
 import type { Guest } from "../models/guest";
 import { useEffect, useState, type ReactNode, useMemo } from "react";
 
@@ -15,16 +19,21 @@ export default function GuestProvider({ children }: { children: ReactNode }) {
     null
   );
 
+  // flashMessage state
+  const [flash, setFlash] = useState<Flash | null>(null);
+
   useEffect(() => {
     localStorage.setItem("guests", JSON.stringify(guests));
   }, [guests]);
 
   function addGuest(guest: Guest) {
     setGuests((prev) => [...prev, guest]);
+    setFlash({ message: "Guest added successfully!", type: "success" });
   }
 
   function updateGuest(updated: Guest) {
     setGuests((prev) => prev.map((g) => (g.id === updated.id ? updated : g)));
+    setFlash({ message: "Guest updated successfully!", type: "success" });
   }
 
   function removeGuest(id: number) {
@@ -71,6 +80,8 @@ export default function GuestProvider({ children }: { children: ReactNode }) {
     sortBy,
     setSortBy,
     processedGuests,
+    flash,
+    setFlash,
   };
 
   return (

@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useGuestContext } from "../context/useGuestContext";
 import GuestCard from "../components/GuestCard";
 import GuestListEmpty from "../components/GuestListEmpty";
+import { motion, AnimatePresence } from "framer-motion";
+import FlashMessage from "../components/FlashMessage";
 
 export default function GuestListPage() {
   const {
@@ -14,18 +16,38 @@ export default function GuestListPage() {
     sortBy,
     setSortBy,
     setSearchQuery,
+    flash,
+    setFlash,
   } = useGuestContext();
 
   const navigation = useNavigate();
 
   function handleEdit(guest: Guest) {
-    navigation(`${guest.id}/update`, { state: guest });
+    navigation(`${guest.id}/update`);
   }
 
   const hasSearch = filterCategory || sortBy;
 
   return (
     <div className="">
+      {/* Flash-Message Wrapper */}
+      <AnimatePresence>
+        {flash && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <FlashMessage
+              message={flash.message}
+              type={flash.type}
+              onClose={() => setFlash(null)}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <h3 className="font-medium text-center text-2xl my-5 ">All Attendees</h3>
 
       {/* Toolbar */}
@@ -42,7 +64,7 @@ export default function GuestListPage() {
           <option value="Sales">Sales</option>
         </select>
 
-        {/* button to clear search/filter/sort */}
+        {/* Button to clear search/filter/sort */}
         {hasSearch && (
           <button
             className="px-3 py-2 rounded-lg border border-gray-300 shadow-sm bg-blue-600 text-white"

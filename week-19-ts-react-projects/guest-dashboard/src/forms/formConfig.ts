@@ -6,7 +6,7 @@ export const formInitialValues: GuestFormValues = {
   name: "",
   email: "",
   phone: "",
-  attending: false,
+  attending: true,
   meal: "Chicken",
   category: "HR",
 };
