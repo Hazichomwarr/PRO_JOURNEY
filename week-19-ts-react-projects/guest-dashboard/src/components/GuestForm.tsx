@@ -14,6 +14,7 @@ import RadioField from "./RadioField";
 import SelectField from "./SelectField";
 import ValidationSummaryPanel from "./ValidationSummaryPanel";
 import type { FormErrors } from "../models/errors";
+import { v4 as uuidv4 } from "uuid";
 
 interface GuestFormProps {
   onAddGuest?: (guest: Guest) => void;
@@ -52,7 +53,7 @@ export default function GuestForm({
           onUpdate({ ...guest, ...values });
         } else if (onAddGuest) {
           //Add Guest
-          onAddGuest({ ...values, id: Date.now() });
+          onAddGuest({ ...values, id: Number(uuidv4()) });
         }
       },
     });
