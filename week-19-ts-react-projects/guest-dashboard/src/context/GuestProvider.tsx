@@ -33,11 +33,12 @@ export default function GuestProvider({ children }: { children: ReactNode }) {
 
   function updateGuest(updated: Guest) {
     setGuests((prev) => prev.map((g) => (g.id === updated.id ? updated : g)));
-    setFlash({ message: "Guest updated successfully!", type: "success" });
+    setFlash({ message: "Guest Info updated!", type: "info" });
   }
 
-  function removeGuest(id: number) {
+  function removeGuest(id: string) {
     setGuests((prev) => prev.filter((g) => g.id !== id));
+    setFlash({ message: "Guest has been removed !", type: "error" });
   }
 
   // processedGuests = search -> filter -> sort

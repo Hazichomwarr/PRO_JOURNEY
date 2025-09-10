@@ -20,7 +20,7 @@ interface GuestFormProps {
 
 export type Step = 1 | 2 | 3 | 4;
 
-const stepFields: Record<number, (keyof GuestFormValues)[]> = {
+const stepFields: Record<Step, (keyof GuestFormValues)[]> = {
   1: ["name", "email", "phone"],
   2: ["attending"],
   3: ["category"],
@@ -73,7 +73,7 @@ export default function GuestForm({
       let nextStep = (step + 1) as Step;
 
       //skip to the end if not attending
-      if (nextStep === 2 && values.attending === false) {
+      if (values.attending === false && nextStep === 2) {
         nextStep = stepFields_lentgh as Step; //the last step
       }
       setStep(nextStep);

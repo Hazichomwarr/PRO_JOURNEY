@@ -1,4 +1,5 @@
 //components/SelectField.tsx
+import type { GuestFormEvent } from "../hooks/useGuestForm";
 import type { meal } from "../models/guest";
 
 interface SelectFieldProps {
@@ -6,7 +7,7 @@ interface SelectFieldProps {
   name: string;
   value: meal;
   options: readonly meal[]; //only accepts valid meals
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChange: (e: GuestFormEvent) => void;
   error?: string;
 }
 

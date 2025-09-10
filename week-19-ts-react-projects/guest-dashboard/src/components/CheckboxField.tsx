@@ -1,12 +1,12 @@
 //components/CheckboxField.tsx
-
+import type { GuestFormEvent } from "../hooks/useGuestForm";
 interface CheckBoxProps {
   label: string;
   name: string;
   type?: string;
   checked: boolean;
   error?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: GuestFormEvent) => void;
 }
 
 export default function CheckboxField({

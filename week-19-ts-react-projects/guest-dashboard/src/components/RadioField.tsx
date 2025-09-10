@@ -1,6 +1,6 @@
 //components/RadioField.tsx
-import React from "react";
 import type { category } from "../models/guest";
+import type { GuestFormEvent } from "../hooks/useGuestForm";
 
 interface RadioFieldProps {
   name: string;
@@ -8,7 +8,7 @@ interface RadioFieldProps {
   type?: string;
   error?: string;
   categories: category[];
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: GuestFormEvent) => void;
 }
 
 export default function RadioField({

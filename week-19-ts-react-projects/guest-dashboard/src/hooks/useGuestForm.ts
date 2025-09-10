@@ -10,6 +10,10 @@ interface UseFormOptions<T> {
   onSubmit: (values: T) => void;
 }
 
+export type GuestFormEvent =
+  | React.ChangeEvent<HTMLInputElement>
+  | React.ChangeEvent<HTMLSelectElement>;
+
 export default function useForm<T>({
   initialValues,
   validate,
@@ -20,9 +24,7 @@ export default function useForm<T>({
 
   const navigation = useNavigate();
 
-  function handleChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) {
+  function handleChange(e: GuestFormEvent) {
     const { name, type, value } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
 

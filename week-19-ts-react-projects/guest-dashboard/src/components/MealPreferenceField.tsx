@@ -1,3 +1,4 @@
+import type { GuestFormEvent } from "../hooks/useGuestForm";
 import type { FormErrors } from "../models/errors";
 import { MEALS, type GuestFormValues } from "../models/guest";
 import SelectField from "./SelectField";
@@ -5,7 +6,7 @@ import SelectField from "./SelectField";
 interface MealPreferenceFieldProps {
   values: GuestFormValues;
   errors: FormErrors;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChange: (e: GuestFormEvent) => void;
 }
 
 export default function MealPreferenceField({

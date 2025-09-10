@@ -14,7 +14,7 @@ import type { Guest } from "../models/guest";
 
 interface DeleteButtonProps {
   guest: Guest;
-  onDelete: (guestID: number) => void;
+  onDelete: (guestID: string) => void;
 }
 
 export default function DeleteButton({ guest, onDelete }: DeleteButtonProps) {

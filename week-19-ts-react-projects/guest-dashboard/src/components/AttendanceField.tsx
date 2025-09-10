@@ -1,3 +1,5 @@
+// Attendancefield.tsx
+import type { GuestFormEvent } from "../hooks/useGuestForm";
 import type { FormErrors } from "../models/errors";
 import type { GuestFormValues } from "../models/guest";
 import CheckboxField from "./CheckboxField";
@@ -5,7 +7,7 @@ import CheckboxField from "./CheckboxField";
 interface AttendanceFieldProps {
   values: GuestFormValues;
   errors: FormErrors;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: GuestFormEvent) => void;
 }
 
 export default function AttendanceField({

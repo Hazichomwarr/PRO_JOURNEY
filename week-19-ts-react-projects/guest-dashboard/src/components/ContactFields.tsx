@@ -1,4 +1,5 @@
-import type React from "react";
+// ContactFields.tsx
+import type { GuestFormEvent } from "../hooks/useGuestForm";
 import type { FormErrors } from "../models/errors";
 import type { GuestFormValues } from "../models/guest";
 import InputField from "./InputField";
@@ -6,7 +7,7 @@ import InputField from "./InputField";
 interface ContactFieldsProps {
   values: GuestFormValues;
   errors: FormErrors;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: GuestFormEvent) => void;
 }
 
 export default function ContactFields({

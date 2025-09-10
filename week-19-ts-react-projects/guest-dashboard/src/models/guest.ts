@@ -1,3 +1,4 @@
+// models/guest.ts
 export const CATEGORIES = ["HR", "IT", "Sales"];
 export type category = (typeof CATEGORIES)[number];
 

@@ -1,10 +1,12 @@
+import type { GuestFormEvent } from "../hooks/useGuestForm";
+
 interface InputfieldProps {
   label: string;
   name: string;
   type?: string;
   value: string;
   error?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: GuestFormEvent) => void;
   placeholder?: string;
 }
 

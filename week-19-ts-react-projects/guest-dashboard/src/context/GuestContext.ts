@@ -12,7 +12,7 @@ export interface GuestContextType {
   setGuests: Dispatch<SetStateAction<Guest[]>>;
   addGuest: (guest: Guest) => void;
   updateGuest: (updated: Guest) => void;
-  removeGuest: (id: number) => void;
+  removeGuest: (id: string) => void;
 
   searchQuery: string;
   setSearchQuery: (q: string) => void;

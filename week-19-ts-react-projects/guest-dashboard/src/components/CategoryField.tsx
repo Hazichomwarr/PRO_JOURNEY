@@ -1,9 +1,11 @@
+//  CategoryField.tsx
+import type { GuestFormEvent } from "../hooks/useGuestForm";
 import { CATEGORIES, type GuestFormValues } from "../models/guest";
 import RadioField from "./RadioField";
 
 interface CategoryFieldProps {
-  values: GuestFormValues;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  values: Pick<GuestFormValues, "category">; //narrow down the type here
+  onChange: (e: GuestFormEvent) => void;
 }
 
 export default function CategoryField({

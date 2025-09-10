@@ -23,10 +23,10 @@ export default function GuestListPage() {
   const navigation = useNavigate();
 
   function handleEdit(guest: Guest) {
-    navigation(`${guest.id}/update`);
+    navigation(`/guests/${guest.id}/update`);
   }
 
-  const hasSearch = filterCategory || sortBy;
+  const hasSearch = Boolean(filterCategory || sortBy);
 
   return (
     <div className="">
@@ -97,6 +97,7 @@ export default function GuestListPage() {
       <GuestListEmpty
         guests={processedGuests}
         onRegister={() => navigation("/guests/new")}
+        hasSearch={hasSearch}
       />
 
       {/* if Guests */}

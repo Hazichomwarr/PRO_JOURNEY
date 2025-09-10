@@ -7,7 +7,7 @@ import DeleteButton from "./DeleteButton";
 interface GuestCardProps {
   guest: Guest;
   onEdit?: (guest: Guest) => void;
-  onDelete?: (id: number) => void;
+  onDelete?: (id: string) => void;
 }
 
 export default function GuestCard({ guest, onDelete, onEdit }: GuestCardProps) {
