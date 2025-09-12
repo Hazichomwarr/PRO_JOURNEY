@@ -3,23 +3,16 @@ import { useTaskStore } from "../stores/taskStore";
 import type { Task } from "../models/task";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 export default function TaskForm() {
   const addTask = useTaskStore((s) => s.addTask);
-  const tasks = useTaskStore((s) => s.tasks);
 
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
   const [values, setValues] = useState<Omit<Task, "id">>({
     text: "",
     isDone: false,
   });
-
-  // persist tasks to localstorage
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, type, value } = e.target;
@@ -37,7 +30,7 @@ export default function TaskForm() {
     if (values.text.trim()) {
       addTask({ ...values, id: uuidv4() });
       setValues({ text: "", isDone: false });
-      navigation("/tasks");
+      navigate("/tasks");
     }
   }
 
