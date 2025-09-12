@@ -9,7 +9,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "../components/ui/alert-dialog";
+} from "./ui/alert-dialog";
 import type { Guest } from "../models/guest";
 
 interface DeleteButtonProps {

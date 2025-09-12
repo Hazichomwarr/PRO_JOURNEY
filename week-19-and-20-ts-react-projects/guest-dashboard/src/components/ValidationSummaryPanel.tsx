@@ -1,5 +1,5 @@
 // components/ValidationSummaryPanel.tsx
-import { Card, CardContent } from "../components/ui/card";
+import { Card, CardContent } from "./ui/card";
 import { AlertTriangle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { FormErrors } from "../models/errors";
