@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { useTaskStore } from "../stores/taskStore";
+// import { useTaskStore } from "../stores/taskStore";
 import type { Task } from "../models/task";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
+import { useTasks } from "../hooks/useTasks";
 
 export default function TaskForm() {
-  const addTask = useTaskStore((s) => s.addTask);
-
+  // const addTask = useTaskStore((s) => s.addTask);
+  const { addTask } = useTasks();
   const navigate = useNavigate();
 
   const [values, setValues] = useState<Omit<Task, "id">>({
@@ -14,24 +15,13 @@ export default function TaskForm() {
     isDone: false,
   });
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const { name, type, value } = e.target;
-    const checked = (e.target as HTMLInputElement).checked;
-
-    setValues((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  }
-
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!values.text.trim()) return;
 
-    if (values.text.trim()) {
-      addTask({ ...values, id: uuidv4() });
-      setValues({ text: "", isDone: false });
-      navigate("/tasks");
-    }
+    addTask.mutate(values);
+    setValues({ text: "", isDone: false });
+    navigate("/tasks");
   }
 
   return (
@@ -43,7 +33,7 @@ export default function TaskForm() {
       <div className="flex flex-col gap-4 w-full">
         <input
           value={values.text}
-          onChange={handleChange}
+          onChange={(e) => setValues({ ...values, text: e.target.value })}
           name="text"
           type="text"
           placeholder="Add new Task..."

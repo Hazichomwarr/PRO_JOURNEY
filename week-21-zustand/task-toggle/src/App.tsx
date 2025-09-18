@@ -6,6 +6,7 @@ import NavBar from "./components/NavBar";
 
 export default function App() {
   const location = useLocation();
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 h-screen">
       <NavBar />

@@ -1,0 +1,19 @@
+{
+  "name": "language-guesser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "franc": "^6.2.0",
+    "iso-639-3": "^3.0.1",
+    "langs": "^2.0.0"
+  }
+}
