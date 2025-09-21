@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Product</title>
+  </head>
+  <body>
+    <h2>Add A Product</h2>
+    <form action="/products" method="post">
+      <input type="text" name="name" id="name" placeholder="Product name" />
+      <input type="number" name="price" id="price" placeholder="Price" />
+      <select name="category" id="category">
+        <!-- <option value="">Choose Category</option>
+        <option value="fruit">Fruit</option>
+        <option value="vegetable">Vegetable</option>
+        <option value="dairy">Dairy</option> -->
+
+        <% for(let cat of categories) { %>
+        <option value="<%=cat%>"><%=cat.toUpperCase()%></option>
+        <% }%>
+      </select>
+      <button type="submit">Submit</button>
+    </form>
+    <div>
+      <br /><br />
+      <a href="/products" style="margin-top: 4rem">All products</a>
+    </div>
+  </body>
+</html>

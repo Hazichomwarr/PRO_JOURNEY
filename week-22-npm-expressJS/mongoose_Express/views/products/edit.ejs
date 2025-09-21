@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Product</title>
+  </head>
+  <body>
+    <h2>Edit Product</h2>
+    <form action="/products/<%=product._id%>?_method=PUT" method="post">
+      <input
+        type="text"
+        name="name"
+        id="name"
+        placeholder="Product name"
+        value="<%=product.name%>"
+      />
+      <input
+        type="number"
+        name="price"
+        id="price"
+        placeholder="Price"
+        value="<%=product.price%>"
+      />
+      <select name="category" id="category" value="<%=product.category%>">
+        <% for(let cat of categories) { %>
+        <option value="<%=cat%>" 
+            <%= product.category === cat ? 'selected' : "" %>
+          >
+          <%= cat.toUpperCase() %>
+        </option>
+        <% }%>
+      </select>
+      <button type="submit">Update</button>
+    </form>
+    <div>
+      <br /><br />
+      <a href="/products" style="margin-top: 4rem">Back</a>
+    </div>
+  </body>
+</html>
