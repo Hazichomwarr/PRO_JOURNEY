@@ -7,14 +7,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-    <h2>Edit Product</h2>
-    <form action="/products/<%=product._id%>?_method=PUT" method="post">
+    <h2 class="text-2xl text-center font-bold my-4">Edit Product</h2>
+    <form action="/products/<%=product._id%>?_method=PUT" method="post" class="flex flex-col gap-4 justify-center w-[25%] my-1 mx-auto">
       <input
         type="text"
         name="name"
         id="name"
         placeholder="Product name"
         value="<%=product.name%>"
+        class="p-2 border-2 rounded-md focus:border-blue-400"
       />
       <input
         type="number"
@@ -22,8 +23,10 @@
         id="price"
         placeholder="Price"
         value="<%=product.price%>"
+        class="p-2 border-2 rounded-md focus:border-blue-400"
       />
-      <select name="category" id="category" value="<%=product.category%>">
+      <select name="category" id="category" value="<%=product.category%>"
+        class="p-2 border-2 rounded-md focus:border-blue-400">
         <% for(let cat of categories) { %>
         <option value="<%=cat%>" 
             <%= product.category === cat ? 'selected' : "" %>
@@ -32,11 +35,10 @@
         </option>
         <% }%>
       </select>
-      <button type="submit">Update</button>
+      <button type="submit" class="py-2 px-1 bg-green-400 rounded-md hover:bg-green-500">Update</button>
     </form>
     <div>
-      <br /><br />
-      <a href="/products" style="margin-top: 4rem">Back</a>
+      <a href="/products" class="text-center py-4 px-2 bg-stone-100 rounded-md hover:bg-stone-200 text-4xl"> 🔙 </a>
     </div>
   </body>
 </html>

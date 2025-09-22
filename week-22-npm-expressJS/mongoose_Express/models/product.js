@@ -8,7 +8,10 @@ const productSchema = new mongoose.Schema({
     required: [true, "Price is required"],
     min: [0, "Price should be positif"],
   },
-  category: { type: String, enum: ["fruit", "vegetable", "dairy"] },
+  category: {
+    type: String,
+    enum: ["fruit", "vegetable", "dairy", "bake-goods"],
+  },
 });
 
 //compile model

@@ -7,19 +7,38 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-    <h1><%= product.name %></h1>
-    <ul>
-      <li>Price: $<%= product.price %></li>
-      <li>Category: <%= product.category %></li>
-    </ul>
-    <br /><br />
-    <a href="/products">All products</a>
-    <br /><br />
-    <a href="/products/<%=product.id%>/edit">Edit Product</a>
-    <br /><br />
-    <!-- Delete form button -->
-    <form action="/products/<%=product.id%>?_method=DELETE" method="post">
-      <button type="submit">Delete</button>
-    </form>
+    <section
+      class="w-[80%] my-2 mx-auto flex flex-col items-center justify-center"
+    >
+      <div
+        class="flex flex-col items-center gap-2 p-6 rounded-sm shadow-md w-[30%]"
+      >
+        <p class="text-center text-xl font-bold"><%= product.name %></p>
+        <ul>
+          <li>Price: $<%= product.price %></li>
+          <li>Category: <%= product.category %></li>
+        </ul>
+      </div>
+      <!-- links for all, edit, delete products -->
+      <div class="my-4 flex gap-3">
+        <a
+          href="/products"
+          class="p-3 bg-green-600 rounded-md hover:bg-green-700 text-gray-200"
+          >All products</a
+        >
+        <a
+          href="/products/<%=product.id%>/edit"
+          class="p-3 bg-blue-600 rounded-md hover:bg-blue-700 text-gray-200"
+          >Edit Product</a
+        >
+        <form
+          action="/products/<%=product.id%>?_method=DELETE"
+          method="post"
+          class="p-3 bg-red-600 rounded-md hover:bg-red-700 text-gray-200"
+        >
+          <button type="submit">Delete</button>
+        </form>
+      </div>
+    </section>
   </body>
 </html>
