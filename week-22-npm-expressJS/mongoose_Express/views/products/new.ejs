@@ -7,7 +7,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-    <h2 class="text-2xl font-bold my-4">Add A Product</h2>
+    <header class="w-[50%] flex items-center justify-around">
+      <h2 class="text-2xl font-bold my-4">Add A Product</h2>
+      <a
+        href="/products"
+        class="px-3 text-blue-600 font-semibold rounded-md hover:text-blue-700 hover:underline"
+        >Back to products</a
+      >
+    </header>
     <form action="/products" method="post">
       <input
         type="text"
@@ -39,13 +46,5 @@
         Submit
       </button>
     </form>
-    <div>
-      <br /><br />
-      <a
-        href="/products"
-        class="py-2 px-4 bg-blue-600 rounded-md hover:bg-blue-700 text-white"
-        >All products</a
-      >
-    </div>
   </body>
 </html>

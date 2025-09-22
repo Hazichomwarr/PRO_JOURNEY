@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 
 const Product = require("./models/product");
-const { nextTick } = require("process");
+const { next } = require("process");
 
 const categories = ["fruit", "vegetable", "dairy", "bake-goods"];
 
@@ -53,7 +53,7 @@ app.get("/products/new", (req, res) => {
   res.render("products/new", { categories });
 });
 app.post("/products", async (req, res) => {
-  const newProduct = new Product(req.body, { runValidators: true });
+  const newProduct = new Product(req.body);
   await newProduct.save();
   res.redirect(`/products/${newProduct._id}`);
 });
