@@ -3,6 +3,7 @@
     "colors": "^1.4.0",
     "figlet": "^1.9.1",
     "franc": "^6.2.0",
-    "give-me-a-joke": "^0.5.1"
+    "give-me-a-joke": "^0.5.1",
+    "mongodb": "^6.20.0"
   }
 }
