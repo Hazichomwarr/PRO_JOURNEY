@@ -9,29 +9,17 @@ app.use(express.json());
 
 const posts = [
   { username: "Kyle", title: "Post 1" },
-  { username: "Issa", title: "please subscribe" },
+  { username: "Issa", title: "Please subscribe" },
 ];
 
 app.get("/posts", authenticateToken, (req, res) => {
-  const posts = posts.filter((p) => p.username === req.user.name);
-  res.json(posts);
-});
-
-//to create a token, use 'POST'
-app.post("/login", (req, res) => {
-  //Authenticate User first
-
-  //Authorization: create token
-  const username = req.body.username;
-  const user = { name: username };
-
-  const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-  res.json({ accessToken: accessToken });
+  const userPosts = posts.filter((p) => p.username === req.user.name);
+  res.json(userPosts);
 });
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split("")[1];
+  const token = authHeader && authHeader.split(" ")[1];
 
   if (!token) {
     return res
