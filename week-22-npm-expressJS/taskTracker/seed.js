@@ -1,7 +1,7 @@
 const { MongoClient, ObjectId } = require("mongodb");
 
 const client = new MongoClient("mongodb://127.0.0.1:27017");
-const dbName = "taskTracker";
+const dbName = "tweeter";
 
 async function seed() {
   await client.connect();
@@ -13,7 +13,7 @@ async function seed() {
     .drop()
     .catch(() => {});
   await db
-    .collection("tasks")
+    .collection("posts")
     .drop()
     .catch(() => {});
 

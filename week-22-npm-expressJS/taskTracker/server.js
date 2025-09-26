@@ -58,7 +58,7 @@ app.delete("/tasks/:id", async (req, res) => {
 //POST
 app.post("/users", async (req, res) => {
   const user = req.body;
-  const newUser = db.collection("users").insertOne(user);
+  const newUser = await db.collection("users").insertOne(user);
   res.json(newUser);
 });
 
