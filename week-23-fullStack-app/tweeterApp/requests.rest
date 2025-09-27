@@ -1,0 +1,57 @@
+### Register user
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{"username":"alice","password":"password123"}
+
+###
+
+### All users
+GET http://localhost:3000/users
+
+###
+
+### Get A User
+GET http://localhost:3000/users/68d8477152b642f0aeb3e0ec
+
+
+### Login
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{"username":"alice","password":"password123"}
+
+###
+
+### Create post (use Authorization header from login response)
+POST http://localhost:3000/posts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZDg0NzcxNTJiNjQyZjBhZWIzZTBlYyIsIm5hbWUiOiJhbGljZSIsImlhdCI6MTc1OTAwODE5NCwiZXhwIjoxNzU5MDA4Mzc0fQ.Of4CZdnAdFIqVYRn1kPuEw-p0IWar4QYpwV3-dDAz3Y
+
+{"text":"Hello3 from Alice"}
+
+###
+
+### Get all posts
+GET http://localhost:3000/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZDg0NzcxNTJiNjQyZjBhZWIzZTBlYyIsIm5hbWUiOiJhbGljZSIsImlhdCI6MTc1OTAwODE5NCwiZXhwIjoxNzU5MDA4Mzc0fQ.Of4CZdnAdFIqVYRn1kPuEw-p0IWar4QYpwV3-dDAz3Y
+
+###
+
+
+### GET a User's posts
+GET http://localhost:3000/posts/user/68d8477152b642f0aeb3e0ec
+
+### Refresh token
+POST http://localhost:3000/auth/token
+Content-Type: application/json
+
+{"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZDg0NzcxNTJiNjQyZjBhZWIzZTBlYyIsIm5hbWUiOiJhbGljZSIsImlhdCI6MTc1OTAwNzcyNn0.PIUqdFiyZKDi4OoCvRJ-c45ixWTm_UzyanooTFoq16Q"}
+
+###
+
+### Logout
+DELETE http://localhost:3000/auth/logout
+Content-Type: application/json
+
+{"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZDg0NzcxNTJiNjQyZjBhZWIzZTBlYyIsIm5hbWUiOiJhbGljZSIsImlhdCI6MTc1OTAwNzcyNn0.PIUqdFiyZKDi4OoCvRJ-c45ixWTm_UzyanooTFoq16Q"}
