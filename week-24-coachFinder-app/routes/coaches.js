@@ -29,7 +29,6 @@ router.get("/", authWithToken, async (req, res) => {
     const allCoaches = await db
       .collection("coaches")
       .aggregate([
-        { $match: { _id: new ObjectId(id) } },
         {
           $lookup: {
             from: "users",
@@ -65,6 +64,7 @@ router.get("/:id", authWithToken, async (req, res) => {
       .collection("coaches")
       .aggregate([
         {
+          $match: { _id: new ObjectId(id) },
           $lookup: {
             from: "users",
             localField: "userId",
@@ -152,58 +152,70 @@ router.post("/", authWithToken, async (req, res) => {
   }
 });
 
-//UPDATE A COACH INFO BY ID
+// UPDATE A COACH INFO BY ID
 router.put("/:id", authWithToken, async (req, res) => {
   const db = req.app.locals.db;
   const { id } = req.params;
 
   try {
-    //Ensure user is a coach
-    if (req.user.role !== "coach")
+    // Ensure user is a coach
+    if (req.user.role !== "coach") {
       return res
         .status(403)
-        .json({ error: "Forbidden: only coaches can create a profile" });
+        .json({ error: "Forbidden: only coaches can update their profile" });
+    }
 
-    //Find coach info
+    // Find coach
     const coach = await db
       .collection("coaches")
       .findOne({ _id: new ObjectId(id) });
-    if (!coach) return res.status(404).json({ error: "User not found" });
+    if (!coach) return res.status(404).json({ error: "Coach not found" });
 
-    // Owner OR admin can update
-    if (coach.userId.toString() !== req.user.id && req.user.role !== "admin") {
+    // Ensure ownership: logged-in user must match coach.userId
+    if (coach.userId.toString() !== req.user.id) {
       return res
         .status(403)
-        .json({ error: "Not allowed to update this profile" });
+        .json({ error: "You can only update your own profile" });
     }
 
-    //Build a coach doc from request body
-    const coachDoc = {
-      userId: new ObjectId(req.user.id),
-      bio: req.body.bio || "",
-      expertise: req.body.expertise || [],
-      hourlyRate: req.body.hourlyRate || 0,
-      availability: req.body.availability || {},
-      rating: req.body.rating || 0,
-      reviews: req.body.reviews || [],
-      updatedAt: new Date(),
-    };
-    //Update into DB
-    const updatedCoach = await db
+    // Build update doc (only allow certain fields to be updated)
+    const updates = {};
+    if (req.body.bio !== undefined) updates.bio = req.body.bio;
+    if (req.body.expertise !== undefined)
+      updates.expertise = req.body.expertise;
+    if (req.body.hourlyRate !== undefined)
+      updates.hourlyRate = req.body.hourlyRate;
+    if (req.body.availability !== undefined)
+      updates.availability = req.body.availability;
+
+    updates.updatedAt = new Date();
+
+    // Update in DB
+    const result = await db
       .collection("coaches")
-      .updateOne({ _id: new ObjectId(id) }, { $set: coachDoc });
+      .updateOne({ _id: new ObjectId(id) }, { $set: updates });
 
     if (result.matchedCount === 0) {
       return res.status(404).json({ error: "Coach not found" });
     }
 
-    res.status(201).json({
-      id: updatedCoach.insertedId.toString(),
-      firstName: coach.firstName,
-      lastName: coach.lastName,
-      email: coach.email,
-      expertise: coachDoc.expertise,
-      rating: coachDoc.rating,
+    // Return updated coach
+    const updatedCoach = await db
+      .collection("coaches")
+      .findOne({ _id: new ObjectId(id) });
+
+    res.status(200).json({
+      id: updatedCoach._id.toString(),
+      firstName: updatedCoach.firstName,
+      lastName: updatedCoach.lastName,
+      email: updatedCoach.email,
+      bio: updatedCoach.bio,
+      expertise: updatedCoach.expertise,
+      hourlyRate: updatedCoach.hourlyRate,
+      availability: updatedCoach.availability,
+      rating: updatedCoach.rating,
+      reviews: updatedCoach.reviews,
+      updatedAt: updatedCoach.updatedAt,
     });
   } catch (err) {
     console.error(err);
@@ -211,7 +223,50 @@ router.put("/:id", authWithToken, async (req, res) => {
   }
 });
 
-// DELETE A COACH BY ID
+//FILTER COACHES by expertise and/or minimum rating
+router.get("/search", async (req, res) => {
+  const db = req.app.locals.db;
+  const { expertise, minRating } = req.query;
+
+  // Build query dynamically
+  const query = {};
+
+  if (expertise) {
+    query.expertise = {
+      $in: Array.isArray(expertise) ? expertise : [expertise],
+    }; // e.g., "JavaScript"
+  }
+
+  if (minRating) {
+    query.rating = { $gte: parseFloat(minRating) };
+  }
+
+  try {
+    const coaches = await db
+      .collection("coaches")
+      .find(query, {
+        projection: {
+          bio: 1,
+          expertise: 1,
+          availability: 1,
+          rating: 1,
+          reviews: 1,
+          hourlyRate: 1,
+        },
+      })
+      .toArray();
+
+    if (coaches.length === 0) {
+      return res.status(404).json({ error: "No matching coaches" });
+    }
+
+    res.status(200).json(coaches);
+  } catch (err) {
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+// DELETE A COACH BY ID (soft delete)
 router.delete("/:id", authWithToken, async (req, res) => {
   const db = req.app.locals.db;
   const { id } = req.params;
