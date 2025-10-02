@@ -1,28 +1,26 @@
-// const coachSchemaExample = {
-//   _id: ObjectId("..."),
-//   userId: ObjectId("..."), // reference to users._id
-//   bio: "I’ve been mentoring junior devs for 5 years...",
-//   expertise: ["JavaScript", "Career Coaching"],
-//   hourlyRate: 50,
-//   availability: {
-//     monday: ["09:00-12:00", "14:00-18:00"],
-//     tuesday: [],
-//     // ...
-//   },
-//   rating: 4.8,
-//   reviews: [{ userId: ObjectId("..."), comment: "Great mentor!", stars: 5 }],
-//   createdAt: ISODate(),
-//   updatedAt: ISODate(),
-// };
+const coachSchemaExample = {
+  _id: ObjectId("..."),
+  userId: ObjectId("..."), // reference to users._id
+  bio: "I’ve been mentoring junior devs for 5 years...",
+  expertise: ["JavaScript", "Career Coaching"],
+  hourlyRate: 50,
+  availability: {
+    monday: ["09:00-12:00", "14:00-18:00"],
+    tuesday: [],
+    // ...
+  },
+  createdAt: ISODate(),
+  updatedAt: ISODate(),
+};
 
-//coaches.js
+//routes/coaches.js
 const express = require("express");
 const { ObjectId } = require("mongodb");
 const authWithToken = require("../middleware/authWithToken");
 
 const router = express.Router();
 
-//ALL COACHES
+//ALL COACHES (with averageRating + totalReviews)
 router.get("/", authWithToken, async (req, res) => {
   const db = req.app.locals.db;
   try {
@@ -39,12 +37,34 @@ router.get("/", authWithToken, async (req, res) => {
         },
         { $unwind: "$user" },
         {
+          $lookup: {
+            from: "reviews",
+            localField: "_id",
+            foreignField: "coachId",
+            as: "reviews",
+          },
+        },
+        //Add computed fields
+        {
+          $addFields: {
+            totalReviews: { $size: "$reviews" },
+            averageRating: {
+              $cond: [
+                { $gt: [{ $size: "$reviews" }, 0] },
+                { $avg: "$reviews.rating" },
+                null, // no reviews yet
+              ],
+            },
+          },
+        },
+        {
           $project: {
             _id: 1,
             expertise: 1,
-            rating: 1,
             "user.firstName": 1,
             "user.lastName": 1,
+            totalReviews: 1,
+            averageRating: 1,
           },
         },
       ])
@@ -55,7 +75,7 @@ router.get("/", authWithToken, async (req, res) => {
   }
 });
 
-//GET A coach BY ID
+// GET A COACH BY ID with Reviews + averageRating + totalReviews
 router.get("/:id", authWithToken, async (req, res) => {
   const db = req.app.locals.db;
   const { id } = req.params;
@@ -65,6 +85,8 @@ router.get("/:id", authWithToken, async (req, res) => {
       .aggregate([
         {
           $match: { _id: new ObjectId(id) },
+        },
+        {
           $lookup: {
             from: "users",
             localField: "userId",
@@ -74,15 +96,43 @@ router.get("/:id", authWithToken, async (req, res) => {
         },
         { $unwind: "$user" },
         {
+          $lookup: {
+            from: "reviews",
+            localField: "_id",
+            foreignField: "coachId",
+            as: "reviews",
+          },
+        },
+        //Add computed fields
+        {
+          $addFields: {
+            totalReviews: { $size: "$reviews" },
+            averageRating: {
+              $cond: [
+                { $gt: [{ $size: "$reviews" }, 0] },
+                { $avg: "$reviews.rating" },
+                null, // no reviews yet
+              ],
+            },
+          },
+        },
+        {
           $project: {
             "user.firstName": 1,
             "user.lastName": 1,
             bio: 1,
             expertise: 1,
             availability: 1,
-            rating: 1,
-            reviews: 1,
             hourlyRate: 1,
+            reviews: {
+              rating: 1,
+              status: 1,
+              createdAt: 1,
+              updatedAt: 1,
+              userId: 1,
+            },
+            totalReviews: 1,
+            averageRating: 1,
           },
         },
       ])
@@ -91,7 +141,7 @@ router.get("/:id", authWithToken, async (req, res) => {
     if (!coach) return res.status(404).json({ error: "Coach not found" });
     res.status(200).json(coach);
   } catch (err) {
-    res.status(400).json({ message: "Invalid id" }); //bad request
+    res.status(400).json({ message: "Invalid coach id" }); //bad request
   }
 });
 
@@ -130,10 +180,10 @@ router.post("/", authWithToken, async (req, res) => {
       expertise: expertise || [],
       hourlyRate: hourlyRate || 0,
       availability: availability || {},
-      rating: 0,
-      reviews: [],
       createdAt: new Date(),
       updatedAt: new Date(),
+      totalReviews: 0,
+      averageRating: null,
     };
 
     //Insert into DB
@@ -144,7 +194,6 @@ router.post("/", authWithToken, async (req, res) => {
       lastName: user.lastName,
       email: user.email,
       expertise: coachDoc.expertise,
-      rating: coachDoc.rating,
     });
   } catch (err) {
     console.log(err);
@@ -189,6 +238,8 @@ router.put("/:id", authWithToken, async (req, res) => {
       updates.availability = req.body.availability;
 
     updates.updatedAt = new Date();
+    updates.totalReviews = coach.totalReviews;
+    updates.averageRating = coach.averageRating;
 
     // Update in DB
     const result = await db
@@ -206,16 +257,13 @@ router.put("/:id", authWithToken, async (req, res) => {
 
     res.status(200).json({
       id: updatedCoach._id.toString(),
-      firstName: updatedCoach.firstName,
-      lastName: updatedCoach.lastName,
-      email: updatedCoach.email,
       bio: updatedCoach.bio,
       expertise: updatedCoach.expertise,
       hourlyRate: updatedCoach.hourlyRate,
       availability: updatedCoach.availability,
-      rating: updatedCoach.rating,
-      reviews: updatedCoach.reviews,
       updatedAt: updatedCoach.updatedAt,
+      totalReviews: updatedCoach.totalReviews,
+      averageRating: updatedCoach.averageRating,
     });
   } catch (err) {
     console.error(err);
@@ -226,7 +274,7 @@ router.put("/:id", authWithToken, async (req, res) => {
 //FILTER COACHES by expertise and/or minimum rating
 router.get("/search", async (req, res) => {
   const db = req.app.locals.db;
-  const { expertise, minRating } = req.query;
+  const { expertise } = req.query;
 
   // Build query dynamically
   const query = {};
@@ -237,10 +285,6 @@ router.get("/search", async (req, res) => {
     }; // e.g., "JavaScript"
   }
 
-  if (minRating) {
-    query.rating = { $gte: parseFloat(minRating) };
-  }
-
   try {
     const coaches = await db
       .collection("coaches")
@@ -249,9 +293,9 @@ router.get("/search", async (req, res) => {
           bio: 1,
           expertise: 1,
           availability: 1,
-          rating: 1,
-          reviews: 1,
           hourlyRate: 1,
+          totalReviews: 1,
+          averageRating: 1,
         },
       })
       .toArray();
