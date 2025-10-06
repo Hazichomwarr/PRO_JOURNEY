@@ -2,7 +2,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const validateSignup = require("../utils/validator");
+const validateSignup = require("../../utils/validator");
 
 const router = express.Router();
 
@@ -31,14 +31,12 @@ router.post("/register", async (req, res) => {
   const newUser = await db
     .collection("users")
     .insertOne({ ...values, password: hashed });
-  res
-    .status(201)
-    .json({
-      id: newUser.insertedId.toString(),
-      firstName: values.firstName,
-      lastName: values.lastName,
-      email: values.email,
-    });
+  res.status(201).json({
+    id: newUser.insertedId.toString(),
+    firstName: values.firstName,
+    lastName: values.lastName,
+    email: values.email,
+  });
 });
 
 //LOGIN ROUTE

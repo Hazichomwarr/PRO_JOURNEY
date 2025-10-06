@@ -3,8 +3,8 @@ require("dotenv").config();
 const express = require("express");
 const connecDB = require("./db");
 
-const authRoutes = require("./routes/auth");
-const userRoutes = require("./routes/users");
+const authRoutes = require("../routes/auth");
+const userRoutes = require("../routes/users");
 const coachRoutes = require("./routes/coaches");
 
 const app = express();

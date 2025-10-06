@@ -25,7 +25,7 @@ const reviewSchema = {
 //routes/sessions.js
 const express = require("express");
 const { ObjectId } = require("mongodb");
-const authWithToken = require("../middleware/authWithToken");
+const authWithToken = require("../backend/middleware/authWithToken");
 
 const router = express.Router();
 
