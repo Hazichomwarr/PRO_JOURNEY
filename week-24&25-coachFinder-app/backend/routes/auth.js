@@ -2,7 +2,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const validateSignup = require("../../utils/validator");
+const validateSignup = require("../utils/validator");
 
 const router = express.Router();
 
@@ -91,7 +91,7 @@ router.post("/refresh", async (req, res) => {
         return res.status(403).json({ message: "Token expired or invalid" });
 
       const newAccessToken = jwt.sign(
-        { id: payload.id, email: payload.email },
+        { id: payload.id, email: payload.email, role: payload.role },
         process.env.ACCESS_TOKEN,
         { expiresIn: "15m" }
       );

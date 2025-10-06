@@ -103,6 +103,14 @@ router.get("/:id", authWithToken, async (req, res) => {
             as: "reviews",
           },
         },
+        {
+          $lookup: {
+            from: "users",
+            localField: "reviews.userId",
+            foreignField: "_id",
+            as: "reviewers",
+          },
+        },
         //Add computed fields
         {
           $addFields: {
@@ -115,11 +123,37 @@ router.get("/:id", authWithToken, async (req, res) => {
               ],
             },
           },
+          reviews: {
+            $map: {
+              input: "$reviews",
+              as: "rev",
+              in: {
+                rating: "$$rev.rating",
+                status: "$$rev.status",
+                createdAt: "$$rev.createdAt",
+                updatedAt: "$$rev.updatedAt",
+                comment: "$$rev.comment",
+                userInfo: {
+                  $arrayElemAt: [
+                    {
+                      $filter: {
+                        input: "$reviewers",
+                        as: "u",
+                        cond: { $eq: ["$$u._id", "$$rev.userId"] },
+                      },
+                    },
+                    0,
+                  ],
+                },
+              },
+            },
+          },
         },
         {
           $project: {
             "user.firstName": 1,
             "user.lastName": 1,
+            "user.image": 1,
             bio: 1,
             expertise: 1,
             availability: 1,
@@ -130,6 +164,7 @@ router.get("/:id", authWithToken, async (req, res) => {
               createdAt: 1,
               updatedAt: 1,
               userId: 1,
+              comment: 1,
             },
             totalReviews: 1,
             averageRating: 1,

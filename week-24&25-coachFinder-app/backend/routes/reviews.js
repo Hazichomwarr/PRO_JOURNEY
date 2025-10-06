@@ -14,10 +14,11 @@ const reviewSchema = {
 const express = require("express");
 const { ObjectId } = require("mongodb");
 const authWithToken = require("../backend/middleware/authWithToken");
+const recomputeCoachesStats = require("../utils/recomputeCoachStats");
 
 const router = express.Router();
 
-//Create a review
+//Create a review Endpoint
 router.post("/", authWithToken, async (req, res) => {
   const db = req.app.locals.db;
 
@@ -76,6 +77,11 @@ router.post("/", authWithToken, async (req, res) => {
 
     //Insert review into DB
     const newReview = await db.collection("reviews").insertOne(reviewDoc);
+
+    //Recompute coach stats
+    await recomputeCoachesStats(db, reviewDoc.coachId);
+
+    //return values
     res.status(201).json({
       id: newReview.insertedId.toString(),
       coachId: reviewDoc.coachId,
@@ -88,7 +94,7 @@ router.post("/", authWithToken, async (req, res) => {
   }
 });
 
-//All reviews for a coach (with user info)
+//All reviews for a coach (with user info) Endpoint
 router.get("/coach/:id", authWithToken, async (req, res) => {
   const db = req.app.locals.db;
   const { id } = req.params;
@@ -137,7 +143,7 @@ router.get("/coach/:id", authWithToken, async (req, res) => {
   }
 });
 
-//All logged-in user's reviews
+//All logged-in user's reviews Endpoint
 router.get("/me", authWithToken, async (req, res) => {
   const db = req.app.locals.db;
   try {
@@ -187,7 +193,7 @@ router.get("/me", authWithToken, async (req, res) => {
   }
 });
 
-//User edit review
+//User edit review Endpoint
 router.put("/:id", authWithToken, async (req, res) => {
   const db = req.app.locals.db;
   const { id } = req.params;
@@ -228,6 +234,11 @@ router.put("/:id", authWithToken, async (req, res) => {
     await db
       .collection("reviews")
       .updateOne({ _id: new ObjectId(id) }, { $set: update });
+
+    //Recompute
+    await recomputeCoachesStats(db, review.coachId);
+
+    //return values
     res.status(200).json({
       id,
       rating: update.rating ?? review.rating, //explain the double ?? in js
@@ -241,7 +252,7 @@ router.put("/:id", authWithToken, async (req, res) => {
   }
 });
 
-//Soft delete review (user or admin only)
+//Soft delete review (user or admin only) Endpoint
 router.delete("/:id", authWithToken, async (req, res) => {
   const db = req.app.locals.db;
   const { id } = req.params;
@@ -264,6 +275,11 @@ router.delete("/:id", authWithToken, async (req, res) => {
         { _id: new ObjectId(review._id) },
         { $set: { status: "deleted" } }
       );
+
+    // ⬇️ Recompute
+    await recomputeCoachesStats(db, review.coachId);
+
+    //return values
     res.status(200).json({ id: review._id.toString(), status: "deleted" });
   } catch (err) {
     console.error(err);

@@ -1,13 +1,13 @@
-const { Mongoclient } = require("mongodb");
+const { MongoClient } = require("mongodb");
 
 const uri = process.env.MONGO_URI || "mongodb://127.0.0.1:27017";
-const client = new Mongoclient(uri);
+const client = new MongoClient(uri);
 
 async function connectDB() {
   try {
     await client.connect();
     console.log("✅Connected to mongoDB");
-    return client.db(process.env.DB_NAME || "coach");
+    return client.db(process.env.DB_NAME || "touch");
   } catch (err) {
     console.error("❌ MongoDB connection failed:", err);
     throw err;
