@@ -1,31 +1,31 @@
-const sessionSchema = {
-  _id: ObjectId,
-  coachId: ObjectId,
-  userId: ObjectId,
-  scheduledAt: ISODate,
-  duration: Number, // in minutes
-  status: "pending" | "confirmed" | "completed" | "cancelled",
-  price: Number,
-  notes: String,
-  createdAt: ISODate,
-  updatedAt: ISODate,
-};
+// const sessionSchema = {
+//   _id: ObjectId,
+//   coachId: ObjectId,
+//   userId: ObjectId,
+//   scheduledAt: ISODate,
+//   duration: Number, // in minutes
+//   status: "pending" | "confirmed" | "completed" | "cancelled",
+//   price: Number,
+//   notes: String,
+//   createdAt: ISODate,
+//   updatedAt: ISODate,
+// };
 
-const reviewSchema = {
-  _id: ObjectId,
-  coachId: ObjectId,
-  userId: ObjectId,
-  sessionId: ObjectId, // optional but good to tie to a session
-  rating: Number, // 1-5
-  comment: String,
-  createdAt: ISODate,
-  status: "new" | "edited",
-};
+// const reviewSchema = {
+//   _id: ObjectId,
+//   coachId: ObjectId,
+//   userId: ObjectId,
+//   sessionId: ObjectId, // optional but good to tie to a session
+//   rating: Number, // 1-5
+//   comment: String,
+//   createdAt: ISODate,
+//   status: "new" | "edited",
+// };
 
 //routes/sessions.js
 const express = require("express");
 const { ObjectId } = require("mongodb");
-const authWithToken = require("../backend/middleware/authWithToken");
+const authWithToken = require("../middleware/authWithToken");
 
 const router = express.Router();
 

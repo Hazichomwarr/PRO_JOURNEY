@@ -1,19 +1,19 @@
-const reviewSchema = {
-  _id: ObjectId,
-  coachId: ObjectId,
-  userId: ObjectId,
-  sessionId: ObjectId, // optional but good to tie to a session
-  rating: Number, // 1-5
-  comment: String,
-  createdAt: ISODate,
-  updatedAt: ISODate,
-  status: "new" | "edited" | "deleted",
-};
+// const reviewSchema = {
+//   _id: ObjectId,
+//   coachId: ObjectId,
+//   userId: ObjectId,
+//   sessionId: ObjectId, // optional but good to tie to a session
+//   rating: Number, // 1-5
+//   comment: String,
+//   createdAt: ISODate,
+//   updatedAt: ISODate,
+//   status: "new" | "edited" | "deleted",
+// };
 
 //routes/reviews.js
 const express = require("express");
 const { ObjectId } = require("mongodb");
-const authWithToken = require("../backend/middleware/authWithToken");
+const authWithToken = require("../middleware/authWithToken");
 const recomputeCoachesStats = require("../utils/recomputeCoachStats");
 
 const router = express.Router();

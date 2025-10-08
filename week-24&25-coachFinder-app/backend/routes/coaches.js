@@ -1,18 +1,3 @@
-const coachSchemaExample = {
-  _id: ObjectId("..."),
-  userId: ObjectId("..."), // reference to users._id
-  bio: "I’ve been mentoring junior devs for 5 years...",
-  expertise: ["JavaScript", "Career Coaching"],
-  hourlyRate: 50,
-  availability: {
-    monday: ["09:00-12:00", "14:00-18:00"],
-    tuesday: [],
-    // ...
-  },
-  createdAt: ISODate(),
-  updatedAt: ISODate(),
-};
-
 //routes/coaches.js
 const express = require("express");
 const { ObjectId } = require("mongodb");
