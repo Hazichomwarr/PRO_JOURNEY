@@ -1,6 +1,8 @@
-// utils/navLinkClass.ts
+//utils/navLinkClass.ts
 export function navLinkClass(isActive: boolean) {
-  return isActive
-    ? "bg-orange-600 font-medium px-2 py-1 rounded transition-colors duration-300"
-    : "hover:bg-orange-400/30 px-2 py-1 rounded transition-colors duration-300";
+  return `px-3 py-1.5 rounded-md transition-all duration-300 ${
+    isActive
+      ? "bg-orange-600 text-white shadow-sm"
+      : "hover:bg-orange-500/30 text-gray-200"
+  }`;
 }
