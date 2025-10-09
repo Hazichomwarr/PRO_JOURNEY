@@ -49,8 +49,12 @@ router.post("/login", async (req, res) => {
   const user = await db.collection("users").findOne({ email });
   if (!user) return res.status(403).json({ message: "Invalid credentials" });
 
-  const ok = await bcrypt.compare(password, user.password);
-  if (!ok) return res.status(403).json({ message: "Invalid credentials" });
+  // const ok = await bcrypt.compare(password, user.password);
+  // if (!ok) return res.status(403).json({ message: "Invalid credentials" });
+
+  //Temp authorization(will be removed later)
+  if (password !== user.password)
+    return res.status(403).json({ message: "Invalid credentials" });
 
   //since authenticate, let's give user a token
   const payload = {
