@@ -34,7 +34,7 @@ function reducer(state: LoginState, action: Action): LoginState {
 
 export default function Login() {
   const [state, dispatch] = useReducer(reducer, initialLoginState);
-  const { login } = useAuthStore();
+  const { setAuth } = useAuthStore();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {
@@ -42,13 +42,17 @@ export default function Login() {
 
     try {
       const res = await axiosClient.post("/auth/login", state);
-      const { user, accessToken } = res.data;
+      const { accessToken, refreshToken } = res.data;
 
-      login(user, accessToken);
+      //decode or fetch user from token if needed
+      const payload = JSON.parse(atob(accessToken.split(".")[1]));
+      const user = { id: payload.id, email: payload.email, role: payload.role };
+
+      setAuth(user, accessToken, refreshToken);
       navigate("/dashboard");
-    } catch (error: any) {
-      console.error("Login error:", error.response?.data || error.message);
-      alert(error.response?.data?.message || "Login failed");
+    } catch (err: any) {
+      console.error("Login failed:", err.response?.data || err.message);
+      alert("Invalid credentials");
     }
   };
 

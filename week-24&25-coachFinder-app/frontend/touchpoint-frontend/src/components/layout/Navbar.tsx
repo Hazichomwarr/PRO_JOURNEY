@@ -56,7 +56,7 @@ export default function Navbar() {
         <NavLink
           to={isAuthenticated === false ? "/register" : "/home"}
           className={({ isActive }) => navLinkClass(isActive)}
-          onClick={handleLogout}
+          onClick={isAuthenticated ? handleLogout : undefined}
         >
           {isAuthenticated === false ? "Register" : "Logout"}
         </NavLink>

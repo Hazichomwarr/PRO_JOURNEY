@@ -1,33 +1,78 @@
 //store/authStore.ts
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import type { User } from "../models/user";
+import axiosClient from "../lib/axiosClient";
 
-interface Store {
-  user: User | null;
+interface UserFromTokenPayload {
+  id: string;
+  email: string;
+  role: string;
+  firstName?: string;
+  lastName?: string;
+}
+
+interface AuthState {
+  user: UserFromTokenPayload | null;
   accessToken: string | null;
+  refreshToken: string | null;
   isAuthenticated: boolean;
 
-  login: (user: User, token: string) => void;
+  setAuth: (
+    user: UserFromTokenPayload,
+    access: string,
+    refresh: string
+  ) => void;
   logout: () => void;
-  setUser: (user: User) => void;
+  restoreSessions: () => Promise<void>;
 }
-export const useAuthStore = create<Store>()(
-  persist(
-    (set) => ({
-      user: null,
-      accessToken: null,
-      isAuthenticated: false,
+export const useAuthStore = create<AuthState>((set) => ({
+  user: null,
+  accessToken: null,
+  refreshToken: null,
+  isAuthenticated: false,
 
-      login: (user, token) =>
-        set({ user, accessToken: token, isAuthenticated: true }),
+  //When login/register succeeds
+  setAuth: (user, accessToken, refreshToken) => {
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
+    localStorage.setItem("user", JSON.stringify(user));
+    set({ user, accessToken, refreshToken, isAuthenticated: true });
+  },
 
-      logout: () =>
-        set({ user: null, accessToken: null, isAuthenticated: false }),
+  //logout handler
+  logout: async () => {
+    try {
+      const refreshToken = localStorage.getItem("refreshToken");
+      if (refreshToken) {
+        await axiosClient.delete("/auth/logout", {
+          data: { token: refreshToken },
+        });
+      }
+    } catch (err) {
+      console.warn("Logout warning", err);
+    } finally {
+      localStorage.clear();
+      set({
+        user: null,
+        accessToken: null,
+        refreshToken: null,
+        isAuthenticated: false,
+      });
+    }
+  },
 
-      setUser: (user) => set({ user }),
-    }),
+  //Auto-hydrate state from localStorage
+  restoreSessions: async () => {
+    const accessToken = localStorage.getItem("accesstoken");
+    const refreshToken = localStorage.getItem("refreshToken");
+    const user = localStorage.getItem("user");
 
-    { name: "auth-storage" }
-  )
-);
+    if (accessToken && refreshToken && user) {
+      set({
+        accessToken,
+        refreshToken,
+        user: JSON.parse(user),
+        isAuthenticated: true,
+      });
+    }
+  },
+}));
