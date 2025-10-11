@@ -1,8 +1,20 @@
 //components/layout/Navbar.tsx
 import { NavLink } from "react-router-dom";
 import { navLinkClass } from "../../utils/navLinkClass";
+import { useAuthStore } from "../../store/authStore";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
+  const { isAuthenticated, logout } = useAuthStore();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    if (isAuthenticated === true) {
+      logout();
+      navigate("/home");
+    }
+  };
+  console.log(isAuthenticated);
   return (
     <nav className="flex justify-between items-center bg-gray-800 px-8 py-4 text-white shadow-md sticky top-0 z-50">
       {/* APP LOGO */}
@@ -42,10 +54,11 @@ export default function Navbar() {
           Sessions
         </NavLink>
         <NavLink
-          to="/login"
+          to={isAuthenticated === false ? "/register" : "/home"}
           className={({ isActive }) => navLinkClass(isActive)}
+          onClick={handleLogout}
         >
-          Login
+          {isAuthenticated === false ? "Register" : "Logout"}
         </NavLink>
       </ul>
     </nav>

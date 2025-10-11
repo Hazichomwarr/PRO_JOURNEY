@@ -3,7 +3,6 @@ import { useReducer, FormEvent, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../lib/axiosClient";
 import { useAuthStore } from "../store/authStore";
-import type { User } from "../models/user";
 
 interface LoginState {
   email: string;
@@ -15,7 +14,7 @@ type Action =
   | { type: "SET_PASSWORD"; payload: string }
   | { type: "RESET" };
 
-const initialState: LoginState = {
+const initialLoginState: LoginState = {
   email: "",
   password: "",
 };
@@ -27,14 +26,14 @@ function reducer(state: LoginState, action: Action): LoginState {
     case "SET_PASSWORD":
       return { ...state, password: action.payload };
     case "RESET":
-      return initialState;
+      return initialLoginState;
     default:
       return state;
   }
 }
 
 export default function Login() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialLoginState);
   const { login } = useAuthStore();
   const navigate = useNavigate();
 
@@ -54,44 +53,55 @@ export default function Login() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col gap-4 w-[300px] mx-auto my-10 p-6 border rounded-lg shadow-md"
-    >
-      <h2 className="text-2xl font-bold text-center">Login</h2>
-
-      <label className="flex flex-col gap-1">
-        <span className="font-medium">Email</span>
-        <input
-          type="email"
-          value={state.email}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            dispatch({ type: "SET_EMAIL", payload: e.target.value })
-          }
-          className="border rounded p-2"
-          required
-        />
-      </label>
-
-      <label className="flex flex-col gap-1">
-        <span className="font-medium">Password</span>
-        <input
-          type="text"
-          value={state.password}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            dispatch({ type: "SET_PASSWORD", payload: e.target.value })
-          }
-          className="border rounded p-2"
-          required
-        />
-      </label>
-
-      <button
-        type="submit"
-        className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+    <div>
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4 w-[300px] mx-auto my-10 p-6 border rounded-lg shadow-md"
       >
-        Login
-      </button>
-    </form>
+        <h2 className="text-2xl font-bold text-center">Login</h2>
+
+        <label className="flex flex-col gap-1">
+          <span className="font-medium">Email</span>
+          <input
+            type="email"
+            value={state.email}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              dispatch({ type: "SET_EMAIL", payload: e.target.value })
+            }
+            className="border rounded p-2"
+            required
+          />
+        </label>
+
+        <label className="flex flex-col gap-1">
+          <span className="font-medium">Password</span>
+          <input
+            type="text"
+            value={state.password}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              dispatch({ type: "SET_PASSWORD", payload: e.target.value })
+            }
+            className="border rounded p-2"
+            required
+          />
+        </label>
+
+        <button
+          type="submit"
+          className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+        >
+          Login
+        </button>
+      </form>
+      <p className="text-center pb-2">
+        Don't have an Account?{" "}
+        <button
+          onClick={() => navigate("/register")}
+          className="text-orange-600 font-semibold underline"
+        >
+          Register
+        </button>
+      </p>
+    </div>
   );
 }
