@@ -62,7 +62,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   //Auto-hydrate state from localStorage
   restoreSessions: async () => {
-    const accessToken = localStorage.getItem("accesstoken");
+    const accessToken = localStorage.getItem("accessToken");
     const refreshToken = localStorage.getItem("refreshToken");
     const user = localStorage.getItem("user");
 

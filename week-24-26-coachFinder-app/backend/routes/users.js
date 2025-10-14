@@ -1,6 +1,7 @@
 //users.js
 const express = require("express");
 const bcrypt = require("bcrypt");
+const authWithToken = require("../middleware/authWithToken");
 const { ObjectId } = require("mongodb");
 
 const router = express.Router();

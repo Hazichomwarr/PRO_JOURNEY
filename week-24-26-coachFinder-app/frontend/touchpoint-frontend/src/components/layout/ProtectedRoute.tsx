@@ -1,14 +1,14 @@
 // components/layout/ProtectedRoute.tsx
 import { Navigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
-import { Children, JSX } from "react";
+import { JSX } from "react";
 
-export default function ProtectedRoute({
-  children,
-}: {
+type Fnprops = {
   children: JSX.Element;
-}) {
+};
+
+export default function ProtectedRouted({ children }: Fnprops) {
   const { isAuthenticated } = useAuthStore();
   if (!isAuthenticated) return <Navigate to="/login" replace />;
-  return Children;
+  return children;
 }

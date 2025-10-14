@@ -36,7 +36,7 @@ export default function Home() {
           className="w-[400px] md:w-[500px] rounded-2xl shadow-lg"
         />
       </section>
-      <section className="mt-16 grid md:grid-cols-3 gap-6 text-center">
+      <section className="my-16 grid md:grid-cols-3 gap-6 text-center">
         {[
           {
             icon: "🧭",

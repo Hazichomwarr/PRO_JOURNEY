@@ -47,8 +47,10 @@ export default function Login() {
       //decode or fetch user from token if needed
       const payload = JSON.parse(atob(accessToken.split(".")[1]));
       const user = { id: payload.id, email: payload.email, role: payload.role };
+      console.log("user ->", user);
 
       setAuth(user, accessToken, refreshToken);
+      console.log("accessToken ->", accessToken);
       navigate("/dashboard");
     } catch (err: any) {
       console.error("Login failed:", err.response?.data || err.message);
