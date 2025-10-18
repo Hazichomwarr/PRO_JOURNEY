@@ -2,20 +2,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCurrentUser } from "../api/userApi";
 import { LoaderIcon } from "lucide-react";
+import { UserPublic } from "../store/userStore";
+import ProfileSummary from "../components/layout/ProfileSummary";
+import { useUserData } from "../hooks/useUserData";
 
 export default function Dashboard() {
-  console.log("inside dashboard..");
-  const {
-    data: user,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["user"],
-    queryFn: getCurrentUser,
-    retry: 1,
-  });
+  const { user, isLoading, isError } = useUserData();
 
-  // 3. Display the Loading State and Message
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center gap-3">
@@ -25,19 +18,14 @@ export default function Dashboard() {
     );
   }
 
-  if (isError) return <p>Error loading user data</p>;
-  if (!user) return null;
-
-  console.log("USER ->", user); //all-Users
+  if (isError)
+    return <p className="text-center mt-6 text-xl">Error loading user data</p>;
 
   return (
-    <div>
-      <h1>Welcome back, {user.firstName}!</h1>
-      <p className="text-gray-600 mt-2">
-        Email: {user.email} <br />
-        Role: {user.role}
-      </p>
-    </div>
+    <section className="p-6">
+      {/* typescript yells at the user props */}
+      <ProfileSummary user={user} />
+    </section>
   );
 }
 

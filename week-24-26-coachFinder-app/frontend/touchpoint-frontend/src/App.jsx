@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Signup from "./pages/Register";
+import Register from "./pages/Register";
 import CoachList from "./pages/CoachList";
 import CoachDetail from "./pages/CoachDetail";
 import Dashboard from "./pages/Dashboard";
@@ -25,7 +25,7 @@ export default function App() {
           <Route path="/" index element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Signup />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/coaches" element={<CoachList />} />
           <Route path="/coach/:id" element={<CoachDetail />} />
           <Route
