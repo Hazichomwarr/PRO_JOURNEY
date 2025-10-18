@@ -1,9 +1,16 @@
 //components/layout/ProfileSummary.tsx
 import type { UserPublic } from "../../store/userStore";
 
-type ProfileSummaryProps = { user: UserPublic };
+type ProfileSummaryProps = { user: UserPublic | null };
 
 export default function ProfileSummary({ user }: ProfileSummaryProps) {
+  if (!user) {
+    return (
+      <div className="text-center text-gray-500 mt-4">
+        No profile data available.
+      </div>
+    );
+  }
   return (
     <div className="flex items-center gap-4 p-4 bg-white rounded shadow">
       <img

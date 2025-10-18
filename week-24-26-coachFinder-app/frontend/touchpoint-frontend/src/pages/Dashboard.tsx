@@ -1,8 +1,5 @@
 //pages/dashboard.tsx
-import { useQuery } from "@tanstack/react-query";
-import { getCurrentUser } from "../api/userApi";
 import { LoaderIcon } from "lucide-react";
-import { UserPublic } from "../store/userStore";
 import ProfileSummary from "../components/layout/ProfileSummary";
 import { useUserData } from "../hooks/useUserData";
 

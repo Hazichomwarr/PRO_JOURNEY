@@ -10,17 +10,17 @@ export function useUserData() {
   const { data, isLoading, isError } = useQuery<UserPublic>({
     queryKey: ["user"],
     queryFn: getCurrentUser,
-    staleTime: 1000 * 60 * 5,
-    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5, // <- explain this line
+    refetchOnWindowFocus: false, //<- explain this line too
     // onSuccess: (data) => {
     //     if (!user) setUser(data)
     // }
   });
 
-  // The modern v5 way to handle side effects
+  // onSuccess doesn't work(why?), that's why i used useEffect
   useEffect(() => {
-    if (!user) setUser(data);
-  }, [data, setUser]);
+    if (data && !user) setUser(data);
+  }, [data, user, setUser]);
 
   return { isLoading, isError, user: user ?? data ?? null };
 }
