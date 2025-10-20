@@ -19,3 +19,8 @@ export interface User {
 // type roleType = "coach" | "user";
 
 export type UserFormValues = Omit<User, "id">;
+
+export type UserUpdateFields = Omit<
+  User,
+  "password" | "confirmPassword" | "id"
+>;

@@ -1,5 +1,6 @@
 //api/userApi.ts
 import axiosClient from "../lib/axiosClient";
+import { UserPublic } from "../store/userStore";
 
 export const getCurrentUser = async () => {
   try {
@@ -8,5 +9,24 @@ export const getCurrentUser = async () => {
     return { ...res.data, id: res.data._id };
   } catch (err) {
     console.error("AUTH ME error:", err);
+  }
+};
+
+export const updateUser = async (id: string, updates: Partial<UserPublic>) => {
+  try {
+    const res = await axiosClient.put(`/users/${id}`, updates);
+    return res.data;
+  } catch (err) {
+    console.error("error:", err);
+  }
+};
+
+//for future : delete user
+export const deleteUser = async (id: string) => {
+  try {
+    const res = await axiosClient.delete(`/users/${id}`);
+    return res.data;
+  } catch (err) {
+    console.error("error:", err);
   }
 };

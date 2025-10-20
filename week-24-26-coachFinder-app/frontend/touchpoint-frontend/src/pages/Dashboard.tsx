@@ -1,7 +1,8 @@
 //pages/dashboard.tsx
 import { LoaderIcon } from "lucide-react";
-import ProfileSummary from "../components/layout/ProfileSummary";
+import ProfileSummary from "../components/layout/dashboard/ProfileSummary";
 import { useUserData } from "../hooks/useUserData";
+import EditProfileForm from "../components/layout/dashboard/EditProfileForm";
 
 export default function Dashboard() {
   const { user, isLoading, isError } = useUserData();
@@ -10,18 +11,23 @@ export default function Dashboard() {
     return (
       <div className="flex flex-col items-center justify-center gap-3">
         <LoaderIcon className="w-8 h-8 animate-spin text-blue-500" />
-        <span className="ml-2">Loading...</span>
+        <span className="ml-2">Loading your dashboard...</span>
       </div>
     );
   }
 
   if (isError)
-    return <p className="text-center mt-6 text-xl">Error loading user data</p>;
+    return (
+      <p className="text-center mt-6 text-xl text-red-500">
+        Error loading user data
+      </p>
+    );
 
   return (
     <section className="p-6">
-      {/* typescript yells at the user props */}
       <ProfileSummary user={user} />
+      <h1 className="text-3xl font-bold mb-4 text-center">Account Settings</h1>
+      <EditProfileForm />
     </section>
   );
 }
