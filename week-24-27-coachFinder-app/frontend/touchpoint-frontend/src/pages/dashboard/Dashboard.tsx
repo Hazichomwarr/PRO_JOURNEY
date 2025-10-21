@@ -1,8 +1,8 @@
 //pages/dashboard.tsx
 import { LoaderIcon } from "lucide-react";
-import ProfileSummary from "../components/layout/dashboard/ProfileSummary";
-import { useUserData } from "../hooks/useUserData";
-import EditProfileForm from "../components/layout/dashboard/EditProfileForm";
+import ProfileSummary from "../../components/layout/dashboard/ProfileSummary";
+import { useUserData } from "../../hooks/useUserData";
+import EditProfileForm from "../../components/layout/dashboard/EditProfileForm";
 
 export default function Dashboard() {
   const { user, isLoading, isError } = useUserData();
