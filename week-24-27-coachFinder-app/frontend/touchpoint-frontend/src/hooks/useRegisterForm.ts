@@ -11,7 +11,7 @@ export interface UserFormValues {
   phone: string;
   city: string;
   state: string;
-  role: "coach" | "seeker" | "";
+  role: "coach" | "buddy" | "seeker" | "";
   birthDate: string;
 }
 
@@ -74,8 +74,16 @@ export function useRegisterForm() {
       console.log("Registered user:", newUser);
 
       alert("Registration successful! Please log in.");
-      dispatch({ type: "RESET" });
+
+      //redirect to dashboard for login
+      // const dashboardRoute =
+      //   state.role === "coach"
+      //     ? "/dashboard/coach"
+      //     : state.role === "buddy"
+      //     ? "/dashboard/buddy"
+      //     : "/dashboard/seeker";
       navigate("/login");
+      dispatch({ type: "RESET" });
     } catch (error: any) {
       console.error(
         "Registration error:",

@@ -9,18 +9,6 @@ const userRoutes = require("./routes/users");
 const coachRoutes = require("./routes/coaches");
 
 const app = express();
-// top of server.js, right after app = express()
-app.use((req, res, next) => {
-  console.log(
-    ">> INCOMING",
-    new Date().toISOString(),
-    req.method,
-    req.url,
-    "auth header present?",
-    !!req.headers.authorization
-  );
-  next();
-});
 app.use(express.json());
 
 app.use(

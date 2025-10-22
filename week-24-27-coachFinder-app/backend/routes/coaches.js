@@ -6,7 +6,7 @@ const authWithToken = require("../middleware/authWithToken");
 const router = express.Router();
 
 //ALL COACHES (with averageRating + totalReviews)
-router.get("/", authWithToken, async (req, res) => {
+router.get("/", authWithToken(), async (req, res) => {
   const db = req.app.locals.db;
   try {
     const allCoaches = await db
@@ -310,6 +310,7 @@ router.get("/search", async (req, res) => {
       .collection("coaches")
       .find(query, {
         projection: {
+          _id: 1,
           bio: 1,
           expertise: 1,
           availability: 1,
@@ -326,6 +327,7 @@ router.get("/search", async (req, res) => {
 
     res.status(200).json(coaches);
   } catch (err) {
+    console.error("Search error:", err);
     res.status(500).json({ error: "Server Error" });
   }
 });

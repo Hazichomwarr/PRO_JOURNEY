@@ -82,15 +82,21 @@ export default function Register() {
         </label>
 
         {/* --- Role --- */}
-        <select
-          value={state.role}
-          onChange={handleChange("role")}
-          className="w-full border p-2 rounded bg-white focus:ring-2 focus:ring-blue-500 outline-none"
-        >
-          <option value="">Select Role</option>
-          <option value="coach">Coach</option>
-          <option value="seeker">Seeker</option>
-        </select>
+        <div className="space-y-2">
+          <label className="text-gray-700 font-medium">
+            How do you want to use TouchPoint?
+            <select
+              value={state.role}
+              onChange={handleChange("role")}
+              className="w-full border p-2 rounded bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+            >
+              <option value="">Select Role</option>
+              <option value="coach">Coach - help others grow</option>
+              <option value="buddy">Buddy - find someone to grow with</option>
+              <option value="seeker">Seeker - Looking for help</option>
+            </select>
+          </label>
+        </div>
 
         {/* --- Passwords --- */}
         <input

@@ -16,7 +16,7 @@ export default function Home() {
 
           <div className="flex items-center gap-4">
             <Link
-              to={"/coaches"}
+              to={"/dashboard/find"}
               className="bg-blue-600 font-medium px-3 py-2 rounded transition-colors duration-300 text-white hover:bg-blue-700"
             >
               Find a Coach

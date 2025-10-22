@@ -22,7 +22,7 @@ export default function EditProfileForm() {
   // );
 
   const { mutate, isPending, isSuccess } = useMutation({
-    mutationFn: updateUser, // error: Type '(id: string, updates: Partial<UserPublic>) => Promise<any>' is not assignable to type 'MutationFunction<UserPublic, string>'.
+    mutationFn: updateUser,
     onSuccess: (updatedUser: UserPublic) => {
       setUser(updatedUser); //in Zustand
       queryClient.setQueryData(["user"], updatedUser); //sync React Query cache
@@ -40,7 +40,7 @@ export default function EditProfileForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    mutate(formData); //ts yells: Argument of type '{ firstName: string; lastName: string; email: string; phone: string; city: string; state: string; }' is not assignable to parameter of type 'string'.
+    mutate({ id: user.id, updates: formData });
   };
 
   return (

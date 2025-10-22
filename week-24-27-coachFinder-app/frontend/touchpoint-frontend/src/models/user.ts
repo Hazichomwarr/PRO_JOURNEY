@@ -13,10 +13,8 @@ export interface User {
   dateBirth?: string;
   image?: string;
   interest?: string;
-  role: string;
+  role: "coach" | "buddy" | "seeker" | "";
 }
-
-// type roleType = "coach" | "user";
 
 export type UserFormValues = Omit<User, "id">;
 

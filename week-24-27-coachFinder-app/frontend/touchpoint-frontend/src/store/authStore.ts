@@ -22,7 +22,7 @@ interface AuthState {
     refresh: string
   ) => void;
   logout: () => void;
-  restoreSessions: () => Promise<void>;
+  restoreSession: () => Promise<void>;
 }
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
@@ -61,7 +61,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   //Auto-hydrate state from localStorage
-  restoreSessions: async () => {
+  restoreSession: async () => {
     const accessToken = localStorage.getItem("accessToken");
     const refreshToken = localStorage.getItem("refreshToken");
     const user = localStorage.getItem("user");

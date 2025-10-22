@@ -1,5 +1,10 @@
 import React from "react";
+import Overview from "../../components/layout/dashboard/Overview";
 
 export default function SeekerDashboard() {
-  return <div>SeekerDashboard</div>;
+  return (
+    <div>
+      <Overview />
+    </div>
+  );
 }

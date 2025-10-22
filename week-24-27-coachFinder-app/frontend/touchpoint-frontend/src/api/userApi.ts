@@ -5,14 +5,19 @@ import { UserPublic } from "../store/userStore";
 export const getCurrentUser = async () => {
   try {
     const res = await axiosClient.get("/auth/me");
-    console.log("AUTH ME response:", res.data);
     return { ...res.data, id: res.data._id };
   } catch (err) {
     console.error("AUTH ME error:", err);
   }
 };
 
-export const updateUser = async (id: string, updates: Partial<UserPublic>) => {
+export const updateUser = async ({
+  id,
+  updates,
+}: {
+  id: string;
+  updates: Partial<UserPublic>;
+}) => {
   try {
     const res = await axiosClient.put(`/users/${id}`, updates);
     return res.data;
