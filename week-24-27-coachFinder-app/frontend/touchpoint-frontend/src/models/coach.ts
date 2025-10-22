@@ -1,10 +1,17 @@
 //models/coach.ts
 export interface Coach {
   id: string; //took care of the trailing(_id) in the axios call
+  name: string;
   bio: string;
   expertise: string;
-  hourlyRate: number;
-  avaibility: string;
+  hourlyRate: number | null;
+  totalReviews: number;
+  averageRating: number | null;
 }
 
-export type CoachPublic = Omit<Coach, "id">;
+export interface CoachFormValues {
+  bio: string;
+  expertise: string;
+  hourlyRate: number | null;
+  availability: string;
+}

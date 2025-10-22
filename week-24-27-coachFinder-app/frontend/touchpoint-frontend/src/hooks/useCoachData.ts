@@ -1,50 +1,47 @@
 //hooks/useCoachData.ts
 import { useEffect, useState } from "react";
 import type { Coach } from "../models/coach";
-import { getAllCoaches, getCoachByExpertise } from "../api/coachApi";
+import { getAllCoaches } from "../api/coachApi";
 
 export function useCoachData() {
   const [expertise, setExpertise] = useState("");
   const [coaches, setCoaches] = useState<Coach[]>([]);
+  const [filteredCoaches, setFilteredCoaches] = useState<Coach[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-
-  //debounce timer
-  const [debouncedExpertise, setDebounceExpertise] = useState(expertise);
-
-  //wait 500ms after the last keystroke before updating debouncedExpertise
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebounceExpertise(expertise);
-    }, 500);
-
-    return () => clearTimeout(timer); //cleanup if user keeps typing
-  }, [expertise]);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
 
       try {
-        let res: Coach[] = [];
-
-        if (debouncedExpertise.trim()) {
-          res = await getCoachByExpertise(debouncedExpertise);
-        } else {
-          //initial load: all coaches
-          res = await getAllCoaches();
-        }
-        setCoaches(res);
-        console.log(coaches);
+        const data = await getAllCoaches();
+        setCoaches(data);
+        setFilteredCoaches(data); //initially show all
       } catch (err: any) {
-        setIsLoading(false);
         setError(err.message || "Error fetching coaches");
       } finally {
         setIsLoading(false);
       }
     };
     fetchData();
-  }, [debouncedExpertise]);
+  }, []);
 
-  return { isLoading, error, coaches, setExpertise };
+  //wait 400ms after the last keystroke before updating debouncedExpertise
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (expertise.trim() === "") {
+        setFilteredCoaches(coaches);
+      } else {
+        const filtered = coaches.filter((c) =>
+          c.expertise.toLowerCase().includes(expertise.toLowerCase())
+        );
+        setFilteredCoaches(filtered);
+      }
+    }, 400);
+
+    return () => clearTimeout(timer); //cleanup if user keeps typing
+  }, [expertise, coaches]);
+
+  return { isLoading, error, filteredCoaches, setExpertise };
 }

@@ -14,6 +14,7 @@ import Overview from "./components/layout/dashboard/Overview";
 import FindCoach from "./pages/dashboard/FindCoach";
 import AccountSettings from "./pages/dashboard/AccountSettings";
 import Messages from "./pages/dashboard/Messages";
+import CoachRegistration from "./pages/CoachRegistration";
 
 export default function App() {
   const restoreSession = useAuthStore((s) => s.restoreSession);
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/coaches" element={<CoachList />} />
+          <Route path="/coaches/new" element={<CoachRegistration />} />
           <Route path="/coach/:id" element={<CoachDetail />} />
           <Route
             path="/dashboard"

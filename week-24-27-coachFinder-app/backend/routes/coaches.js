@@ -7,11 +7,21 @@ const router = express.Router();
 
 //ALL COACHES (with averageRating + totalReviews)
 router.get("/", authWithToken(), async (req, res) => {
+  console.log("inside '/coaches'");
   const db = req.app.locals.db;
   try {
+    const count = await db.collection("coaches").countDocuments();
+    console.log("total coaches in db ->", count);
+
     const allCoaches = await db
       .collection("coaches")
       .aggregate([
+        //convert userId to ObjectId first
+        {
+          $addFields: {
+            userId: { $toObjectId: "$userId" },
+          },
+        },
         {
           $lookup: {
             from: "users",
@@ -54,6 +64,7 @@ router.get("/", authWithToken(), async (req, res) => {
         },
       ])
       .toArray();
+    console.log("all-coaches ->", allCoaches);
     res.status(200).json(allCoaches);
   } catch (err) {
     res.status(500).json({ error: "Server Error" });

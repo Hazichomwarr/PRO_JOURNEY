@@ -26,10 +26,11 @@ export const getAllCoaches = async (): Promise<Coach[]> => {
     const res = await axiosClient.get("/coaches");
     return res.data.map((coach: any) => ({
       id: coach._id,
+      name: `${coach.user.firstName} ${coach.user.lastName}`,
       bio: coach.bio,
-      expertise: coach.expertise,
-      hourlyRate: coach.hourlyRate,
-      availability: coach.avaibility,
+      expertise: coach.expertise.join(" "),
+      totalReviews: coach.totalReviews || 0,
+      averageRating: coach.averageRating || null,
     }));
   } catch (err) {
     console.error("error ->", err);

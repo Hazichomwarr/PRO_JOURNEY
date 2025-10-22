@@ -62,6 +62,8 @@ function authWithToken(requiredRole = null) {
         ? authHeader.slice(7)
         : authHeader;
 
+      console.log("🔑 ENV TOKEN SECRET:", process.env.ACCESS_TOKEN);
+
       const payload = jwt.verify(token, process.env.ACCESS_TOKEN);
       console.log("✅ Token verified:", payload);
 
@@ -71,6 +73,7 @@ function authWithToken(requiredRole = null) {
         console.log("🚫 Role mismatch:", req.user.role);
         return res.status(403).json({ error: "Forbidden" });
       }
+      console.log("🧍 Verified user:", req.user);
 
       console.log("➡️ calling next()");
       next();

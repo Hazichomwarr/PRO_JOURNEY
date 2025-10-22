@@ -12,7 +12,7 @@ export default function Register() {
         className="w-full max-w-lg rounded-2xl bg-white p-8 shadow-md space-y-4"
       >
         <h2 className="text-2xl font-semibold text-center text-gray-700">
-          Create Your Account
+          Create Your User Account
         </h2>
 
         {/* --- First & Last Name --- */}
