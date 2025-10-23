@@ -1,8 +1,16 @@
 // pages/CoachRegistration.tsx
+import AvailabilityPicker from "../components/layout/coach/AvailabilityPicker";
+import ExpertiseSelector from "../components/layout/coach/ExpertiseSelector";
 import { useCoachRegistration } from "../hooks/useCoachRegistration";
 
 export default function CoachRegistration() {
-  const { state, handleChange, handleSubmit } = useCoachRegistration();
+  const {
+    state,
+    handleChange,
+    handleSubmit,
+    toggleExpertise,
+    toggleAvailability,
+  } = useCoachRegistration();
 
   return (
     <div className="flex flex-col min-h-screen items-center justify-center bg-gray-50">
@@ -11,16 +19,14 @@ export default function CoachRegistration() {
         onSubmit={handleSubmit}
       >
         <h2 className="text-2xl font-semibold text-center text-gray-700">
-          Register to become a Coach
+          Become a Coach
         </h2>
-
-        {/* HourlyRate + Aailability */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="flex flex-col gap-4">
           <textarea
             rows={4}
             name="bio"
             id="bio"
-            value={state.bio}
+            value={state.values.bio}
             onChange={handleChange("bio")}
             className="border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none col-span-2"
             placeholder="Write a short catching bio about yourself here..."
@@ -28,38 +34,21 @@ export default function CoachRegistration() {
           <input
             type="number"
             placeholder="Hourly Rate"
-            value={state.hourlyRate!}
+            value={state.values.hourlyRate!}
             onChange={handleChange("hourlyRate")}
-            className="border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none"
-          />
-          <input
-            type="text" //not sure it should be text
-            placeholder="Availability"
-            value={state.availability}
-            onChange={handleChange("availability")}
             className="border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none"
           />
         </div>
 
         {/* Expertise */}
-        <div className="space-y-2">
-          <label className="text-gray-700">
-            Choose your domain(s)
-            <select
-              value={state.expertise}
-              onChange={handleChange("expertise")}
-              className="w-full border p-2 rounded bg-white focus:ring-2 focus:ring-blue-500 outline-none"
-            >
-              {/* light way for now -- awaiting your profesional options */}
-              <option value="">Select Expertise</option>
-              <option value="Motivation">I Can motivate people</option>
-              <option value="Finance">
-                I'll help you reach your financial goals
-              </option>
-              <option value="Coding">I am coder geek</option>
-            </select>
-          </label>
-        </div>
+        <ExpertiseSelector
+          selected={state.values.expertise}
+          onToggle={toggleExpertise}
+        />
+        <AvailabilityPicker
+          availability={state.values.availability}
+          onToggleSlot={toggleAvailability}
+        />
 
         {/* --- Submit --- */}
         <button
