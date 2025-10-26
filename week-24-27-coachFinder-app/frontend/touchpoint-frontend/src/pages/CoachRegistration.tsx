@@ -1,11 +1,15 @@
 // pages/CoachRegistration.tsx
 import AvailabilityPicker from "../components/layout/coach/AvailabilityPicker";
 import ExpertiseSelector from "../components/layout/coach/ExpertiseSelector";
+import UpgradeRoleModal from "../components/layout/UpgradeRoleModal";
 import { useCoachRegistration } from "../hooks/useCoachRegistration";
 
 export default function CoachRegistration() {
   const {
     state,
+    showUpgradeModal,
+    setShowUpgradeModal,
+    handleUpgrade,
     handleChange,
     handleSubmit,
     toggleExpertise,
@@ -34,7 +38,7 @@ export default function CoachRegistration() {
           <input
             type="number"
             placeholder="Hourly Rate"
-            value={state.values.hourlyRate!}
+            value={state.values.hourlyRate ?? ""}
             onChange={handleChange("hourlyRate")}
             className="border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none"
           />
@@ -57,6 +61,12 @@ export default function CoachRegistration() {
         >
           Submit
         </button>
+        {showUpgradeModal && (
+          <UpgradeRoleModal
+            onConfirm={handleUpgrade}
+            onCancel={() => setShowUpgradeModal(false)}
+          />
+        )}
       </form>
     </div>
   );

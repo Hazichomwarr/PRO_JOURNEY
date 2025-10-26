@@ -50,7 +50,6 @@ export default function Login() {
       console.log("user ->", user);
 
       setAuth(user, accessToken, refreshToken);
-      console.log("accessToken ->", accessToken);
       navigate("/dashboard");
     } catch (err: any) {
       console.error("Login failed:", err.response?.data || err.message);

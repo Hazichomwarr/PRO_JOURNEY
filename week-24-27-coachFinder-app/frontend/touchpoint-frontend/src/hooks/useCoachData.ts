@@ -34,7 +34,7 @@ export function useCoachData() {
         setFilteredCoaches(coaches);
       } else {
         const filtered = coaches.filter((c) =>
-          c.expertise.toLowerCase().includes(expertise.toLowerCase())
+          c.expertise.includes(expertise.toLowerCase())
         );
         setFilteredCoaches(filtered);
       }

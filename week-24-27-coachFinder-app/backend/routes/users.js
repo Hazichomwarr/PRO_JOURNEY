@@ -69,6 +69,18 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+//Upgrade role from user to coach
+router.patch("/me/role", authWithToken(), async (req, res) => {
+  const db = req.app.locals.db;
+  const userId = new ObjectId(req.user.id);
+
+  await db
+    .collection("users")
+    .updateOne({ _id: userId }, { $set: { role: req.body.role } });
+
+  res.json({ success: true, newRole: req.body.role });
+});
+
 //DELETE A USER
 router.delete("/:id", async (req, res) => {
   const db = req.app.locals.db;

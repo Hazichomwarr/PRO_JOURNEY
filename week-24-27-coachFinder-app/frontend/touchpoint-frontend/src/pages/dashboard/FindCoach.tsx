@@ -34,7 +34,10 @@ export default function FindCoach() {
             </div>
             <div className="text-right">
               <p className="text-yellow-500">
-                ⭐ {c.averageRating?.toFixed(1) ?? "N/A"}
+                {c.averageRating?.toFixed(1)
+                  ? "★".repeat(c.averageRating) +
+                    "☆".repeat(c.averageRating - 5)
+                  : "N/A"}
               </p>
               <p className="text-xs text-gray-500">{c.totalReviews} reviews</p>
             </div>

@@ -1,8 +1,4 @@
 //components/layout/coach/AvailabilityPicker.tsx
-
-// components/AvailabilityPicker.tsx
-import React from "react";
-
 interface Props {
   availability: { [day: string]: string[] };
   onToggleSlot: (day: string, slot: string) => void;
@@ -17,16 +13,14 @@ export default function AvailabilityPicker({
 }: Props) {
   return (
     <div className="space-y-2">
-      <p className="text-gray-600 font-medium mt-4 text-center">
-        Set your weekly availability
-      </p>
+      <p className="text-gray-600 font-medium">Set your weekly availability</p>
       <div className="overflow-x-auto">
-        <table className="w-full text-sm border-collapse">
+        <table className="w-full text-sm border-separate [border-spacing:0.25rem] p-2">
           <thead>
             <tr>
-              <th className="p-2"></th>
+              <th></th>
               {SLOTS.map((slot) => (
-                <th key={slot} className="p-2 text-gray-500">
+                <th key={slot} className="text-gray-700 p-2">
                   {slot}
                 </th>
               ))}
@@ -42,10 +36,10 @@ export default function AvailabilityPicker({
                     <td
                       key={slot}
                       onClick={() => onToggleSlot(day, slot)}
-                      className={`cursor-pointer text-center p-2 rounded ${
+                      className={`cursor-pointer text-center p-2 m-2 rounded ${
                         selected
                           ? "bg-blue-500 text-white"
-                          : "bg-gray-100 hover:bg-blue-100"
+                          : "bg-gray-200 hover: bg-blue-100"
                       }`}
                     >
                       {selected ? "✓" : ""}

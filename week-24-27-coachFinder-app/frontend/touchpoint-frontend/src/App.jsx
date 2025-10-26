@@ -15,6 +15,7 @@ import FindCoach from "./pages/dashboard/FindCoach";
 import AccountSettings from "./pages/dashboard/AccountSettings";
 import Messages from "./pages/dashboard/Messages";
 import CoachRegistration from "./pages/CoachRegistration";
+import PublicRoute from "./components/layout/PublicRoute";
 
 export default function App() {
   const restoreSession = useAuthStore((s) => s.restoreSession);
@@ -28,8 +29,15 @@ export default function App() {
         {/* <Navbar /> */}
         <Routes>
           <Route path="/" index element={<Home />} />
-          <Route path="/home" element={<FindCoach />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/home" element={<Home />} />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
           <Route path="/register" element={<Register />} />
           <Route path="/coaches" element={<CoachList />} />
           <Route path="/coaches/new" element={<CoachRegistration />} />
@@ -42,6 +50,7 @@ export default function App() {
               </ProtectedRoute>
             }
           >
+            {/* These below paths are static as of now */}
             <Route path="overview" element={<Overview />} />
             <Route path="find" element={<FindCoach />} />
             <Route path="messages" element={<Messages />} />

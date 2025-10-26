@@ -177,7 +177,7 @@ router.get("/:id", authWithToken, async (req, res) => {
 });
 
 //CREATE A COACH
-router.post("/", authWithToken, async (req, res) => {
+router.post("/", authWithToken(), async (req, res) => {
   const db = req.app.locals.db;
 
   try {

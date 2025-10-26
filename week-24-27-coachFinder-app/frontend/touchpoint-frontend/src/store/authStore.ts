@@ -23,8 +23,9 @@ interface AuthState {
   ) => void;
   logout: () => void;
   restoreSession: () => Promise<void>;
+  updateRole: (newRole: string) => void;
 }
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   accessToken: null,
   refreshToken: null,
@@ -74,5 +75,17 @@ export const useAuthStore = create<AuthState>((set) => ({
         isAuthenticated: true,
       });
     }
+  },
+
+  //Update Role (seeker -> coach)
+  updateRole: (newRole) => {
+    const current = get().user;
+    if (!current) return;
+
+    const updateUser = { ...current, role: newRole };
+    localStorage.setItem("user", JSON.stringify(updateUser));
+
+    set({ user: updateUser });
+    console.log("Role updated to:", newRole);
   },
 }));

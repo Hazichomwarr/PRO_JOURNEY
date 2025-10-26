@@ -1,9 +1,11 @@
 //hooks/useCoachRegistration.ts
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 import { CoachFormValues } from "../models/coach";
 import axiosClient from "../lib/axiosClient";
 import toast from "react-hot-toast";
 import string from "figlet/fonts/babyface-lame";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/authStore";
 
 interface CoachFormState {
   values: CoachFormValues;
@@ -89,6 +91,23 @@ function reducer(state: CoachFormState, action: Action): CoachFormState {
 
 export function useCoachRegistration() {
   const [state, dispatch] = useReducer(reducer, initialCoachDocState);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const navigate = useNavigate();
+
+  const handleUpgrade = async () => {
+    try {
+      const res = await axiosClient.patch("/users/me/role", { role: "coach" });
+      console.log("Upgraded:", res.data);
+      const updateRole = useAuthStore((s) => s.updateRole);
+      updateRole("coach");
+
+      setShowUpgradeModal(false);
+      navigate("/coaches/new");
+    } catch (error: any) {
+      console.error("Upgrade error:", error.response?.data || error.message);
+      alert("Failed to upgrade role. Please try again.");
+    }
+  };
 
   const handleChange =
     (
@@ -139,29 +158,43 @@ export function useCoachRegistration() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateForm) return;
+    console.log("handleSubmit triggered!!!");
+    if (!validateForm) {
+      console.error("Error filling out form!");
+      console.info("validate form ? ->", validateForm);
+      return;
+    }
     dispatch({ type: "SET_LOADING", value: true });
 
     try {
+      console.log("🟡 about to send:", state.values);
       const res = await axiosClient.post("/coaches", state.values);
+      console.log("🟢 got response:", res.data);
       const newCoach = res.data;
       console.log("Registered Coach ->", newCoach);
 
-      toast.success("Coach registered successfully!");
+      // toast.success("Coach registered successfully!");
+      alert("Coach registered successfully!");
+      console.log("🟡 about to set new coach:", newCoach);
       dispatch({ type: "SET_SUCCESS", value: true });
+      console.log("🟢 got response:", "Success!");
       dispatch({ type: "RESET_FORM" });
     } catch (error: any) {
-      console.error(
-        "Registration error:",
-        error.response?.data || error.message
-      );
-      toast.error(error.response?.data?.message || "Failed to register coach");
+      if (error.response?.status === 403) {
+        //trigger modal
+        setShowUpgradeModal(true);
+      } else {
+        console.error(error.response?.data?.message || "Something went wrong");
+      }
     } finally {
       dispatch({ type: "SET_LOADING", value: false });
     }
   };
   return {
     state,
+    showUpgradeModal,
+    setShowUpgradeModal,
+    handleUpgrade,
     handleChange,
     handleSubmit,
     toggleExpertise,
