@@ -50,7 +50,7 @@ export default function App() {
               </ProtectedRoute>
             }
           >
-            {/* These below paths are static as of now */}
+            {/* Can't hit these sub-routes */}
             <Route path="overview" element={<Overview />} />
             <Route path="find" element={<FindCoach />} />
             <Route path="messages" element={<Messages />} />

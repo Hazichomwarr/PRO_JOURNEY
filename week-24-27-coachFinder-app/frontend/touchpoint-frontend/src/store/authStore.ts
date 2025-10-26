@@ -24,6 +24,8 @@ interface AuthState {
   logout: () => void;
   restoreSession: () => Promise<void>;
   updateRole: (newRole: string) => void;
+  checkAccessExpiry: () => void;
+  refreshAccessToken: () => Promise<boolean>;
 }
 export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
@@ -74,6 +76,48 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         user: JSON.parse(user),
         isAuthenticated: true,
       });
+
+      // Check if access token is expired; refresh if needed
+      get().checkAccessExpiry();
+    }
+  },
+
+  //Decode and check access expiry
+  checkAccessExpiry: () => {
+    const { accessToken } = get();
+    if (!accessToken) return;
+
+    const [, payload] = accessToken.split(".");
+    const decoded = JSON.parse(atob(payload));
+    const isExpired = decoded.exp * 1000 < Date.now();
+
+    if (isExpired) {
+      console.log("Access token expired - attempting refresh...");
+      get().refreshAccessToken();
+    }
+  },
+
+  //refresh token logic
+  refreshAccessToken: async () => {
+    const { refreshToken, user } = get();
+    if (!refreshToken) {
+      get().logout();
+      return false;
+    }
+
+    try {
+      const res = await axiosClient.post("/auth/refresh", { refreshToken });
+      const { accessToken: newAccess } = res.data;
+
+      localStorage.setItem("accessToken", newAccess);
+      set({ accessToken: newAccess, isAuthenticated: true });
+      console.log("Access token refreshed successfully!");
+
+      return true;
+    } catch (err) {
+      console.warn("Failed to refresh token:", err);
+      get().logout();
+      return false;
     }
   },
 

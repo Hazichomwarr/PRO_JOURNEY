@@ -7,6 +7,7 @@ const cors = require("cors");
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
 const coachRoutes = require("./routes/coaches");
+const dashboardRoutes = require("./routes/dashboard");
 
 const app = express();
 app.use(express.json());
@@ -27,6 +28,7 @@ app.use(
   console.log("✅ auth routes mounted");
   app.use("/api/users", userRoutes);
   app.use("/api/coaches", coachRoutes);
+  app.use("/api/dashboard", dashboardRoutes);
 
   const port = process.env.PORT || 5000;
   app.listen(port, () => console.log(`✅ Server running on port ${port}`));

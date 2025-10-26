@@ -10,7 +10,7 @@ export default function FindCoach() {
   if (error) return <p className="text-red-500 mt-4">{error}</p>;
 
   return (
-    <section className=" flex flex-col justify-around p-6">
+    <section className="space-y-4 flex flex-col justify-around p-6">
       <h2 className="text-2xl font-semibold mb-4">
         Search a coach based on your goals:
       </h2>
@@ -36,7 +36,7 @@ export default function FindCoach() {
               <p className="text-yellow-500">
                 {c.averageRating?.toFixed(1)
                   ? "★".repeat(c.averageRating) +
-                    "☆".repeat(c.averageRating - 5)
+                    "☆".repeat(5 - c.averageRating)
                   : "N/A"}
               </p>
               <p className="text-xs text-gray-500">{c.totalReviews} reviews</p>

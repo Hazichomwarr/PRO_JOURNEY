@@ -14,8 +14,8 @@ export default function Sidebar() {
 
   const links = [
     {
-      to: "/dashboard/",
-      label: "Overiew",
+      to: "/dashboard/overview",
+      label: "Overview",
       icon: <Home size={18} />,
     },
     {

@@ -2,6 +2,7 @@
 import { ReactNode } from "react";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
+import { Outlet } from "react-router-dom";
 
 type Props = { children: ReactNode };
 
@@ -16,7 +17,9 @@ export default function DashboardLayout({ children }: Props) {
       {/* Main content Area */}
       <div className="flex flex-1 flex-col min-h-screen">
         <Topbar />
-        <main className="flex-1 p-6 overflow-y-auto">{children}</main>
+        <main className="flex-1 p-6 overflow-y-auto">
+          {children || <Outlet />}
+        </main>
       </div>
     </div>
   );

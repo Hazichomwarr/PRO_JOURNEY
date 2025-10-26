@@ -101,11 +101,14 @@ router.post("/refresh", async (req, res) => {
 
   try {
     //1.get token from the post's body
-    const { token } = req.body;
-    if (!token) return res.sendStatus(401); //unauthorized
+    const { refreshToken } = req.body;
+    if (!refreshToken)
+      return res.status(401).json({ message: "No refresh token" }); //unauthorized
 
     //2. make sure the token is still in the db
-    const found = await db.collection("refreshTokens").findOne({ token });
+    const found = await db
+      .collection("refreshTokens")
+      .findOne({ token: refreshToken });
     if (!found)
       return res.status(403).json({ message: "Invalid refresh token" });
 
