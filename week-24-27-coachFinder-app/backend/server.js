@@ -10,14 +10,16 @@ const coachRoutes = require("./routes/coaches");
 const dashboardRoutes = require("./routes/dashboard");
 
 const app = express();
-app.use(express.json());
 
-app.use(
-  cors({
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+//     credentials: true,
+//   })
+// );
+app.use(cors({ origin: true, credentials: true }));
+
+app.use(express.json());
 
 //Connect to db before setting routes
 (async () => {
@@ -30,6 +32,6 @@ app.use(
   app.use("/api/coaches", coachRoutes);
   app.use("/api/dashboard", dashboardRoutes);
 
-  const port = process.env.PORT || 5000;
+  const port = process.env.PORT || 3000;
   app.listen(port, () => console.log(`✅ Server running on port ${port}`));
 })();

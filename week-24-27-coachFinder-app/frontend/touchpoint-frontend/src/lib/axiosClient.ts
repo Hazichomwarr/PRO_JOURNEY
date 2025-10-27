@@ -145,7 +145,7 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 // --- Base API setup ---
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = "http://localhost:3000/api";
 
 export const axiosClient = axios.create({
   baseURL: BASE_URL,
