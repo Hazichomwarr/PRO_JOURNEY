@@ -7,7 +7,7 @@ async function connectDB() {
   try {
     await client.connect();
     console.log("✅Connected to mongoDB");
-    return client.db(process.env.DB_NAME || "touch");
+    return client.db(process.env.DB_NAME || "touchpoint");
   } catch (err) {
     console.error("❌ MongoDB connection failed:", err);
     throw err;
