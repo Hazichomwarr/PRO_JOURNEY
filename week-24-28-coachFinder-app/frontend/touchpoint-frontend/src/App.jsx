@@ -6,7 +6,7 @@ import CoachList from "./pages/CoachList";
 import CoachDetail from "./pages/CoachDetail";
 import Dashboard from "./pages/dashboard/Dashboard";
 import NotFound from "./pages/NotFound";
-// import Navbar from "./components/layout/Navbar";
+import Navbar from "./components/layout/Navbar";
 import { useEffect } from "react";
 import { useAuthStore } from "./store/authStore";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
@@ -16,6 +16,7 @@ import AccountSettings from "./pages/dashboard/AccountSettings";
 import Messages from "./pages/dashboard/Messages";
 import CoachRegistration from "./pages/CoachRegistration";
 import PublicRoute from "./components/layout/PublicRoute";
+import RoleBasedDashboard from "./components/layout/dashboard/RoleBasedDashboard";
 
 export default function App() {
   const restoreSession = useAuthStore((s) => s.restoreSession);
@@ -26,7 +27,7 @@ export default function App() {
   return (
     <Router>
       <div className="min-h-screen bg-gray-50 text-gray-900">
-        {/* <Navbar /> */}
+        <Navbar />
         <Routes>
           <Route path="/" index element={<Home />} />
           <Route path="/home" element={<Home />} />
@@ -40,7 +41,14 @@ export default function App() {
           />
           <Route path="/register" element={<Register />} />
           <Route path="/coaches" element={<CoachList />} />
-          <Route path="/coaches/new" element={<CoachRegistration />} />
+          <Route
+            path="/coaches/new"
+            element={
+              <ProtectedRoute>
+                <CoachRegistration />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/coach/:id" element={<CoachDetail />} />
           <Route
             path="/dashboard"
@@ -50,7 +58,7 @@ export default function App() {
               </ProtectedRoute>
             }
           >
-            {/* Can't hit these sub-routes */}
+            <Route index element={<RoleBasedDashboard />} />
             <Route path="overview" element={<Overview />} />
             <Route path="find" element={<FindCoach />} />
             <Route path="messages" element={<Messages />} />

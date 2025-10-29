@@ -1,7 +1,6 @@
 //components/layout/dashboard/Topbar.tsx
 import { Bell } from "lucide-react";
 import { useUserStore } from "../../../store/userStore";
-// import { useAuthStore } from "../../../store/authStore";
 
 export default function Topbar() {
   const { user } = useUserStore();

@@ -6,7 +6,7 @@ const authWithToken = require("../middleware/authWithToken");
 const router = express.Router();
 
 // GET /api/dashboard/stats
-router.get("/stats", authWithToken, async (req, res) => {
+router.get("/stats", authWithToken(), async (req, res) => {
   const db = req.app.locals.db;
 
   try {
@@ -85,7 +85,7 @@ router.get("/stats", authWithToken, async (req, res) => {
     }
 
     // User dashboard stats
-    else if (req.user.role === "user") {
+    else if (req.user.role === "seeker") {
       const userId = new ObjectId(req.user.id);
 
       // Count sessions

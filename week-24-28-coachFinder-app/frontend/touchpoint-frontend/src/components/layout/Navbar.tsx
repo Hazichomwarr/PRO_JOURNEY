@@ -35,24 +35,24 @@ export default function Navbar() {
         >
           Home
         </NavLink>
-        <NavLink
+        {/* <NavLink
           to="/coaches"
           className={({ isActive }) => navLinkClass(isActive)}
         >
           Coaches
-        </NavLink>
+        </NavLink> */}
         <NavLink
           to="/dashboard"
           className={({ isActive }) => navLinkClass(isActive)}
         >
           Dashboard
         </NavLink>
-        <NavLink
+        {/* <NavLink
           to="/sessions"
           className={({ isActive }) => navLinkClass(isActive)}
         >
           Sessions
-        </NavLink>
+        </NavLink> */}
         <NavLink
           to={isAuthenticated === false ? "/register" : "/home"}
           className={({ isActive }) => navLinkClass(isActive)}

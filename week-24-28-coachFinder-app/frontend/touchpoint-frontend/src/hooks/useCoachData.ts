@@ -17,6 +17,7 @@ export function useCoachData() {
       try {
         const data = await getAllCoaches();
         setCoaches(data);
+        console.log("All coaches->", coaches);
         setFilteredCoaches(data); //initially show all
       } catch (err: any) {
         setError(err.message || "Error fetching coaches");

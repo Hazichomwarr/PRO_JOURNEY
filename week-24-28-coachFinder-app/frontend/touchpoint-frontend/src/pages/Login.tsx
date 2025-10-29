@@ -3,6 +3,7 @@ import { useReducer, FormEvent, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../lib/axiosClient";
 import { useAuthStore } from "../store/authStore";
+import { useUserStore } from "../store/userStore";
 
 interface LoginState {
   email: string;
@@ -36,6 +37,7 @@ export default function Login() {
   const [state, dispatch] = useReducer(reducer, initialLoginState);
   const { setAuth } = useAuthStore();
   const navigate = useNavigate();
+  const { setUser } = useUserStore();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -46,10 +48,15 @@ export default function Login() {
 
       //decode or fetch user from token if needed
       const payload = JSON.parse(atob(accessToken.split(".")[1]));
-      const user = { id: payload.id, email: payload.email, role: payload.role };
-      console.log("user ->", user);
+      const user = {
+        id: payload.id,
+        email: payload.email,
+        role: payload.role,
+      };
+      console.log("user ->", res.data.user);
 
       setAuth(user, accessToken, refreshToken);
+      setUser(res.data.user); //set the userStore as well
       navigate("/dashboard");
     } catch (err: any) {
       console.error("Login failed:", err.response?.data || err.message);

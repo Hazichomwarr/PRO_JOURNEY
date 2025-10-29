@@ -72,16 +72,20 @@ router.get("/", authWithToken(), async (req, res) => {
 });
 
 // GET A COACH BY ID with Reviews + averageRating + totalReviews
-router.get("/:id", authWithToken, async (req, res) => {
+router.get("/:id", authWithToken(), async (req, res) => {
+  console.log("inside /coaches/:id");
   const db = req.app.locals.db;
   const { id } = req.params;
+
+  if (!ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid coach id format" });
+  }
+
   try {
     const coach = await db
       .collection("coaches")
       .aggregate([
-        {
-          $match: { _id: new ObjectId(id) },
-        },
+        { $match: { _id: new ObjectId(id) } },
         {
           $lookup: {
             from: "users",
@@ -107,7 +111,6 @@ router.get("/:id", authWithToken, async (req, res) => {
             as: "reviewers",
           },
         },
-        //Add computed fields
         {
           $addFields: {
             totalReviews: { $size: "$reviews" },
@@ -115,31 +118,31 @@ router.get("/:id", authWithToken, async (req, res) => {
               $cond: [
                 { $gt: [{ $size: "$reviews" }, 0] },
                 { $avg: "$reviews.rating" },
-                null, // no reviews yet
+                null,
               ],
             },
-          },
-          reviews: {
-            $map: {
-              input: "$reviews",
-              as: "rev",
-              in: {
-                rating: "$$rev.rating",
-                status: "$$rev.status",
-                createdAt: "$$rev.createdAt",
-                updatedAt: "$$rev.updatedAt",
-                comment: "$$rev.comment",
-                userInfo: {
-                  $arrayElemAt: [
-                    {
-                      $filter: {
-                        input: "$reviewers",
-                        as: "u",
-                        cond: { $eq: ["$$u._id", "$$rev.userId"] },
+            reviews: {
+              $map: {
+                input: "$reviews",
+                as: "rev",
+                in: {
+                  rating: "$$rev.rating",
+                  status: "$$rev.status",
+                  createdAt: "$$rev.createdAt",
+                  updatedAt: "$$rev.updatedAt",
+                  comment: "$$rev.comment",
+                  userInfo: {
+                    $arrayElemAt: [
+                      {
+                        $filter: {
+                          input: "$reviewers",
+                          as: "u",
+                          cond: { $eq: ["$$u._id", "$$rev.userId"] },
+                        },
                       },
-                    },
-                    0,
-                  ],
+                      0,
+                    ],
+                  },
                 },
               },
             },
@@ -154,25 +157,19 @@ router.get("/:id", authWithToken, async (req, res) => {
             expertise: 1,
             availability: 1,
             hourlyRate: 1,
-            reviews: {
-              rating: 1,
-              status: 1,
-              createdAt: 1,
-              updatedAt: 1,
-              userId: 1,
-              comment: 1,
-            },
+            reviews: 1,
             totalReviews: 1,
             averageRating: 1,
           },
         },
       ])
-      .next(); //returns a single doc (row)
+      .next();
 
     if (!coach) return res.status(404).json({ error: "Coach not found" });
     res.status(200).json(coach);
   } catch (err) {
-    res.status(400).json({ message: "Invalid coach id" }); //bad request
+    console.error("Error fetching coach:", err);
+    res.status(500).json({ message: "Server error while fetching coach" });
   }
 });
 
@@ -233,7 +230,7 @@ router.post("/", authWithToken(), async (req, res) => {
 });
 
 // UPDATE A COACH INFO BY ID
-router.put("/:id", authWithToken, async (req, res) => {
+router.put("/:id", authWithToken(), async (req, res) => {
   const db = req.app.locals.db;
   const { id } = req.params;
 

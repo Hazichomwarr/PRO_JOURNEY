@@ -5,12 +5,15 @@ import {
   Settings,
   MessageCircle,
   ScanSearch,
+  UserPlus,
   LogOut,
 } from "lucide-react";
 import useLogout from "../../../hooks/useLogout";
+import { useAuthStore } from "../../../store/authStore";
 
 export default function Sidebar() {
   const { handleLogout } = useLogout();
+  const { user } = useAuthStore();
 
   const links = [
     {
@@ -20,7 +23,7 @@ export default function Sidebar() {
     },
     {
       to: "/dashboard/find",
-      label: "Find a coach",
+      label: "Coaches catalog",
       icon: <ScanSearch size={18} />,
     },
     {
@@ -55,6 +58,14 @@ export default function Sidebar() {
               {link.label}
             </NavLink>
           ))}
+          {user?.role !== "coach" && (
+            <NavLink
+              to={"/coaches/new"}
+              className="flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-200 hover:bg-gray-100 active:bg-blue-100"
+            >
+              <UserPlus /> Become a Coach
+            </NavLink>
+          )}
         </nav>
       </div>
 

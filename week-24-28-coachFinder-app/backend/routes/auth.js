@@ -44,17 +44,21 @@ router.post("/register", async (req, res) => {
 //LOGIN ROUTE
 router.post("/login", async (req, res) => {
   const db = req.app.locals.db;
-
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).json();
 
   const user = await db.collection("users").findOne({ email });
   if (!user) return res.status(403).json({ message: "Invalid credentials" });
 
+  // renamed "password" bc previous name variable in use already.
+  // userData to set right away the user in the userStore frontend
+  const { password: pwd, confirmPassword: confirmPwd, ...userData } = user;
+
+  //Authenticate the password
   const ok = await bcrypt.compare(password, user.password);
   if (!ok) return res.status(403).json({ message: "Invalid credentials" });
 
-  //since authenticate, let's give user a token
+  //since authenticate, let's give the user a token
   const payload = {
     id: user._id.toString(),
     email: user.email,
@@ -70,7 +74,8 @@ router.post("/login", async (req, res) => {
     .collection("refreshTokens")
     .insertOne({ token: refreshToken, userId: user._id, createAt: new Date() });
 
-  res.json({ accessToken, refreshToken });
+  //Data for the frontEnd
+  res.json({ accessToken, refreshToken, user: userData });
 });
 
 // --- GET: loggedIn DashBoard ---
