@@ -1,53 +1,21 @@
 //pages/CoachDetails.tsx
+import { Clock, DollarSign, Star, Pencil, X } from "lucide-react";
+import { useUserStore } from "../store/userStore";
+import { useEditForm } from "../hooks/useEditForm";
+import EditForm from "../components/layout/coach/EditForm";
 
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import axiosClient from "../lib/axiosClient";
-import { Clock, DollarSign, Star } from "lucide-react";
-
-interface Reviewer {
-  firstName: string;
-  lastName: string;
-  image?: string;
-}
-
-interface Review {
-  rating: number;
-  comment: string;
-  createdAt: string;
-  userInfo?: Reviewer;
-}
-
-interface CoachDetail {
-  user: Reviewer;
-  bio: string;
-  expertise: string;
-  hourlyRate: number;
-  availability: { day: string; slots: string[] }[];
-  totalReviews: number;
-  averageRating: number | null;
-  reviews: Review[];
-}
 export default function CoachDetail() {
-  const { id } = useParams();
-  console.log("coachId ->", id);
-  const [coach, setCoach] = useState<CoachDetail | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchCoach = async () => {
-      try {
-        const res = await axiosClient.get(`/coaches/${id}`);
-        console.log(res.data);
-        setCoach(res.data);
-      } catch (err: any) {
-        console.error("Error fetching coach:", err.response);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCoach();
-  }, [id]);
+  const { user: loggedInUser } = useUserStore();
+  const {
+    coach,
+    isEditing,
+    setIsEditing,
+    handleSubmit,
+    handleChange,
+    loading,
+    setLoading,
+    id,
+  } = useEditForm();
 
   if (loading)
     return <p className="text-center mt-6 text-gray-500">Loading...</p>;
@@ -78,7 +46,9 @@ export default function CoachDetail() {
           <h1 className="text-sm text-gray-500">
             {user.firstName} {user.lastName}
           </h1>
-          <p className="text-2xl font-semibold text-gray-800">{expertise}</p>
+          <p className="text-2xl font-semibold text-gray-800">
+            {expertise.join(" ")}
+          </p>
           <div className="flex items-center gap-2 text-yellow-500">
             <Star size={18} />
             <span>
@@ -88,6 +58,18 @@ export default function CoachDetail() {
           </div>
         </div>
       </div>
+
+      {/* Only show Edit button if this is the coach’s own profile */}
+      {loggedInUser?.firstName === user.firstName &&
+        loggedInUser?.role === "coach" && (
+          <button
+            onClick={() => setIsEditing(true)}
+            className="flex items-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 px-3 py-1.5 rounded-xl border border-blue-200 transition"
+          >
+            <Pencil size={16} />
+            Edit Profile
+          </button>
+        )}
 
       {/* BIO */}
       <div>
@@ -151,6 +133,29 @@ export default function CoachDetail() {
           <p className="text-gray-500 text-sm">No reviews yet.</p>
         )}
       </div>
+
+      {isEditing && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-lg w-full max-w-lg p-6 relative">
+            <button
+              className="absolute top-4 right 4 text-gray-500 hover:text-gray-700"
+              onClick={() => setIsEditing(false)}
+            >
+              <X size={20} />
+            </button>
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+              Edit Profile
+            </h2>
+
+            {/* Edit-Form */}
+            <EditForm
+              changeFn={handleChange}
+              submitFn={handleSubmit}
+              coach={coach}
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 }

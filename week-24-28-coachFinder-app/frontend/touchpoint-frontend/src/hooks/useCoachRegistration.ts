@@ -1,9 +1,6 @@
-//hooks/useCoachRegistration.ts
 import React, { useReducer, useState } from "react";
 import { CoachFormValues } from "../models/coach";
 import axiosClient from "../lib/axiosClient";
-import toast from "react-hot-toast";
-import string from "figlet/fonts/babyface-lame";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 
@@ -15,16 +12,21 @@ interface CoachFormState {
 }
 
 export const initialCoachDocState: CoachFormState = {
-  values: { bio: "", expertise: [], hourlyRate: null, availability: {} },
+  values: {
+    bio: "",
+    expertise: [],
+    hourlyRate: null,
+    availability: [], // ✅ simplified to string[]
+  },
   loading: false,
   success: false,
   errors: {},
 };
 
 type Action =
-  | { type: "SET_FIELD"; field: keyof CoachFormValues; value: string }
+  | { type: "SET_FIELD"; field: keyof CoachFormValues; value: string | number }
   | { type: "TOGGLE_EXPERTISE"; value: string }
-  | { type: "TOGGLE_AVAILABILITY"; values: { day: string; slot: string } }
+  | { type: "SET_AVAILABILITY"; values: string[] }
   | { type: "SET_LOADING"; value: boolean }
   | { type: "SET_ERROR"; field: keyof CoachFormValues; message: string }
   | { type: "SET_SUCCESS"; value: boolean }
@@ -44,33 +46,26 @@ function reducer(state: CoachFormState, action: Action): CoachFormState {
       };
 
     case "TOGGLE_EXPERTISE":
-      const already = state.values.expertise.includes(action.value);
+      const exists = state.values.expertise.includes(action.value);
       return {
         ...state,
         values: {
           ...state.values,
-          expertise: already
-            ? state.values.expertise.filter((e) => e !== action.value)
+          expertise: exists
+            ? state.values.expertise.filter((x) => x !== action.value)
             : [...state.values.expertise, action.value],
         },
       };
 
-    case "TOGGLE_AVAILABILITY":
-      const { day, slot } = action.values;
-      const daySlots = state.values.availability[day] || [];
-      const updatedSlots = daySlots.includes(slot)
-        ? daySlots.filter((s) => s !== slot)
-        : [...daySlots, slot];
+    case "SET_AVAILABILITY":
       return {
         ...state,
-        values: {
-          ...state.values,
-          availability: { ...state.values.availability, [day]: updatedSlots },
-        },
+        values: { ...state.values, availability: action.values },
       };
 
     case "SET_LOADING":
       return { ...state, loading: action.value };
+
     case "SET_ERROR":
       return {
         ...state,
@@ -78,12 +73,17 @@ function reducer(state: CoachFormState, action: Action): CoachFormState {
       };
 
     case "CLEAR_ERROR":
-      return { ...state, errors: { ...state.errors, [action.field]: "" } };
+      return {
+        ...state,
+        errors: { ...state.errors, [action.field]: "" },
+      };
+
     case "SET_SUCCESS":
       return { ...state, success: action.value };
 
     case "RESET_FORM":
       return initialCoachDocState;
+
     default:
       return state;
   }
@@ -97,10 +97,8 @@ export function useCoachRegistration() {
   const handleUpgrade = async () => {
     try {
       const res = await axiosClient.patch("/users/me/role", { role: "coach" });
-      console.log("Upgraded:", res.data);
       const updateRole = useAuthStore((s) => s.updateRole);
       updateRole("coach");
-
       setShowUpgradeModal(false);
       navigate("/coaches/new");
     } catch (error: any) {
@@ -110,26 +108,30 @@ export function useCoachRegistration() {
   };
 
   const handleChange =
-    (
-      field: keyof CoachFormValues //it's called currying(to remember it)
-    ) =>
+    (field: keyof CoachFormValues) =>
     (
       e: React.ChangeEvent<
         HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
       >
     ) => {
-      dispatch({ type: "SET_FIELD", field, value: e.target.value });
+      const value =
+        field === "hourlyRate" ? Number(e.target.value) : e.target.value;
+      dispatch({ type: "SET_FIELD", field, value });
     };
 
   const toggleExpertise = (value: string) =>
     dispatch({ type: "TOGGLE_EXPERTISE", value });
 
-  const toggleAvailability = (day: string, slot: string) =>
-    dispatch({ type: "TOGGLE_AVAILABILITY", values: { day, slot } });
+  const handleAvailabilityChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const selected = Array.from(e.target.selectedOptions, (opt) => opt.value);
+    dispatch({ type: "SET_AVAILABILITY", values: selected });
+  };
 
   const validateForm = (): boolean => {
     let isValid = true;
-    // required fields
+
     if (!state.values.bio.trim()) {
       dispatch({ type: "SET_ERROR", field: "bio", message: "Bio is required" });
       isValid = false;
@@ -158,30 +160,17 @@ export function useCoachRegistration() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("handleSubmit triggered!!!");
-    if (!validateForm) {
-      console.error("Error filling out form!");
-      console.info("validate form ? ->", validateForm);
-      return;
-    }
+    if (!validateForm()) return;
+
     dispatch({ type: "SET_LOADING", value: true });
 
     try {
-      console.log("🟡 about to send:", state.values);
       const res = await axiosClient.post("/coaches", state.values);
-      console.log("🟢 got response:", res.data);
-      const newCoach = res.data;
-      console.log("Registered Coach ->", newCoach);
-
-      // toast.success("Coach registered successfully!");
       alert("Coach registered successfully!");
-      console.log("🟡 about to set new coach:", newCoach);
       dispatch({ type: "SET_SUCCESS", value: true });
-      console.log("🟢 got response:", "Success!");
       dispatch({ type: "RESET_FORM" });
     } catch (error: any) {
       if (error.response?.status === 403) {
-        //trigger modal
         setShowUpgradeModal(true);
       } else {
         console.error(error.response?.data?.message || "Something went wrong");
@@ -190,6 +179,7 @@ export function useCoachRegistration() {
       dispatch({ type: "SET_LOADING", value: false });
     }
   };
+
   return {
     state,
     showUpgradeModal,
@@ -198,6 +188,6 @@ export function useCoachRegistration() {
     handleChange,
     handleSubmit,
     toggleExpertise,
-    toggleAvailability,
+    handleAvailabilityChange,
   };
 }

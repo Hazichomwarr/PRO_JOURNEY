@@ -1,5 +1,5 @@
 // pages/CoachRegistration.tsx
-import AvailabilityPicker from "../components/layout/coach/AvailabilityPicker";
+import AvailabilitySelect from "../components/layout/coach/AvailabilitySelect";
 import ExpertiseSelector from "../components/layout/coach/ExpertiseSelector";
 import UpgradeRoleModal from "../components/layout/UpgradeRoleModal";
 import { useCoachRegistration } from "../hooks/useCoachRegistration";
@@ -13,7 +13,7 @@ export default function CoachRegistration() {
     handleChange,
     handleSubmit,
     toggleExpertise,
-    toggleAvailability,
+    handleAvailabilityChange,
   } = useCoachRegistration();
 
   return (
@@ -49,9 +49,9 @@ export default function CoachRegistration() {
           selected={state.values.expertise}
           onToggle={toggleExpertise}
         />
-        <AvailabilityPicker
-          availability={state.values.availability}
-          onToggleSlot={toggleAvailability}
+        <AvailabilitySelect
+          selected={state.values.availability}
+          onChange={handleAvailabilityChange}
         />
 
         {/* --- Submit --- */}

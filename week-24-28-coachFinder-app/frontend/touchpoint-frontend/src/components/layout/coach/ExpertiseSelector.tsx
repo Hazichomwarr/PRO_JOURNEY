@@ -1,5 +1,4 @@
 //components/layout/coach/ExpertiseSelector.tsx
-
 interface Props {
   selected: string[];
   onToggle: (expertise: string) => void;

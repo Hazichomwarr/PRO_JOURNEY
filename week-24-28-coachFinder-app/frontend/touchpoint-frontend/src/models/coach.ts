@@ -13,5 +13,5 @@ export interface CoachFormValues {
   bio: string;
   expertise: string[];
   hourlyRate: number | null;
-  availability: { [day: string]: string[] }; // {['Mon': ["09-11", '16-17'],]}
+  availability: string[];
 }
