@@ -17,7 +17,6 @@ export function useCoachData() {
       try {
         const data = await getAllCoaches();
         setCoaches(data);
-        console.log("All coaches->", coaches);
         setFilteredCoaches(data); //initially show all
       } catch (err: any) {
         setError(err.message || "Error fetching coaches");
@@ -31,12 +30,17 @@ export function useCoachData() {
   //wait 400ms after the last keystroke before updating debouncedExpertise
   useEffect(() => {
     const timer = setTimeout(() => {
+      if (!coaches.length) return;
+
       if (expertise.trim() === "") {
         setFilteredCoaches(coaches);
       } else {
-        const filtered = coaches.filter((c) =>
-          c.expertise.includes(expertise.toLowerCase())
-        );
+        const filtered = coaches.filter((c) => {
+          const expertiseValue = Array.isArray(c.expertise)
+            ? c.expertise.join(" ")
+            : c.expertise || "";
+          return expertiseValue.toLowerCase().includes(expertise.toLowerCase());
+        });
         setFilteredCoaches(filtered);
       }
     }, 400);

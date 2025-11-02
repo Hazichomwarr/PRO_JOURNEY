@@ -75,7 +75,7 @@ export function useRegisterForm() {
 
       alert("Registration successful! Please log in.");
 
-      //redirect to dashboard for login
+      // // redirect to dashboard for login
       // const dashboardRoute =
       //   state.role === "coach"
       //     ? "/dashboard/coach"

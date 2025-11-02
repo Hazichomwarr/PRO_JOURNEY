@@ -57,6 +57,8 @@ export default function EditForm({
   };
 
   return (
+    // <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+    //   <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-8 relative border border-gray-100">
     <form onSubmit={submitFn} className="space-y-4 text-gray-700">
       {/* BIO */}
       <div>
@@ -118,5 +120,7 @@ export default function EditForm({
         Save Changes
       </button>
     </form>
+    //   </div>
+    // </div>
   );
 }
