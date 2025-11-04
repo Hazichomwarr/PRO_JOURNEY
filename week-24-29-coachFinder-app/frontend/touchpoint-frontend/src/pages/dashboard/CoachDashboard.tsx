@@ -28,7 +28,7 @@ export default function CoachDashboard() {
         <StatCard
           label="Clients Satisfaction"
           value={
-            stats.satisfaction ? `${stats.satisfaction}%` : "No rating yet"
+            stats.satisfaction ? `${stats.satisfaction}%` : "Not rated yet"
           }
         />
       </div>

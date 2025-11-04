@@ -207,7 +207,7 @@ router.post("/", authWithToken(), async (req, res) => {
       bio: bio || "",
       expertise: expertise || [],
       hourlyRate: hourlyRate || 0,
-      availability: availability || {},
+      availability: availability || [],
       createdAt: new Date(),
       updatedAt: new Date(),
       totalReviews: 0,

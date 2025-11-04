@@ -21,7 +21,7 @@ export interface CoachDetail {
   bio: string;
   expertise: string[];
   hourlyRate: number;
-  availability: { day: string; slots: string[] }[];
+  availability: string[];
   totalReviews: number;
   averageRating: number | null;
   reviews: Review[];
@@ -39,7 +39,17 @@ export function useEditForm() {
       try {
         const res = await axiosClient.get(`/coaches/${id}`);
         console.log(res.data);
-        setCoach(res.data);
+        setCoach(() => {
+          const c = res.data;
+          return {
+            ...c,
+            availability: Array.isArray(c.availability)
+              ? c.availability
+              : typeof c.availability === "string"
+              ? c.availability.split(",").map((s: string) => s.trim())
+              : [],
+          };
+        });
       } catch (err: any) {
         console.error("Error fetching coach:", err.response);
       } finally {
@@ -72,22 +82,13 @@ export function useEditForm() {
           return { ...prev, expertise: list };
         }
 
-        // handle availability — expects JSON string or custom format
+        // handle availability (string[])
         if (field === "availability") {
-          try {
-            // Try to parse JSON, e.g. '[{"day":"Tuesday","slots":["9am"]}]'
-            const parsed = JSON.parse(value);
-            if (Array.isArray(parsed)) {
-              return { ...prev, availability: parsed };
-            }
-          } catch {
-            // fallback: user types simple CSV format like "Tue 9am, Thu 2pm"
-            const arr = value.split(",").map((v) => {
-              const [day, ...slots] = v.trim().split(" ");
-              return { day, slots };
-            });
-            return { ...prev, availability: arr };
-          }
+          const list = value
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean);
+          return { ...prev, availability: list };
         }
 
         // default: string or number

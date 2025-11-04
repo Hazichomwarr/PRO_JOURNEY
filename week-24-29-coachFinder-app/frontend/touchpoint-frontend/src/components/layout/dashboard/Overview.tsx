@@ -26,9 +26,7 @@ export default function Overview() {
         <StatCard label="Sessions Booked" value={stats.sessionsBooked ?? 0} />
         <StatCard
           label="Satisfaction"
-          value={
-            stats.satisfaction ? `${stats.satisfaction}%` : "No rating yet"
-          }
+          value={stats.satisfaction ? `${stats.satisfaction}%` : "N/A"}
         />
       </div>
     </div>

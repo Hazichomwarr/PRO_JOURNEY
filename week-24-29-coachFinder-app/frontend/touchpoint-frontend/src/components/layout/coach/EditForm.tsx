@@ -1,5 +1,6 @@
 import React from "react";
 import ExpertiseSelector from "./ExpertiseSelector";
+import { CoachDetail } from "../../../hooks/useEditForm";
 
 interface EditFormProps {
   coach: {
@@ -9,7 +10,7 @@ interface EditFormProps {
     hourlyRate: number;
   };
   changeFn: (
-    field: string
+    field: keyof CoachDetail
   ) => (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement

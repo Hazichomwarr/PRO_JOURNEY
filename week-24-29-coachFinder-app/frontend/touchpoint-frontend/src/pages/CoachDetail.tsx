@@ -82,11 +82,14 @@ export default function CoachDetail() {
         <div className="flex items-center gap-2 text-gray-700">
           <Clock size={16} />
           <span className="font-semibold text-blue-500">Availability</span>
-          <span>
-            {availability
-              ?.map((a) => `${a.day} (${a.slots.join(", ")})`)
-              .join(", ")}
-          </span>
+          <div>
+            {/* the bug is in the mapping */}
+            {Array.isArray(availability) ? (
+              availability.map((a, idx) => <li key={idx}>{a}</li>)
+            ) : (
+              <li>{availability}</li>
+            )}
+          </div>
         </div>
         <div className="flex items-center gap-2 text-gray-700">
           <DollarSign size={16} />
