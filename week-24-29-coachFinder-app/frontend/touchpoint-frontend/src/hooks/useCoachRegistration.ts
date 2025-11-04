@@ -1,3 +1,4 @@
+//hooks/useCoachRegistration.ts
 import React, { useReducer, useState } from "react";
 import { CoachFormValues } from "../models/coach";
 import axiosClient from "../lib/axiosClient";
@@ -60,7 +61,10 @@ function reducer(state: CoachFormState, action: Action): CoachFormState {
     case "SET_AVAILABILITY":
       return {
         ...state,
-        values: { ...state.values, availability: action.values },
+        values: {
+          ...state.values,
+          availability: [...action.values],
+        },
       };
 
     case "SET_LOADING":
@@ -122,11 +126,8 @@ export function useCoachRegistration() {
   const toggleExpertise = (value: string) =>
     dispatch({ type: "TOGGLE_EXPERTISE", value });
 
-  const handleAvailabilityChange = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const selected = Array.from(e.target.selectedOptions, (opt) => opt.value);
-    dispatch({ type: "SET_AVAILABILITY", values: selected });
+  const handleAvailabilityChange = (slots: string[]) => {
+    dispatch({ type: "SET_AVAILABILITY", values: slots });
   };
 
   const validateForm = (): boolean => {
