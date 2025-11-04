@@ -17,6 +17,7 @@ import Messages from "./pages/dashboard/Messages";
 import CoachRegistration from "./pages/CoachRegistration";
 import PublicRoute from "./components/layout/PublicRoute";
 import RoleBasedDashboard from "./components/layout/dashboard/RoleBasedDashboard";
+import React from "react";
 
 export default function App() {
   const restoreSession = useAuthStore((s) => s.restoreSession);
