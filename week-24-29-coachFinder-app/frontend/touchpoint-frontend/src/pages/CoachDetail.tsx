@@ -82,14 +82,14 @@ export default function CoachDetail() {
         <div className="flex items-center gap-2 text-gray-700">
           <Clock size={16} />
           <span className="font-semibold text-blue-500">Availability</span>
-          <div>
+          <ul className="flex gap-2">
             {/* the bug is in the mapping */}
             {Array.isArray(availability) ? (
-              availability.map((a, idx) => <li key={idx}>{a}</li>)
+              availability.map((a, idx) => <li key={idx}>{a} |</li>)
             ) : (
               <li>{availability}</li>
             )}
-          </div>
+          </ul>
         </div>
         <div className="flex items-center gap-2 text-gray-700">
           <DollarSign size={16} />

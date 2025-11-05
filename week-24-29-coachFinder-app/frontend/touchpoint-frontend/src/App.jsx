@@ -60,7 +60,7 @@ export default function App() {
             }
           >
             <Route index element={<RoleBasedDashboard />} />
-            <Route path="overview" element={<Overview />} />
+            <Route path="overview" element={<RoleBasedDashboard />} />
             <Route path="find" element={<FindCoach />} />
             <Route path="messages" element={<Messages />} />
             <Route path="settings" element={<AccountSettings />} />

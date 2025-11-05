@@ -283,7 +283,7 @@ router.put("/:id", authWithToken(), async (req, res) => {
       .collection("coaches")
       .findOne({ _id: new ObjectId(id) });
 
-    res.status(200).json({
+    return res.status(200).json({
       id: updatedCoach._id.toString(),
       bio: updatedCoach.bio,
       expertise: updatedCoach.expertise,

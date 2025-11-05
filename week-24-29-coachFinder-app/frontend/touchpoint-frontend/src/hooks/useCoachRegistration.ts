@@ -107,7 +107,7 @@ export function useCoachRegistration() {
       navigate("/coaches/new");
     } catch (error: any) {
       console.error("Upgrade error:", error.response?.data || error.message);
-      alert("Failed to upgrade role. Please try again.");
+      alert(`Failed to upgrade role. ${error.message} || Please try again`);
     }
   };
 

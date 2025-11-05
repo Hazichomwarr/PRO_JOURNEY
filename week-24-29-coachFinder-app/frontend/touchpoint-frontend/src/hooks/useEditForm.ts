@@ -75,19 +75,23 @@ export function useEditForm() {
 
         // handle expertise (string[]) — split by comma or space
         if (field === "expertise") {
+          console.log("field =", field);
           const list = value
             .split(",")
             .map((s) => s.trim())
             .filter(Boolean);
+          console.log("list here ->", list);
           return { ...prev, expertise: list };
         }
 
         // handle availability (string[])
         if (field === "availability") {
+          console.log("field =", field);
           const list = value
             .split(",")
             .map((s) => s.trim())
             .filter(Boolean);
+          console.log("list here ->", list);
           return { ...prev, availability: list };
         }
 
@@ -100,18 +104,19 @@ export function useEditForm() {
     e.preventDefault();
 
     try {
-      const res = await axiosClient.put(`coach/${id}`, {
+      const res = await axiosClient.put(`coaches/${id}`, {
         bio: coach?.bio,
         expertise: coach?.expertise,
         hourlyRate: coach?.hourlyRate,
         availability: coach?.availability,
       });
-
+      console.log("status response ->", res.status);
       setCoach((prev) => (prev ? { ...prev, ...res.data } : null));
       setIsEditing(false);
     } catch (err: any) {
       console.error("Update failed:", err);
-      alert("Update failed. Please try again.");
+
+      alert(`Update failed: ${err.message || "Please try again."}`);
     }
   };
 

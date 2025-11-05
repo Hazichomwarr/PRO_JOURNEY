@@ -1,6 +1,8 @@
+//components/layout/coach/EditForm.tsx
 import React from "react";
 import ExpertiseSelector from "./ExpertiseSelector";
 import { CoachDetail } from "../../../hooks/useEditForm";
+import AvailabilitySelect from "./AvailabilitySelect";
 
 interface EditFormProps {
   coach: {
@@ -42,8 +44,21 @@ export default function EditForm({
   const { bio, expertise, availability, hourlyRate } = coach;
 
   const handleExpertiseToggle = (value: string) => {
-    if (!dispatch) return;
-    dispatch({ type: "TOGGLE_EXPERTISE", value });
+    if (dispatch) {
+      dispatch({ type: "TOGGLE_EXPERTISE", value });
+    } else {
+      // fallback for non-reducer mode
+      const newExpertise = expertise.includes(value)
+        ? expertise.filter((e) => e !== value)
+        : [...expertise, value];
+
+      // manually trigger changeFn
+      const fakeEvent = {
+        target: { value: newExpertise.join(",") },
+      } as React.ChangeEvent<HTMLSelectElement>;
+
+      changeFn("expertise")(fakeEvent);
+    }
   };
 
   const handleAvailabilityChange = (
@@ -95,24 +110,19 @@ export default function EditForm({
       </div>
 
       {/* AVAILABILITY SELECT */}
-      <div>
-        <label className="block text-sm font-medium mb-1">
-          Availability (hold Ctrl / Cmd to select multiple)
-        </label>
-        <select
-          multiple
-          value={availability}
-          onChange={handleAvailabilityChange}
-          className="w-full border border-gray-300 rounded-lg p-2 h-32 focus:ring-2 focus:ring-blue-400"
-        >
-          {AVAILABILITY_OPTIONS.map((slot) => (
-            <option key={slot} value={slot}>
-              {slot}
-            </option>
-          ))}
-        </select>
-      </div>
-
+      <AvailabilitySelect
+        onChange={(slots) => {
+          if (dispatch) {
+            dispatch({ type: "TOGGLE_AVAILABILITY", values: slots });
+          } else {
+            const fakeEvent = {
+              target: { value: slots.join(",") },
+            } as React.ChangeEvent<HTMLSelectElement>;
+            changeFn("availability")(fakeEvent);
+          }
+        }}
+        selected={AVAILABILITY_OPTIONS}
+      />
       {/* SUBMIT BUTTON */}
       <button
         type="submit"
