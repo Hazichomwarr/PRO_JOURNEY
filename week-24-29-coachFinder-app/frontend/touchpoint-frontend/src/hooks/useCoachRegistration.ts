@@ -1,5 +1,5 @@
 //hooks/useCoachRegistration.ts
-import React, { useReducer, useState } from "react";
+import React, { useReducer } from "react";
 import { CoachFormValues } from "../models/coach";
 import axiosClient from "../lib/axiosClient";
 import { useNavigate } from "react-router-dom";
@@ -95,15 +95,16 @@ function reducer(state: CoachFormState, action: Action): CoachFormState {
 
 export function useCoachRegistration() {
   const [state, dispatch] = useReducer(reducer, initialCoachDocState);
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const navigate = useNavigate();
+  const { updateRole } = useAuthStore();
+  const userRole = useAuthStore((state) => state.user?.role);
 
-  const handleUpgrade = async () => {
+  const handleUpgrade = async (onSuccess?: () => void) => {
     try {
-      const res = await axiosClient.patch("/users/me/role", { role: "coach" });
-      const updateRole = useAuthStore((s) => s.updateRole);
+      await axiosClient.patch("/users/me/role", { role: "coach" });
       updateRole("coach");
-      setShowUpgradeModal(false);
+      if (onSuccess) onSuccess(); //component closes modal
+      alert("role upgraded to coach successfully!!");
       navigate("/coaches/new");
     } catch (error: any) {
       console.error("Upgrade error:", error.response?.data || error.message);
@@ -161,18 +162,30 @@ export function useCoachRegistration() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    console.log("inside handleSubmit");
+    // if (!validateForm()) return;
+    console.log("no errors in fields");
+    //if user isn't coach, show modal instead of sending request
+    if (userRole === "coach") {
+      console.log("user is role is coach");
+    }
 
     dispatch({ type: "SET_LOADING", value: true });
 
+    // Fetch fresh role from backend before proceeding
+    const { data: user } = await axiosClient.get("/users/me");
+    if (user.role !== "coach") {
+      alert("Please wait a moment and try again after your role updates.");
+      return;
+    }
+
     try {
-      const res = await axiosClient.post("/coaches", state.values);
+      await axiosClient.post("/coaches", state.values);
       alert("Coach registered successfully!");
       dispatch({ type: "SET_SUCCESS", value: true });
       dispatch({ type: "RESET_FORM" });
     } catch (error: any) {
       if (error.response?.status === 403) {
-        setShowUpgradeModal(true);
       } else {
         console.error(error.response?.data?.message || "Something went wrong");
       }
@@ -183,8 +196,6 @@ export function useCoachRegistration() {
 
   return {
     state,
-    showUpgradeModal,
-    setShowUpgradeModal,
     handleUpgrade,
     handleChange,
     handleSubmit,

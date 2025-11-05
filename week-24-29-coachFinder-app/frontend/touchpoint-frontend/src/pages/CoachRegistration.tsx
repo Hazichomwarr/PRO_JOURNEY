@@ -1,26 +1,33 @@
 // pages/CoachRegistration.tsx
+import { useState } from "react";
 import AvailabilitySelect from "../components/layout/coach/AvailabilitySelect";
 import ExpertiseSelector from "../components/layout/coach/ExpertiseSelector";
 import UpgradeRoleModal from "../components/layout/UpgradeRoleModal";
 import { useCoachRegistration } from "../hooks/useCoachRegistration";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/authStore";
 
 export default function CoachRegistration() {
   const {
     state,
-    showUpgradeModal,
-    setShowUpgradeModal,
     handleUpgrade,
     handleChange,
     handleSubmit,
     toggleExpertise,
     handleAvailabilityChange,
   } = useCoachRegistration();
+  const { user } = useAuthStore();
+
+  const [showUpgradeModal, setShowUpgradeModal] = useState(
+    user?.role !== "coach"
+  ); // show modal right away if not coach
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col min-h-screen items-center justify-center bg-gray-50">
       <form
         className="w-full max-w-lg rounded-2xl bg-white p-8 shadow-md space-y-4"
-        onSubmit={handleSubmit}
+        onSubmit={(e) => handleSubmit(e)}
       >
         <h2 className="text-2xl font-semibold text-center text-gray-700">
           Become a Coach
@@ -63,8 +70,11 @@ export default function CoachRegistration() {
         </button>
         {showUpgradeModal && (
           <UpgradeRoleModal
-            onConfirm={handleUpgrade}
-            onCancel={() => setShowUpgradeModal(false)}
+            onConfirm={() => handleUpgrade(() => setShowUpgradeModal(false))}
+            onCancel={() => {
+              setShowUpgradeModal(false);
+              navigate("/dashboard");
+            }}
           />
         )}
       </form>

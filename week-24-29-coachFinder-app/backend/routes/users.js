@@ -3,6 +3,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const authWithToken = require("../middleware/authWithToken");
 const { ObjectId } = require("mongodb");
+const { JsonWebTokenError } = require("jsonwebtoken");
 
 const router = express.Router();
 
@@ -73,12 +74,16 @@ router.put("/:id", async (req, res) => {
 router.patch("/me/role", authWithToken(), async (req, res) => {
   const db = req.app.locals.db;
   const userId = new ObjectId(req.user.id);
+  console.log("userID ->", userId);
+  const { role } = req.body;
 
   await db
     .collection("users")
-    .updateOne({ _id: userId }, { $set: { role: req.body.role } });
+    .updateOne({ _id: userId }, { $set: { role: role } });
 
-  res.json({ success: true, newRole: req.body.role });
+  const updatedUser = { ...req.user, role };
+
+  res.json({ user: updatedUser });
 });
 
 //DELETE A USER

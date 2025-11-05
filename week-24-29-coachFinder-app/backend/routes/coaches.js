@@ -7,7 +7,6 @@ const router = express.Router();
 
 //ALL COACHES (with averageRating + totalReviews)
 router.get("/", authWithToken(), async (req, res) => {
-  console.log("inside '/coaches'");
   const db = req.app.locals.db;
   try {
     const count = await db.collection("coaches").countDocuments();
@@ -180,9 +179,10 @@ router.post("/", authWithToken(), async (req, res) => {
   try {
     //Ensure user is a coach
     if (req.user.role !== "coach")
-      return res
-        .status(403)
-        .json({ error: "Forbidden: only coaches can create a profile" });
+      console.log("user role is ->", req.user.role);
+    return res
+      .status(403)
+      .json({ error: "Forbidden: only coaches can create a profile" });
 
     //Find user info
     const user = await db

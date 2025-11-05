@@ -6,7 +6,7 @@ import { Coach } from "../../models/coach";
 export default function FindCoach() {
   const { isLoading, error, filteredCoaches, setExpertise } = useCoachData();
   const navigate = useNavigate();
-  console.table(filteredCoaches);
+  // console.table(filteredCoaches);
   if (isLoading)
     return <p className="mt-4 text-gray-500 text-center">Loading...</p>;
   if (error) return <p className="text-red-500 mt-4">{error}</p>;

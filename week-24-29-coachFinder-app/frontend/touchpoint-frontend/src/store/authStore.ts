@@ -127,9 +127,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     if (!current) return;
 
     const updateUser = { ...current, role: newRole };
+    set({ user: updateUser });
     localStorage.setItem("user", JSON.stringify(updateUser));
 
-    set({ user: updateUser });
     console.log("Role updated to:", newRole);
   },
 }));
