@@ -1,48 +1,10 @@
-// ///middleware/authWithToken.js
+//middleware/authWithToken.js
 const jwt = require("jsonwebtoken");
-
-// function authWithToken(requiredRole = null) {
-//   return (req, res, next) => {
-//     try {
-//       const authHeader = req.headers["authorization"];
-//       if (!authHeader) return res.status(401).json({ message: "No token" });
-
-//       //Bearer or raw token extraction
-//       const token = authHeader.startsWith("Bearer ")
-//         ? authHeader.split(" ")[1]
-//         : authHeader;
-//       if (!token)
-//         return res
-//           .status(401)
-//           .json({ error: "Malformed Authorization header" });
-
-//       const payload = jwt.verify(token, process.env.ACCESS_TOKEN);
-
-//       //attach info to request
-//       req.user = {
-//         id: payload.id,
-//         role: payload.role,
-//         email: payload.email,
-//       };
-//       //optional role check (authorization)
-//       if (requiredRole && req.user.role !== requiredRole) {
-//         return res.status(403).json({ error: "Forbidden" });
-//       }
-//       console.log("authWithToken running, token:", token);
-//       next();
-//     } catch (err) {
-//       if (err.name === "TokenExpiredError") {
-//         return res.status(401).json({ error: "Access token expired" });
-//       }
-//       return res.status(401).json({ error: "Invalid access token" });
-//     }
-//   };
-// }
-
-// module.exports = authWithtoken;
+const { ObjectId } = require("mongodb");
 
 function authWithToken(requiredRole = null) {
-  return (req, res, next) => {
+  return async (req, res, next) => {
+    // const db = req.app.locals.db;
     try {
       const authHeader = req.headers["authorization"];
       console.log(
@@ -65,9 +27,12 @@ function authWithToken(requiredRole = null) {
       console.log("🔑 ENV TOKEN SECRET:", process.env.ACCESS_TOKEN);
 
       const payload = jwt.verify(token, process.env.ACCESS_TOKEN);
-      console.log("✅ Token verified:", payload);
-
-      req.user = { id: payload.id, role: payload.role, email: payload.email };
+      const userId = payload.id || payload._id;
+      if (!userId || !ObjectId.isValid(userId)) {
+        console.log("🚫 Invalid or missing userId:", userId);
+        return res.status(400).json({ error: "Invalid ID in token", payload });
+      }
+      req.user = { id: userId, role: payload.role, email: payload.email };
 
       if (requiredRole && req.user.role !== requiredRole) {
         console.log("🚫 Role mismatch:", req.user.role);
@@ -75,7 +40,7 @@ function authWithToken(requiredRole = null) {
       }
       console.log("🧍 Verified user:", req.user);
 
-      console.log("➡️ calling next()");
+      // console.log("➡️ calling next()");
       next();
       console.log("✅ next() returned successfully");
     } catch (err) {

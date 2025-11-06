@@ -178,11 +178,12 @@ router.post("/", authWithToken(), async (req, res) => {
 
   try {
     //Ensure user is a coach
-    if (req.user.role !== "coach")
+    if (req.user.role !== "coach") {
       console.log("user role is ->", req.user.role);
-    return res
-      .status(403)
-      .json({ error: "Forbidden: only coaches can create a profile" });
+      return res
+        .status(403)
+        .json({ error: "Forbidden: only coaches can create a profile" });
+    }
 
     //Find user info
     const user = await db
@@ -216,6 +217,7 @@ router.post("/", authWithToken(), async (req, res) => {
 
     //Insert into DB
     const newCoach = await db.collection("coaches").insertOne(coachDoc);
+
     res.status(201).json({
       id: newCoach.insertedId.toString(),
       firstName: user.firstName,
@@ -341,7 +343,7 @@ router.get("/search", async (req, res) => {
 });
 
 // DELETE A COACH BY ID (soft delete)
-router.delete("/:id", authWithToken, async (req, res) => {
+router.delete("/:id", authWithToken("coach"), async (req, res) => {
   const db = req.app.locals.db;
   const { id } = req.params;
 

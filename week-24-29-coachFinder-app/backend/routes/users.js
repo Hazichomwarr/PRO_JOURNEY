@@ -3,7 +3,6 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const authWithToken = require("../middleware/authWithToken");
 const { ObjectId } = require("mongodb");
-const { JsonWebTokenError } = require("jsonwebtoken");
 
 const router = express.Router();
 
@@ -72,14 +71,32 @@ router.put("/:id", async (req, res) => {
 
 //Upgrade role from user to coach
 router.patch("/me/role", authWithToken(), async (req, res) => {
+  console.log(
+    "🔁 /users/me/role called, req.user:",
+    req.user,
+    "body:",
+    req.body
+  );
+
   const db = req.app.locals.db;
   const userId = new ObjectId(req.user.id);
   console.log("userID ->", userId);
   const { role } = req.body;
 
-  await db
+  console.log("Incoming upgrade body:", req.body);
+  console.log("req.user from token:", req.user);
+  console.log(
+    "🧾 ObjectId check:",
+    req.user?.id && ObjectId.isValid(req.user.id)
+  );
+
+  const result = await db
     .collection("users")
     .updateOne({ _id: userId }, { $set: { role: role } });
+  console.log("user found ->", result);
+
+  if (!result.matchedCount)
+    return res.status(404).json({ message: "User not found" });
 
   const updatedUser = { ...req.user, role };
 

@@ -118,9 +118,11 @@ router.post("/refresh", async (req, res) => {
       return res.status(403).json({ message: "Invalid refresh token" });
 
     //3. make sure the token hasn't been tampered with
-    jwt.verify(token, process.env.REFRESH_TOKEN, (err, payload) => {
-      if (err)
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN, (err, payload) => {
+      if (err) {
+        console.log("❌ Refresh token verification failed:", err.message);
         return res.status(403).json({ message: "Token expired or invalid" });
+      }
 
       const newAccessToken = jwt.sign(
         { id: payload.id, email: payload.email, role: payload.role },
@@ -130,7 +132,7 @@ router.post("/refresh", async (req, res) => {
       res.json({ accessToken: newAccessToken });
     });
   } catch (err) {
-    res.status.json({ message: "Server error" });
+    res.status(500).json({ message: "Server error" });
   }
 });
 

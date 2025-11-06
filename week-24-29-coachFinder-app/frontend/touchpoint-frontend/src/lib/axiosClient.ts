@@ -1,3 +1,85 @@
+// // utils/axiosClient.ts
+// import axios, { AxiosError, AxiosRequestConfig } from "axios";
+
+// // 🧱 Base API URL
+// const BASE_URL = "http://localhost:3000/api";
+
+// // 🧠 Reuse global instance across reloads/imports
+// const globalAxios = globalThis as typeof globalThis & {
+//   axiosClient?: ReturnType<typeof axios.create>;
+//   refreshClient?: ReturnType<typeof axios.create>;
+// };
+
+// // 🪄 Create or reuse existing instances
+// const axiosClient =
+//   globalAxios.axiosClient ||
+//   axios.create({
+//     baseURL: BASE_URL,
+//     withCredentials: true,
+//   });
+
+// const refreshClient =
+//   globalAxios.refreshClient ||
+//   axios.create({
+//     baseURL: BASE_URL,
+//     withCredentials: true,
+//   });
+
+// // store globally so it’s reused everywhere
+// globalAxios.axiosClient = axiosClient;
+// globalAxios.refreshClient = refreshClient;
+
+// // 🔑 Attach access token before every request
+// axiosClient.interceptors.request.use((config) => {
+//   const token = localStorage.getItem("accessToken");
+//   if (token) {
+//     config.headers = config.headers || {};
+//     config.headers.Authorization = `Bearer ${token}`;
+//   }
+//   return config;
+// });
+
+// // 🔁 Auto-refresh on 401
+// axiosClient.interceptors.response.use(
+//   (res) => res,
+//   async (error: AxiosError) => {
+//     const originalRequest = error.config as AxiosRequestConfig & {
+//       _retry?: boolean;
+//     };
+
+//     if (error.response?.status !== 401 || originalRequest._retry) {
+//       return Promise.reject(error);
+//     }
+
+//     originalRequest._retry = true;
+
+//     try {
+//       const { data } = await refreshClient.post("/auth/refresh", {
+//         refreshToken: localStorage.getItem("refreshToken"),
+//       });
+
+//       const newToken = data?.accessToken;
+//       if (!newToken) throw new Error("No new access token returned");
+
+//       localStorage.setItem("accessToken", newToken);
+//       axiosClient.defaults.headers.common.Authorization = `Bearer ${newToken}`;
+
+//       originalRequest.headers = {
+//         ...originalRequest.headers,
+//         Authorization: `Bearer ${newToken}`,
+//       };
+
+//       return axiosClient(originalRequest);
+//     } catch (err) {
+//       localStorage.removeItem("accessToken");
+//       localStorage.removeItem("refreshToken");
+//       return Promise.reject(err);
+//     }
+//   }
+// );
+
+// export default axiosClient;
+
 // //utils/axiosClient.ts
 // import axios, { AxiosRequestConfig, AxiosError } from "axios";
 
@@ -9,7 +91,7 @@
 // }
 
 // /* --- Create main client (used by app) --- */
-// const BASE_URL = "http://localhost:5000/api";
+// const BASE_URL = "http://localhost:3000/api";
 // export const axiosClient = axios.create({
 //   baseURL: BASE_URL,
 //   withCredentials: true,

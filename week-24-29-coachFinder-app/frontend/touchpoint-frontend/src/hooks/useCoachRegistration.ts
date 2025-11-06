@@ -100,9 +100,41 @@ export function useCoachRegistration() {
   const userRole = useAuthStore((state) => state.user?.role);
 
   const handleUpgrade = async (onSuccess?: () => void) => {
+    console.log(
+      "accessToken in localStorage just before patch ->",
+      localStorage.getItem("accessToken")
+    );
+
     try {
+      const token = localStorage.getItem("accessToken");
+
+      console.log("accessToken present?", !!token);
+      if (token) {
+        try {
+          const payload = JSON.parse(atob(token.split(".")[1]));
+          console.log("decoded access token payload ->", payload);
+        } catch (err) {
+          console.log("⚠️ couldn't decode token:", err);
+        }
+      }
+      console.log("axiosClient.baseURL ->", axiosClient.defaults.baseURL);
+      console.log(
+        "axiosClient default Authorization ->",
+        axiosClient.defaults.headers?.common?.Authorization
+      );
+
+      // // 🔧 Force-attach the header to the axiosClient instance
+      // axiosClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      // console.log(
+      //   "🧩 axiosClient.defaults.Authorization now ->",
+      //   axiosClient.defaults.headers.common["Authorization"]
+      // );
+
+      console.log("➡️ About to PATCH /users/me/role");
       await axiosClient.patch("/users/me/role", { role: "coach" });
+
       updateRole("coach");
+
       if (onSuccess) onSuccess(); //component closes modal
       alert("role upgraded to coach successfully!!");
       navigate("/coaches/new");
@@ -186,6 +218,7 @@ export function useCoachRegistration() {
       dispatch({ type: "RESET_FORM" });
     } catch (error: any) {
       if (error.response?.status === 403) {
+        console.log("bad request from handleSubmit catch block");
       } else {
         console.error(error.response?.data?.message || "Something went wrong");
       }
