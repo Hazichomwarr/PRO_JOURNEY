@@ -27,7 +27,9 @@ export default function Topbar() {
             alt="avatar"
             className="w-8 h-8 object-cover bg-gray-400 rounded"
           />
-          <span>{role ?? "Member"}</span>
+          <span className="font-semibold">
+            {role ? role.toUpperCase() : "Member"}
+          </span>
         </div>
       </div>
     </header>
