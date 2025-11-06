@@ -78,28 +78,6 @@ router.post("/login", async (req, res) => {
   res.json({ accessToken, refreshToken, user: userData });
 });
 
-// --- GET: loggedIn DashBoard ---
-router.get("/me", authWithToken(), async (req, res) => {
-  console.log("→ Inside /me route");
-  const db = req.app.locals.db;
-
-  try {
-    const user = await db
-      .collection("users")
-      .findOne(
-        { _id: new ObjectId(req.user.id) },
-        { projection: { password: 0 } }
-      );
-
-    if (!user) return res.status(404).json({ message: "User not found" });
-    console.log("User found:", user.email);
-    res.status(200).json(user);
-  } catch (err) {
-    console.error("Error fetching user:", err);
-    res.status(500).json({ message: "Server error" });
-  }
-});
-
 //REFRESH TOKEN ROUTE
 router.post("/refresh", async (req, res) => {
   const db = req.app.locals.db;

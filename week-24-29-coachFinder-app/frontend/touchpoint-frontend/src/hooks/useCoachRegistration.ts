@@ -99,48 +99,59 @@ export function useCoachRegistration() {
   const { updateRole } = useAuthStore();
   const userRole = useAuthStore((state) => state.user?.role);
 
+  // const handleUpgrade = async (onSuccess?: () => void) => {
+  //   console.log(
+  //     "accessToken in localStorage just before patch ->",
+  //     localStorage.getItem("accessToken")
+  //   );
+
+  //   try {
+  //     const token = localStorage.getItem("accessToken");
+
+  //     console.log("accessToken present?", !!token);
+  //     if (token) {
+  //       try {
+  //         const payload = JSON.parse(atob(token.split(".")[1]));
+  //         console.log("decoded access token payload ->", payload);
+  //       } catch (err) {
+  //         console.log("⚠️ couldn't decode token:", err);
+  //       }
+  //     }
+  //     console.log("axiosClient.baseURL ->", axiosClient.defaults.baseURL);
+  //     console.log(
+  //       "axiosClient default Authorization ->",
+  //       axiosClient.defaults.headers?.common?.Authorization
+  //     );
+
+  //     console.log("➡️ About to PATCH /users/upgrade-role");
+  //     await axiosClient.patch("/users/upgrade-role", { role: "coach" });
+  //     updateRole("coach");
+
+  //     if (onSuccess) onSuccess(); //component closes modal
+  //     alert("role upgraded to coach successfully!!");
+  //     navigate("/coaches/new");
+  //   } catch (error: any) {
+  //     console.log("Upgrade error:", error.response?.data || error.message);
+  //     alert(`Failed to upgrade role. ${error.message} || Please try again`);
+  //   }
+  // };
+
   const handleUpgrade = async (onSuccess?: () => void) => {
-    console.log(
-      "accessToken in localStorage just before patch ->",
-      localStorage.getItem("accessToken")
-    );
-
     try {
-      const token = localStorage.getItem("accessToken");
+      // 1️⃣ Send request to backend
+      await axiosClient.patch("/users/upgrade-role", { role: "coach" });
 
-      console.log("accessToken present?", !!token);
-      if (token) {
-        try {
-          const payload = JSON.parse(atob(token.split(".")[1]));
-          console.log("decoded access token payload ->", payload);
-        } catch (err) {
-          console.log("⚠️ couldn't decode token:", err);
-        }
-      }
-      console.log("axiosClient.baseURL ->", axiosClient.defaults.baseURL);
-      console.log(
-        "axiosClient default Authorization ->",
-        axiosClient.defaults.headers?.common?.Authorization
-      );
-
-      // // 🔧 Force-attach the header to the axiosClient instance
-      // axiosClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      // console.log(
-      //   "🧩 axiosClient.defaults.Authorization now ->",
-      //   axiosClient.defaults.headers.common["Authorization"]
-      // );
-
-      console.log("➡️ About to PATCH /users/me/role");
-      await axiosClient.patch("/users/me/role", { role: "coach" });
-
+      // 2️⃣ Update Zustand store
       updateRole("coach");
 
-      if (onSuccess) onSuccess(); //component closes modal
-      alert("role upgraded to coach successfully!!");
-      navigate("/coaches/new");
+      // 3️⃣ Wait one microtask tick for store propagation
+      await new Promise((r) => setTimeout(r, 0));
+
+      alert("Role upgraded to coach successfully!");
+      if (onSuccess) onSuccess(); // closes modal
     } catch (error: any) {
       console.error("Upgrade error:", error.response?.data || error.message);
-      alert(`Failed to upgrade role. ${error.message} || Please try again`);
+      alert(`Failed to upgrade role. ${error.message}`);
     }
   };
 
@@ -195,27 +206,33 @@ export function useCoachRegistration() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("inside handleSubmit");
-    // if (!validateForm()) return;
+    if (!validateForm()) {
+      console.log("error in form fields ->", state.errors);
+      return;
+    }
     console.log("no errors in fields");
-    //if user isn't coach, show modal instead of sending request
+
     if (userRole === "coach") {
-      console.log("user is role is coach");
+      console.log("user role is", userRole);
     }
 
     dispatch({ type: "SET_LOADING", value: true });
 
-    // Fetch fresh role from backend before proceeding
-    const { data: user } = await axiosClient.get("/users/me");
-    if (user.role !== "coach") {
-      alert("Please wait a moment and try again after your role updates.");
-      return;
-    }
+    // // Fetch fresh role from backend before proceeding
+    // const { data: user } = await axiosClient.get("/users/me");
+    // if (user.role !== "coach") {
+    //   console.log("user freshly fresh with updated role ->", user.role);
+    //   alert("Please wait a moment and try again after your role updates.");
+    // }
 
     try {
-      await axiosClient.post("/coaches", state.values);
-      alert("Coach registered successfully!");
+      await axiosClient.post("/coaches", {
+        data: state.values,
+        role: "coach",
+      }); //<- hardcoded 'coach' while looking for a better way
       dispatch({ type: "SET_SUCCESS", value: true });
       dispatch({ type: "RESET_FORM" });
+      alert("Coach registered successfully!");
     } catch (error: any) {
       if (error.response?.status === 403) {
         console.log("bad request from handleSubmit catch block");

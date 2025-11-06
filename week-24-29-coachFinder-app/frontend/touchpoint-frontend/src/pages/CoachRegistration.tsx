@@ -1,5 +1,5 @@
 // pages/CoachRegistration.tsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AvailabilitySelect from "../components/layout/coach/AvailabilitySelect";
 import ExpertiseSelector from "../components/layout/coach/ExpertiseSelector";
 import UpgradeRoleModal from "../components/layout/UpgradeRoleModal";
@@ -16,18 +16,22 @@ export default function CoachRegistration() {
     toggleExpertise,
     handleAvailabilityChange,
   } = useCoachRegistration();
-  const { user } = useAuthStore();
-
-  const [showUpgradeModal, setShowUpgradeModal] = useState(
-    user?.role !== "coach"
-  ); // show modal right away if not coach
+  const role = useAuthStore((s) => s.user?.role);
   const navigate = useNavigate();
 
+  const [showUpgradeModal, setShowUpgradeModal] = useState(role !== "coach");
+
+  // ✅ Reactively navigate once Zustand finishes updating
+  useEffect(() => {
+    if (role === "coach") {
+      navigate("/coaches/new");
+    }
+  }, [role]);
   return (
     <div className="flex flex-col min-h-screen items-center justify-center bg-gray-50">
       <form
         className="w-full max-w-lg rounded-2xl bg-white p-8 shadow-md space-y-4"
-        onSubmit={(e) => handleSubmit(e)}
+        onSubmit={handleSubmit}
       >
         <h2 className="text-2xl font-semibold text-center text-gray-700">
           Become a Coach

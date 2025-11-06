@@ -89,17 +89,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     const [, payload] = accessToken.split(".");
     const decoded = JSON.parse(atob(payload));
-    const isExpired = decoded.exp * 1000 < Date.now();
+    const expiryMS = decoded.exp * 1000 - Date.now() - 60000; //1 min before expiry
 
-    if (isExpired) {
-      console.log("Access token expired - attempting refresh...");
-      get().refreshAccessToken();
-    }
+    setTimeout(() => get().refreshAccessToken(), expiryMS);
   },
 
   //refresh token logic
   refreshAccessToken: async () => {
-    const { refreshToken, user } = get();
+    const { refreshToken } = get();
     if (!refreshToken) {
       get().logout();
       return false;
@@ -126,9 +123,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const current = get().user;
     if (!current) return;
 
-    const updateUser = { ...current, role: newRole };
-    set({ user: updateUser });
-    localStorage.setItem("user", JSON.stringify(updateUser));
+    const updatedUser = { ...current, role: newRole };
+    set({ user: updatedUser });
+    localStorage.setItem("user", JSON.stringify(updatedUser));
 
     console.log("Role updated to:", newRole);
   },

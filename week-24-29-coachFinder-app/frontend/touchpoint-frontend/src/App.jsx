@@ -10,13 +10,13 @@ import Navbar from "./components/layout/Navbar";
 import { useEffect } from "react";
 import { useAuthStore } from "./store/authStore";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
-import Overview from "./components/layout/dashboard/Overview";
 import FindCoach from "./pages/dashboard/FindCoach";
 import AccountSettings from "./pages/dashboard/AccountSettings";
 import Messages from "./pages/dashboard/Messages";
 import CoachRegistration from "./pages/CoachRegistration";
 import PublicRoute from "./components/layout/PublicRoute";
 import RoleBasedDashboard from "./components/layout/dashboard/RoleBasedDashboard";
+import SessionWatcher from "./components/SessionWatcher";
 import React from "react";
 
 export default function App() {
@@ -27,6 +27,7 @@ export default function App() {
   }, [restoreSession]);
   return (
     <Router>
+      <SessionWatcher />
       <div className="min-h-screen bg-gray-50 text-gray-900">
         <Navbar />
         <Routes>

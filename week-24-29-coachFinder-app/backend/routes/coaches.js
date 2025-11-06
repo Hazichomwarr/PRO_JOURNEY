@@ -175,11 +175,11 @@ router.get("/:id", authWithToken(), async (req, res) => {
 //CREATE A COACH
 router.post("/", authWithToken(), async (req, res) => {
   const db = req.app.locals.db;
-
+  const { role } = req.body; //use newRole instead of token role
   try {
     //Ensure user is a coach
-    if (req.user.role !== "coach") {
-      console.log("user role is ->", req.user.role);
+    if (role !== "coach") {
+      console.log("user role is ->", req.body.role);
       return res
         .status(403)
         .json({ error: "Forbidden: only coaches can create a profile" });
@@ -200,7 +200,7 @@ router.post("/", authWithToken(), async (req, res) => {
     }
 
     //Extract allowed coach fields from request body
-    const { bio, expertise, hourlyRate, availability } = req.body;
+    const { bio, expertise, hourlyRate, availability } = req.body.data;
 
     //Build a coach doc
     const coachDoc = {

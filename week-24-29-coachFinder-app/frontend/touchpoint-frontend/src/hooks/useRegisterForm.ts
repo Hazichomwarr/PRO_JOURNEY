@@ -74,14 +74,6 @@ export function useRegisterForm() {
       console.log("Registered user:", newUser);
 
       alert("Registration successful! Please log in.");
-
-      // // redirect to dashboard for login
-      // const dashboardRoute =
-      //   state.role === "coach"
-      //     ? "/dashboard/coach"
-      //     : state.role === "buddy"
-      //     ? "/dashboard/buddy"
-      //     : "/dashboard/seeker";
       navigate("/login");
       dispatch({ type: "RESET" });
     } catch (error: any) {

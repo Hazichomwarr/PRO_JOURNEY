@@ -1,10 +1,12 @@
 //components/layout/dashboard/Topbar.tsx
 import { Bell } from "lucide-react";
 import { useUserStore } from "../../../store/userStore";
+import { useAuthStore } from "../../../store/authStore";
 
 export default function Topbar() {
   const { user } = useUserStore();
-  console.log("loggedIn-User ->", user);
+  const role = useAuthStore((s) => s.user?.role);
+  console.log("(inside Topbar.tsx) LoggedIn-User ->", user);
 
   return (
     <header className="flex items-center justify-between bg-white shadow px-6 py-3 sticky top-0 z-10">
@@ -25,7 +27,7 @@ export default function Topbar() {
             alt="avatar"
             className="w-8 h-8 object-cover bg-gray-400 rounded"
           />
-          <span>{user?.role ?? "Member"}</span>
+          <span>{role ?? "Member"}</span>
         </div>
       </div>
     </header>
