@@ -3,9 +3,13 @@ import { Clock, DollarSign, Star, Pencil, X } from "lucide-react";
 import { useUserStore } from "../store/userStore";
 import { useEditForm } from "../hooks/useEditForm";
 import EditForm from "../components/layout/coach/EditForm";
+import { useState } from "react";
+import MessageModal from "../components/layout/coach/MessageModal";
 
 export default function CoachDetail() {
   const { user: loggedInUser } = useUserStore();
+  const [showMessageModal, setShowMessageModal] = useState(false);
+
   const {
     coach,
     isEditing,
@@ -13,8 +17,7 @@ export default function CoachDetail() {
     handleSubmit,
     handleChange,
     loading,
-    setLoading,
-    id,
+    id: coachId,
   } = useEditForm();
 
   if (loading)
@@ -83,7 +86,6 @@ export default function CoachDetail() {
           <Clock size={16} />
           <span className="font-semibold text-blue-500">Availability</span>
           <ul className="flex gap-2">
-            {/* the bug is in the mapping */}
             {Array.isArray(availability) ? (
               availability.map((a, idx) => <li key={idx}>{a} |</li>)
             ) : (
@@ -101,10 +103,7 @@ export default function CoachDetail() {
       {/* Call to Action */}
       <button
         className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all"
-        onClick={() => {
-          console.log("how to send a message to a coach?");
-          alert("write your message simulation ok!");
-        }}
+        onClick={() => setShowMessageModal(true)}
       >
         Message Coach
       </button>
@@ -163,6 +162,16 @@ export default function CoachDetail() {
             />
           </div>
         </div>
+      )}
+
+      {showMessageModal && (
+        <MessageModal
+          onClose={() => setShowMessageModal(false)}
+          coachId={coachId!}
+          coachName={user.firstName}
+          userName={loggedInUser!.firstName}
+          userId={loggedInUser!.id}
+        />
       )}
     </section>
   );

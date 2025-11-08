@@ -8,6 +8,7 @@ const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
 const coachRoutes = require("./routes/coaches");
 const dashboardRoutes = require("./routes/dashboard");
+const messageRoutes = require("./routes/messages");
 
 const app = express();
 
@@ -17,7 +18,7 @@ app.use(
     credentials: true,
   })
 );
-// app.use(cors({ origin: true, credentials: true }));
+
 app.use(express.json());
 //Connect to db before setting routes
 (async () => {
@@ -29,6 +30,7 @@ app.use(express.json());
   app.use("/api/users", userRoutes);
   app.use("/api/coaches", coachRoutes);
   app.use("/api/dashboard", dashboardRoutes);
+  app.use("/api/messages", messageRoutes);
 
   const port = process.env.PORT || 3000;
   app.listen(port, () => console.log(`✅ Server running on port ${port}`));

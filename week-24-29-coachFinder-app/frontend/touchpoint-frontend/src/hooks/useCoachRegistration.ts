@@ -2,7 +2,6 @@
 import React, { useReducer } from "react";
 import { CoachFormValues } from "../models/coach";
 import axiosClient from "../lib/axiosClient";
-import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 
 interface CoachFormState {
@@ -95,7 +94,6 @@ function reducer(state: CoachFormState, action: Action): CoachFormState {
 
 export function useCoachRegistration() {
   const [state, dispatch] = useReducer(reducer, initialCoachDocState);
-  const navigate = useNavigate();
   const { updateRole } = useAuthStore();
   const userRole = useAuthStore((state) => state.user?.role);
 

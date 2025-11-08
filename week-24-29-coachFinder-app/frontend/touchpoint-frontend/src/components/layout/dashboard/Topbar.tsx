@@ -2,10 +2,15 @@
 import { Bell } from "lucide-react";
 import { useUserStore } from "../../../store/userStore";
 import { useAuthStore } from "../../../store/authStore";
+import { useMessagesStore } from "../../../store/messagesStore";
 
 export default function Topbar() {
   const { user } = useUserStore();
   const role = useAuthStore((s) => s.user?.role);
+  const messages = useMessagesStore((s) => s.messages);
+
+  const unreadMsgCount = messages.filter((m) => !m.isRead).length;
+
   console.log("(inside Topbar.tsx) LoggedIn-User ->", user);
 
   return (
@@ -17,7 +22,9 @@ export default function Topbar() {
       <div className="flex items-center gap-5">
         <button className="relative text-gray-600 hover:text-blue-600">
           <Bell size={20} />
-          <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+          {unreadMsgCount > 0 && (
+            <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+          )}
         </button>
 
         {/* User avatar */}

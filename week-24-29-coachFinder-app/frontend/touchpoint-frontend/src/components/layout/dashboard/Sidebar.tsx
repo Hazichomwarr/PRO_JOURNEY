@@ -10,10 +10,14 @@ import {
 } from "lucide-react";
 import useLogout from "../../../hooks/useLogout";
 import { useAuthStore } from "../../../store/authStore";
+import { useMessagesStore } from "../../../store/messagesStore";
 
 export default function Sidebar() {
   const { handleLogout } = useLogout();
-  const { user } = useAuthStore();
+  const user = useAuthStore((s) => s.user);
+  const messages = useMessagesStore((s) => s.messages);
+
+  const unreadMsgCount = messages.filter((m) => !m.isRead).length;
 
   const links = [
     {
@@ -28,7 +32,12 @@ export default function Sidebar() {
     },
     {
       to: "/dashboard/messages",
-      label: "Messages",
+      label: (
+        <span>
+          Messages
+          {unreadMsgCount > 0 && <span>{unreadMsgCount}</span>}
+        </span>
+      ),
       icon: <MessageCircle size={18} />,
     },
     {
