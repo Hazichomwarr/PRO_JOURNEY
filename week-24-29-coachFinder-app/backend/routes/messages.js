@@ -17,7 +17,7 @@ router.post("/", authWithToken(), async (req, res) => {
       senderName: userName,
       receiverId: new ObjectId(coachId),
       content: message,
-      isread: false,
+      isRead: false,
       createdAt: new Date(),
     };
 
@@ -39,19 +39,25 @@ router.post("/", authWithToken(), async (req, res) => {
 
 //GET messages by coachID
 router.get("/:id", authWithToken(), async (req, res) => {
+  console.log("inside /messages/:coachId");
   const db = req.app.locals.db;
   const { id } = req.params;
-
+  console.log("1. got coach id from req.params->", id);
   if (!ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid coach id format" });
   }
+  console.log("2. ID verified and it's ObjectId valid!");
 
   try {
+    console.log("3. inside try block to fetch messages from DB");
     const messages = await db
       .collection("messages")
-      .find({ coachId: new ObjectId(id) });
+      .find({ receiverId: new ObjectId(id) })
+      .toArray();
+
     if (!messages) return res.status(404).json({ error: "No message" });
-    res.status(200).json(coach);
+    console.log("4. found messages from DB ->", messages);
+    res.status(200).json(messages);
   } catch (err) {
     console.error("Error fetching coach:", err);
     res.status(500).json({ message: "Server error while fetching coach" });
@@ -79,7 +85,8 @@ router.patch("/:id/read", authWithToken(), async (req, res) => {
     //return updated message
     const updatedMsg = await db
       .collection("messages")
-      .find({ _id: new ObjectId(id) });
+      .findOne({ _id: new ObjectId(id) });
+
     res.status(200).json(updatedMsg);
   } catch (err) {
     console.error("Error patching message:", err);

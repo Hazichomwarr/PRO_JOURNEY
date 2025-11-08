@@ -70,6 +70,27 @@ router.get("/", authWithToken(), async (req, res) => {
   }
 });
 
+// ✅ Get coachId of logged-in user
+router.get("/by-user", authWithToken(), async (req, res) => {
+  const db = req.app.locals.db;
+  const userId = req.user.id; // comes from your token payload
+
+  try {
+    const coachDoc = await db
+      .collection("coaches")
+      .findOne({ userId: new ObjectId(userId) });
+
+    if (!coachDoc) {
+      return res.status(404).json({ message: "Coach profile not found" });
+    }
+    console.log("coach ID found in DB ->", coachDoc._id);
+    res.status(200).json({ coachId: coachDoc._id });
+  } catch (err) {
+    console.error("Error fetching coachId", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // GET A COACH BY ID with Reviews + averageRating + totalReviews
 router.get("/:id", authWithToken(), async (req, res) => {
   console.log("inside /coaches/:id");
@@ -165,6 +186,7 @@ router.get("/:id", authWithToken(), async (req, res) => {
       .next();
 
     if (!coach) return res.status(404).json({ error: "Coach not found" });
+    console.log("coach queried found ind DB ->", coach);
     res.status(200).json(coach);
   } catch (err) {
     console.error("Error fetching coach:", err);

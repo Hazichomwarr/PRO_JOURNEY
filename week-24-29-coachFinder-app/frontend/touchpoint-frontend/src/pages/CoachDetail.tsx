@@ -100,13 +100,18 @@ export default function CoachDetail() {
         </div>
       </div>
 
-      {/* Call to Action */}
-      <button
-        className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all"
-        onClick={() => setShowMessageModal(true)}
-      >
-        Message Coach
-      </button>
+      {/* Call to Action(except can't write to yourself) */}
+      {loggedInUser?.firstName === user.firstName &&
+      loggedInUser?.role === "coach" ? (
+        <></>
+      ) : (
+        <button
+          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all"
+          onClick={() => setShowMessageModal(true)}
+        >
+          Message Coach
+        </button>
+      )}
 
       {/* Reviews */}
       <div className="mt-6 space-y-4">

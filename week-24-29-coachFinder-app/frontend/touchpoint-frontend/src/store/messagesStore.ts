@@ -1,6 +1,7 @@
 //store/messagesStore.ts
 import { create } from "zustand";
 import axiosClient from "../lib/axiosClient";
+import { useAuthStore } from "./authStore";
 
 interface Message {
   id: string;
@@ -8,13 +9,14 @@ interface Message {
   receiverId: string;
   content: Message;
   isRead: boolean;
+  createdAt?: string;
 }
 
 interface MessageState {
   messages: Message[];
   isLoading: boolean;
   error: string | null;
-  fetchMessages: (coachId: string) => Promise<void>;
+  fetchMessages: () => Promise<void>;
   markAsRead: (id: string) => Promise<void>;
 }
 
@@ -23,12 +25,27 @@ export const useMessagesStore = create<MessageState>((set, get) => ({
   isLoading: false,
   error: null,
 
-  fetchMessages: async (coachId) => {
+  // ✅ Smart fetch function that handles both roles
+  fetchMessages: async () => {
+    const user = useAuthStore.getState().user;
+
+    if (!user?.id) return;
+
     set({ isLoading: true, error: null });
 
     try {
-      const res = await axiosClient.get(`/messages/${coachId}`);
-      set({ messages: res.data, isLoading: false });
+      let coachId = null;
+
+      if (user.role === "coach") {
+        console.log("user id ->", user.id);
+        const resCoach = await axiosClient.get("/coaches/by-user");
+        coachId = resCoach.data.coachId;
+
+        const idToUse = user.role === "coach" ? coachId : user.id;
+
+        const res = await axiosClient.get(`/messages/${idToUse}`);
+        set({ messages: res.data, isLoading: false });
+      }
     } catch (err) {
       set({ error: "Failed to fetch messages", isLoading: false });
     }
