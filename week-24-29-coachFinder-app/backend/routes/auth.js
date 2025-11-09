@@ -3,8 +3,8 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { validateSignup } = require("../utils/validator");
-const authWithToken = require("../middleware/authWithToken");
-const { ObjectId } = require("mongodb");
+// const authWithToken = require("../middleware/authWithToken");
+// const { ObjectId } = require("mongodb");
 
 const router = express.Router();
 
@@ -43,12 +43,15 @@ router.post("/register", async (req, res) => {
 
 //LOGIN ROUTE
 router.post("/login", async (req, res) => {
+  // console.log("1. Inside /login");
   const db = req.app.locals.db;
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).json();
+  // console.log("2.Got email and password");
 
   const user = await db.collection("users").findOne({ email });
   if (!user) return res.status(403).json({ message: "Invalid credentials" });
+  // console.log("3.Got user from DB ->", user);
 
   // renamed "password" bc previous name variable in use already.
   // userData to set right away the user in the userStore frontend
@@ -57,6 +60,7 @@ router.post("/login", async (req, res) => {
   //Authenticate the password
   const ok = await bcrypt.compare(password, user.password);
   if (!ok) return res.status(403).json({ message: "Invalid credentials" });
+  // console.log("4. User password verification success!");
 
   //since authenticate, let's give the user a token
   const payload = {
@@ -67,12 +71,14 @@ router.post("/login", async (req, res) => {
   const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN, {
     expiresIn: "15m",
   });
+  //console.log("5.AccessToken created for user ->", accessToken);
   const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN);
 
   //store refresh token in DB
   await db
     .collection("refreshTokens")
     .insertOne({ token: refreshToken, userId: user._id, createAt: new Date() });
+  //console.log("6. Access Token saved in DB successfully!");
 
   //Data for the frontEnd
   res.json({ accessToken, refreshToken, user: userData });
