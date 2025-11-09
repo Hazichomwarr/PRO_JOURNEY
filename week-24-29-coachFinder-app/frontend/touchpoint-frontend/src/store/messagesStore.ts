@@ -4,10 +4,10 @@ import axiosClient from "../lib/axiosClient";
 import { useAuthStore } from "./authStore";
 
 interface Message {
-  id: string;
+  _id: string;
   senderName: string;
   receiverId: string;
-  content: Message;
+  content: string;
   isRead: boolean;
   createdAt?: string;
 }
@@ -37,13 +37,13 @@ export const useMessagesStore = create<MessageState>((set, get) => ({
       let coachId = null;
 
       if (user.role === "coach") {
-        console.log("user id ->", user.id);
         const resCoach = await axiosClient.get("/coaches/by-user");
         coachId = resCoach.data.coachId;
 
-        const idToUse = user.role === "coach" ? coachId : user.id;
-
-        const res = await axiosClient.get(`/messages/${idToUse}`);
+        const res = await axiosClient.get(`/messages/${coachId}`);
+        set({ messages: res.data, isLoading: false });
+      } else if (user.role === "seeker") {
+        const res = await axiosClient.get(`/messages/${user.id}`);
         set({ messages: res.data, isLoading: false });
       }
     } catch (err) {

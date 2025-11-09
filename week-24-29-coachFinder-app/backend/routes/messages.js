@@ -37,11 +37,12 @@ router.post("/", authWithToken(), async (req, res) => {
   }
 });
 
-//GET messages by coachID
+//GET messages by coach or user ID
 router.get("/:id", authWithToken(), async (req, res) => {
   console.log("inside /messages/:coachId");
   const db = req.app.locals.db;
   const { id } = req.params;
+  // console.log(". user's role is ->", req.user.role);
   console.log("1. got coach id from req.params->", id);
   if (!ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid coach id format" });
@@ -49,14 +50,31 @@ router.get("/:id", authWithToken(), async (req, res) => {
   console.log("2. ID verified and it's ObjectId valid!");
 
   try {
-    console.log("3. inside try block to fetch messages from DB");
-    const messages = await db
-      .collection("messages")
-      .find({ receiverId: new ObjectId(id) })
-      .toArray();
+    let messages;
+    if (req.user.role === "coach") {
+      console.log("3. inside try block to fetch messages from DB for a coach");
 
-    if (!messages) return res.status(404).json({ error: "No message" });
-    console.log("4. found messages from DB ->", messages);
+      messages = await db
+        .collection("messages")
+        .find({ receiverId: new ObjectId(id) }) //coach
+        .toArray();
+
+      if (!messages) return res.status(404).json({ error: "No message" });
+      console.log("4. found messages from DB ->", messages);
+      res.status(200).json(messages);
+    } else if (req.user.role === "seeker") {
+      console.log("3. inside try block to fetch messages from DB for a coach");
+
+      messages = await db
+        .collection("messages")
+        .find({ senderId: new ObjectId(id) }) //seeker
+        .toArray();
+
+      if (!messages) return res.status(404).json({ error: "No message" });
+      console.log("4. found messages from DB ->", messages);
+    }
+
+    //return messages Doc
     res.status(200).json(messages);
   } catch (err) {
     console.error("Error fetching coach:", err);
