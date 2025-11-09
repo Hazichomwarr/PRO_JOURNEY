@@ -50,17 +50,24 @@ export const useMessagesStore = create<MessageState>((set, get) => ({
       set({ error: "Failed to fetch messages", isLoading: false });
     }
   },
-
+  // ✅ Optimistic update + rollback on failure
   markAsRead: async (id) => {
+    const prevMessages = get().messages;
+
+    // Optimistically mark as read locally
+    set({
+      messages: prevMessages.map((m) =>
+        m._id === id ? { ...m, isRead: true } : m
+      ),
+    });
+
     try {
       await axiosClient.patch(`/messages/${id}/read`);
-      set({
-        messages: get().messages.map((m: Message) =>
-          m.id === id ? { ...m, read: true } : m
-        ),
-      });
     } catch (err) {
-      console.error("Error marking as read", err);
+      console.error("Error marking message as 'read':", err);
+
+      // Rollback on failure
+      set({ messages: prevMessages });
     }
   },
 }));

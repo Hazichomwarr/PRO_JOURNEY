@@ -34,8 +34,7 @@ export default function Sidebar() {
       to: "/dashboard/messages",
       label: (
         <span>
-          Messages
-          {unreadMsgCount > 0 && <span>{unreadMsgCount}</span>}
+          Messages {unreadMsgCount > 0 && <span>{unreadMsgCount}</span>}
         </span>
       ),
       icon: <MessageCircle size={18} />,
