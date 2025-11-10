@@ -37,17 +37,14 @@ router.post("/", authWithToken(), async (req, res) => {
   }
 });
 
-//GET messages by coach or user ID
+//GET messages by (coach or user) ID
 router.get("/:id", authWithToken(), async (req, res) => {
-  console.log("inside /messages/:coachId");
   const db = req.app.locals.db;
   const { id } = req.params;
-  // console.log(". user's role is ->", req.user.role);
-  console.log("1. got coach id from req.params->", id);
+
   if (!ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid coach id format" });
   }
-  console.log("2. ID verified and it's ObjectId valid!");
 
   try {
     let messages;
@@ -60,11 +57,9 @@ router.get("/:id", authWithToken(), async (req, res) => {
         .toArray();
 
       if (!messages) return res.status(404).json({ error: "No message" });
-      console.log("4. found messages from DB ->", messages);
+
       res.status(200).json(messages);
     } else if (req.user.role === "seeker") {
-      console.log("3. inside try block to fetch messages from DB for a coach");
-
       messages = await db
         .collection("messages")
         .find({ senderId: new ObjectId(id) }) //seeker
@@ -110,6 +105,32 @@ router.patch("/:id/read", authWithToken(), async (req, res) => {
     console.error("Error patching message:", err);
     res.status(500).json({ message: "Server error while updating message" });
   }
+});
+
+// GET /messages/unread-count/:userId
+router.get("/unread-count/:id", authWithToken(), async (req, res) => {
+  const db = req.app.locals.db;
+  const { id } = req.params;
+  if (!ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid message id format" });
+  }
+  try {
+    let count;
+    const messagesCollection = await db.collection("messages");
+    if (req.user.role === "coach") {
+      count = await messagesCollection.countDocuments({
+        receiverId: id,
+        isRead: false,
+      });
+    } else if (req.user.role === "seeker") {
+      count = await messagesCollection.countDocuments({
+        senderId: id,
+        isRead: false,
+      });
+    }
+    console.log("count: ->", count);
+    res.json({ count });
+  } catch (err) {}
 });
 
 module.exports = router;

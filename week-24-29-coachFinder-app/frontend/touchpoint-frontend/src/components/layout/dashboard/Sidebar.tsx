@@ -11,10 +11,17 @@ import {
 import useLogout from "../../../hooks/useLogout";
 import { useAuthStore } from "../../../store/authStore";
 import { useMessagesStore } from "../../../store/messagesStore";
+import { useEffect } from "react";
 
 export default function Sidebar() {
   const { handleLogout } = useLogout();
   const user = useAuthStore((s) => s.user);
+
+  const fetchUnreadCount = useMessagesStore((s) => s.fetchUnreadCount);
+  useEffect(() => {
+    fetchUnreadCount(); // very light call
+  }, []);
+
   const messages = useMessagesStore((s) => s.messages);
 
   const unreadMsgCount = messages.filter((m) => !m.isRead).length;

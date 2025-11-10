@@ -16,6 +16,8 @@ interface MessageState {
   messages: Message[];
   isLoading: boolean;
   error: string | null;
+  unreadCount: number;
+  fetchUnreadCount: () => Promise<void>;
   fetchMessages: () => Promise<void>;
   markAsRead: (id: string) => Promise<void>;
 }
@@ -24,6 +26,28 @@ export const useMessagesStore = create<MessageState>((set, get) => ({
   messages: [],
   isLoading: false,
   error: null,
+  unreadCount: 0,
+
+  fetchUnreadCount: async () => {
+    const user = useAuthStore.getState().user;
+    if (!user?.id) return;
+
+    try {
+      if (user.role === "coach") {
+        //first get the coach to extract his ID
+        const resCoach = await axiosClient.get("/coaches/by-user");
+        const coachId = resCoach.data.coachId;
+
+        const res = await axiosClient.get(`/messages/unread-count/${coachId}`);
+        set({ unreadCount: res.data.count });
+      } else if (user.role === "seeker") {
+        const res = await axiosClient.get(`/messages/unread-count/${user.id}`);
+        set({ unreadCount: res.data.count });
+      }
+    } catch (err) {
+      console.error("Failed to fetch unread count", err);
+    }
+  },
 
   // ✅ Smart fetch function that handles both roles
   fetchMessages: async () => {
@@ -34,11 +58,9 @@ export const useMessagesStore = create<MessageState>((set, get) => ({
     set({ isLoading: true, error: null });
 
     try {
-      let coachId = null;
-
       if (user.role === "coach") {
         const resCoach = await axiosClient.get("/coaches/by-user");
-        coachId = resCoach.data.coachId;
+        const coachId = resCoach.data.coachId;
 
         const res = await axiosClient.get(`/messages/${coachId}`);
         set({ messages: res.data, isLoading: false });
@@ -59,6 +81,7 @@ export const useMessagesStore = create<MessageState>((set, get) => ({
       messages: prevMessages.map((m) =>
         m._id === id ? { ...m, isRead: true } : m
       ),
+      unreadCount: Math.max(get().unreadCount - 1, 0), // 🔥 live update badge
     });
 
     try {
