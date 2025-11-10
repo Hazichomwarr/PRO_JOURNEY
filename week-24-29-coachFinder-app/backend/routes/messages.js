@@ -54,6 +54,7 @@ router.get("/:id", authWithToken(), async (req, res) => {
       messages = await db
         .collection("messages")
         .find({ receiverId: new ObjectId(id) }) //coach
+        .sort({ createdAt: -1 }) // latest messages first
         .toArray();
 
       if (!messages) return res.status(404).json({ error: "No message" });
@@ -107,30 +108,33 @@ router.patch("/:id/read", authWithToken(), async (req, res) => {
   }
 });
 
-// GET /messages/unread-count/:userId
+// GET /messages/unread-count/:id
 router.get("/unread-count/:id", authWithToken(), async (req, res) => {
   const db = req.app.locals.db;
   const { id } = req.params;
+
   if (!ObjectId.isValid(id)) {
-    return res.status(400).json({ message: "Invalid message id format" });
+    return res.status(400).json({ message: "Invalid id format" });
   }
+
   try {
-    let count;
-    const messagesCollection = await db.collection("messages");
+    const messagesCollection = db.collection("messages");
+
+    let filter = {};
     if (req.user.role === "coach") {
-      count = await messagesCollection.countDocuments({
-        receiverId: id,
-        isRead: false,
-      });
+      filter = { receiverId: new ObjectId(id), isRead: false };
     } else if (req.user.role === "seeker") {
-      count = await messagesCollection.countDocuments({
-        senderId: id,
-        isRead: false,
-      });
+      filter = { senderId: new ObjectId(id), isRead: false };
     }
-    console.log("count: ->", count);
+
+    const count = await messagesCollection.countDocuments(filter);
+    console.log("unread count ->", count);
+
     res.json({ count });
-  } catch (err) {}
+  } catch (err) {
+    console.error("Error fetching unread count:", err);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 module.exports = router;

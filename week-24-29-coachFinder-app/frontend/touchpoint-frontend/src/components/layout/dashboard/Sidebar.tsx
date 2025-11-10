@@ -22,9 +22,7 @@ export default function Sidebar() {
     fetchUnreadCount(); // very light call
   }, []);
 
-  const messages = useMessagesStore((s) => s.messages);
-
-  const unreadMsgCount = messages.filter((m) => !m.isRead).length;
+  const unreadMsgCount = useMessagesStore((s) => s.unreadCount);
 
   const links = [
     {
@@ -40,12 +38,18 @@ export default function Sidebar() {
     {
       to: "/dashboard/messages",
       label: (
-        <span>
-          Messages {unreadMsgCount > 0 && <span>{unreadMsgCount}</span>}
+        <span className="flex items-center gap-2">
+          <span>Messages</span>
+          {unreadMsgCount > 0 && (
+            <span className="bg-red-500 text-white text-xs font-semibold rounded-full px-2 py-0.5">
+              {unreadMsgCount}
+            </span>
+          )}
         </span>
       ),
       icon: <MessageCircle size={18} />,
     },
+
     {
       to: "/dashboard/settings",
       label: "Settings",
