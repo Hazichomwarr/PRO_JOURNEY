@@ -2,6 +2,7 @@
 import { create } from "zustand";
 import axiosClient from "../lib/axiosClient";
 import { useAuthStore } from "./authStore";
+import { User } from "lucide-react";
 
 interface Message {
   _id: string;
@@ -19,6 +20,7 @@ interface MessageState {
   unreadCount: number;
   fetchUnreadCount: () => Promise<void>;
   fetchMessages: () => Promise<void>;
+  deleteMessage: (id: string) => Promise<void>;
   markAsRead: (id: string) => Promise<void>;
 }
 
@@ -72,11 +74,23 @@ export const useMessagesStore = create<MessageState>((set, get) => ({
       set({ error: "Failed to fetch messages", isLoading: false });
     }
   },
+
+  //Delete a message fn
+  deleteMessage: async (msgId) => {
+    const prev = get().messages;
+    set({ messages: prev.filter((m) => m._id !== msgId) }); // optimistic UI
+
+    try {
+      const res = await axiosClient.delete(`/messages/${msgId}`);
+      console.log(res.data);
+    } catch (err) {
+      set({ messages: prev, error: "Failed deleting messages" });
+    }
+  },
+
   // ✅ Optimistic update + rollback on failure
   markAsRead: async (id) => {
     const prevMessages = get().messages;
-
-    // Optimistically mark as read locally
     set({
       messages: prevMessages.map((m) =>
         m._id === id ? { ...m, isRead: true } : m

@@ -2,20 +2,27 @@
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../../store/authStore";
 import { useMessagesStore } from "../../store/messagesStore";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Trash2Icon } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 //Pages/dashboard/Messages.tsx
 export default function Messages() {
   const user = useAuthStore((s) => s.user);
 
-  const { messages, fetchMessages, markAsRead, isLoading } = useMessagesStore();
+  const { messages, fetchMessages, markAsRead, deleteMessage, isLoading } =
+    useMessagesStore();
   const [openMessageId, setOpenMessageId] = useState<string | null>(null);
 
-  //it works but opens all the messages open at once
   const handleOpenMessage = (id: string) => {
     setOpenMessageId((prevId) => (prevId === id ? null : id));
     if (openMessageId !== id) markAsRead(id);
   };
+
+  // //delete message fn
+  // const handleDeleteMessage = (id: string) => {
+  //   deleteMessage(id);
+  //   console.log("message deleted successfully!");
+  // };
 
   //auto-fetch Logged in user (coach) messages right away
   useEffect(() => {
@@ -33,35 +40,48 @@ export default function Messages() {
       </h2>
 
       <ul className="space-y-3">
-        {messages.map((msg) => {
-          const isOpen = openMessageId === msg._id;
-          return (
-            <li
-              key={msg._id}
-              onClick={() => handleOpenMessage(msg._id)}
-              aria-expanded={isOpen}
-              className={`p-4 rounded-xl border transition-all cursor-pointer ${
-                msg.isRead
-                  ? "bg-white hover:shadow-sm"
-                  : "bg-blue-50 border-blue-200 shadow-md"
-              }`}
-            >
-              <div className="flex justify-between">
-                <p className="font-semibold text-gray-700">
-                  From: {msg.senderName}{" "}
-                  {isOpen ? <ChevronUp /> : <ChevronDown />}
-                </p>
+        <AnimatePresence>
+          {messages.map((msg) => {
+            const isOpen = openMessageId === msg._id;
+            return (
+              <motion.li
+                className="space-y-3 flex justify-center items-center gap-4"
+                key={msg._id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                transition={{ duration: 0.25 }}
+              >
+                <div
+                  onClick={() => handleOpenMessage(msg._id)}
+                  aria-expanded={isOpen}
+                  className={`flex-1 p-4 rounded-xl border transition-all cursor-pointer ${
+                    msg.isRead
+                      ? "bg-white hover:shadow-sm"
+                      : "bg-blue-50 border-blue-200 shadow-md"
+                  }`}
+                >
+                  <div className="flex justify-between">
+                    <p className="font-semibold text-gray-700">
+                      From: {msg.senderName}{" "}
+                      {isOpen ? <ChevronUp /> : <ChevronDown />}
+                    </p>
 
-                {msg.createdAt && (
-                  <span>{new Date(msg.createdAt).toLocaleString()}</span>
-                )}
-              </div>
-              {isOpen && (
-                <p className="text-gray-600 mt-5 italic">{msg.content}</p>
-              )}
-            </li>
-          );
-        })}
+                    {msg.createdAt && (
+                      <span>{new Date(msg.createdAt).toLocaleString()}</span>
+                    )}
+                  </div>
+                  {isOpen && (
+                    <p className="text-gray-600 mt-5 italic">{msg.content}</p>
+                  )}
+                </div>
+                <button onClick={() => deleteMessage(msg._id)}>
+                  <Trash2Icon color="red" size={25} />
+                </button>
+              </motion.li>
+            );
+          })}
+        </AnimatePresence>
       </ul>
     </div>
   );

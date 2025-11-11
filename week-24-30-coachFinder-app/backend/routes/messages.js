@@ -58,8 +58,6 @@ router.get("/:id", authWithToken(), async (req, res) => {
         .toArray();
 
       if (!messages) return res.status(404).json({ error: "No message" });
-
-      res.status(200).json(messages);
     } else if (req.user.role === "seeker") {
       messages = await db
         .collection("messages")
@@ -71,7 +69,8 @@ router.get("/:id", authWithToken(), async (req, res) => {
     }
 
     //return messages Doc
-    res.status(200).json(messages);
+    console.log("got messages ->", messages);
+    return res.status(200).json(messages);
   } catch (err) {
     console.error("Error fetching coach:", err);
     res.status(500).json({ message: "Server error while fetching coach" });
@@ -135,6 +134,26 @@ router.get("/unread-count/:id", authWithToken(), async (req, res) => {
     console.error("Error fetching unread count:", err);
     res.status(500).json({ error: "Server error" });
   }
+});
+
+//DELETE a message
+router.delete("/:id", authWithToken(), async (req, res) => {
+  console.log("inside delete /messages/:id");
+  const db = req.app.locals.db;
+  const { id } = req.params;
+
+  if (!ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid id format" });
+  }
+
+  const result = await db
+    .collection("messages")
+    .deleteOne({ _id: new ObjectId(id) });
+  if (result.deletedCount === 0) {
+    return res.status(404).json({ message: "Message Not found" });
+  }
+  console.log("message deletion success!!!");
+  return res.status(200).json({ message: "Message deleted successfully!" });
 });
 
 module.exports = router;
