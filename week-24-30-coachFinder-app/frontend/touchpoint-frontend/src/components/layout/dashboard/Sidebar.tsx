@@ -88,14 +88,18 @@ export default function Sidebar() {
           })}
 
           {/* Collapsible settings items */}
-
           <div
-            className={`block px-3 py-2 rounded-md transition-all duration-200 bg-blue-100 text-blue-600 active:text-gray-700 hover:bg-gray-100`}
+            className={`block px-3 py-2 rounded-md transition-all duration-200 cursor-pointer ${
+              location.pathname.startsWith("/dashboard/settings")
+                ? "bg-blue-100 text-blue-600"
+                : "text-gray-700 hover:bg-gray-100"
+            }`}
           >
             <div
               className="flex gap-4 items-center"
               onClick={() => {
                 setIsOpen((prev) => !prev);
+                if (!isOpen) navigate("/dashboard/settings"); // inversed logic because of delayed update in state.
               }}
             >
               <Settings size={18} />
@@ -114,7 +118,7 @@ export default function Sidebar() {
                   <li
                     key={i.path}
                     onClick={() => {
-                      console.log("clicked", i.label);
+                      // setIsOpen((prev) => !prev);
                       navigate(`/dashboard/settings/${i.path}`);
                     }}
                     className="text-gray-600 hover:text-blue-600 hover:underline cursor-pointer"
