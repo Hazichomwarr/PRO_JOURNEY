@@ -219,6 +219,7 @@
 
 //utils/axiosClient.ts
 import axios, { AxiosRequestConfig, AxiosError } from "axios";
+import { useAuthStore } from "../store/authStore";
 
 /* --- Extend AxiosRequestConfig so TS knows about _retry --- */
 declare module "axios" {
@@ -349,7 +350,8 @@ axiosClient.interceptors.response.use(
         localStorage.removeItem("refreshToken");
       } catch (_) {}
       // Redirect to login (or better: call auth store logout)
-      window.location.href = "/login";
+      const { logout } = useAuthStore.getState();
+      logout();
       return Promise.reject(refreshErr);
     } finally {
       // Ensure resetting the flag if not already cleared

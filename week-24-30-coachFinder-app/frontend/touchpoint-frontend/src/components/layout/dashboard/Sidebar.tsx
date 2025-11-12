@@ -1,5 +1,5 @@
 //components/layout/dashboard/Sidebar.tsx
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Home,
@@ -22,6 +22,7 @@ export default function Sidebar() {
   const user = useAuthStore((s) => s.user);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const fetchUnreadCount = useMessagesStore((s) => s.fetchUnreadCount);
   useEffect(() => {

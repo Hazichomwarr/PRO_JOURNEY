@@ -1,6 +1,7 @@
 //store/authStore.ts
 import { create } from "zustand";
 import axiosClient from "../lib/axiosClient";
+import refreshClient from "../lib/axiosClient";
 
 interface UserFromTokenPayload {
   id: string;
@@ -89,9 +90,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     const [, payload] = accessToken.split(".");
     const decoded = JSON.parse(atob(payload));
-    const expiryMS = decoded.exp * 1000 - Date.now() - 60000; //1 min before expiry
+    // const expiryMS = decoded.exp * 1000 - Date.now() - 60000; //1 min before expiry
 
-    setTimeout(() => get().refreshAccessToken(), expiryMS);
+    // setTimeout(() => get().refreshAccessToken(), expiryMS);
+    const delay = Math.max(decoded.exp * 1000 - Date.now() - 60000, 0);
+    setTimeout(() => get().refreshAccessToken(), delay);
   },
 
   //refresh token logic
@@ -103,7 +106,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
 
     try {
-      const res = await axiosClient.post("/auth/refresh", { refreshToken });
+      const res = await refreshClient.post("/auth/refresh", { refreshToken });
       const { accessToken: newAccess } = res.data;
 
       localStorage.setItem("accessToken", newAccess);
