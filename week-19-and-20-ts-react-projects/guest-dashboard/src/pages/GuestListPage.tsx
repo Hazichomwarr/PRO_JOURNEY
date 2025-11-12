@@ -20,10 +20,10 @@ export default function GuestListPage() {
     setFlash,
   } = useGuestContext();
 
-  const navigation = useNavigate();
+  const navigateTo = useNavigate();
 
   function handleEdit(guest: Guest) {
-    navigation(`/guests/${guest.id}/update`);
+    navigateTo(`/guests/${guest.id}/update`);
   }
 
   const hasSearch = Boolean(filterCategory || sortBy);
@@ -65,7 +65,7 @@ export default function GuestListPage() {
         </select>
 
         {/* Button to clear search/filter/sort */}
-        {hasSearch && (
+        {hasSearch && processedGuests.length > 0 && (
           <button
             className="px-3 py-2 rounded-lg border border-gray-300 shadow-sm bg-blue-600 text-white"
             onClick={() => {
@@ -96,7 +96,7 @@ export default function GuestListPage() {
       {/* if No guests */}
       <GuestListEmpty
         guests={processedGuests}
-        onRegister={() => navigation("/guests/new")}
+        onRegister={() => navigateTo("/guests/new")}
         hasSearch={hasSearch}
       />
 
