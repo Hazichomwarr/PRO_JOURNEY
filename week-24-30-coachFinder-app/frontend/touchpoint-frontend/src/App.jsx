@@ -17,6 +17,9 @@ import CoachRegistration from "./pages/CoachRegistration";
 import PublicRoute from "./components/layout/PublicRoute";
 import RoleBasedDashboard from "./components/layout/dashboard/RoleBasedDashboard";
 import SessionWatcher from "./components/SessionWatcher";
+import AppearanceMode from "./pages/dashboard/AppearanceMode";
+import EditUserProfile from "./pages/dashboard/EditUserProfile";
+import ChangePassword from "./pages/dashboard/ChangePassword";
 
 export default function App() {
   const restoreSession = useAuthStore((s) => s.restoreSession);
@@ -27,6 +30,7 @@ export default function App() {
   return (
     <Router>
       <SessionWatcher />
+      <Navbar />
       <Routes>
         <Route path="/" index element={<Home />} />
         <Route path="/home" element={<Home />} />
@@ -61,7 +65,11 @@ export default function App() {
           <Route path="overview" element={<RoleBasedDashboard />} />
           <Route path="find" element={<FindCoach />} />
           <Route path="messages" element={<Messages />} />
-          <Route path="settings" element={<AccountSettings />} />
+          <Route path="settings" element={<AccountSettings />}>
+            <Route path="appearance" element={<AppearanceMode />} />
+            <Route path="edit-profile" element={<EditUserProfile />} />
+            <Route path="change-password" element={<ChangePassword />} />
+          </Route>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -1,5 +1,6 @@
 //components/layout/dashboard/Sidebar.tsx
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   Home,
   Settings,
@@ -7,15 +8,20 @@ import {
   ScanSearch,
   UserPlus,
   LogOut,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import useLogout from "../../../hooks/useLogout";
 import { useAuthStore } from "../../../store/authStore";
 import { useMessagesStore } from "../../../store/messagesStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Sidebar() {
   const { handleLogout } = useLogout();
+  const [isOpen, setIsOpen] = useState(false);
   const user = useAuthStore((s) => s.user);
+
+  const navigate = useNavigate();
 
   const fetchUnreadCount = useMessagesStore((s) => s.fetchUnreadCount);
   useEffect(() => {
@@ -49,34 +55,77 @@ export default function Sidebar() {
       ),
       icon: <MessageCircle size={18} />,
     },
-
-    {
-      to: "/dashboard/settings",
-      label: "Settings",
-      icon: <Settings size={18} />,
-    },
   ];
+  const settingsLinkItems = [
+    { label: "Appearance", path: "appearance" },
+    { label: "Edit Profile", path: "edit-profile" },
+    { label: "Change Password", path: "change-password" },
+  ];
+
   return (
     <div className=" flex flex-col justify-between p-4 space-y-6 w-64 h-screen bg-white shadow-md">
       <div>
         <h1 className="text-xl font-bold mb-8 text-blue-600">TouchPoint</h1>
         <nav className="space-y-3">
-          {links.map((link) => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-200 ${
-                  isActive
-                    ? "bg-blue-100 text-blue-600"
-                    : "text-gray-700 hover:bg-gray-100"
-                }`
-              }
+          {links.map((link) => {
+            return (
+              <NavLink
+                to={link.to}
+                key={link.to}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-200 
+                   ${
+                     isActive
+                       ? "bg-blue-100 text-blue-600"
+                       : "text-gray-700 hover:bg-gray-100"
+                   }`
+                }
+              >
+                {link.icon}
+                {link.label}
+              </NavLink>
+            );
+          })}
+
+          {/* Collapsible settings items */}
+
+          <div
+            className={`block px-3 py-2 rounded-md transition-all duration-200 bg-blue-100 text-blue-600 active:text-gray-700 hover:bg-gray-100`}
+          >
+            <div
+              className="flex gap-4 items-center"
+              onClick={() => {
+                setIsOpen((prev) => !prev);
+              }}
             >
-              {link.icon}
-              {link.label}
-            </NavLink>
-          ))}
+              <Settings size={18} />
+              <span>Settings</span>
+              {!isOpen ? <ChevronDown /> : <ChevronUp />}
+            </div>
+
+            {isOpen && (
+              <motion.ul
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="ml-8 mt-2 flex flex-col gap-1 space-y-2 overflow-hidden"
+              >
+                {settingsLinkItems.map((i) => (
+                  <li
+                    key={i.path}
+                    onClick={() => {
+                      console.log("clicked", i.label);
+                      navigate(`/dashboard/settings/${i.path}`);
+                    }}
+                    className="text-gray-600 hover:text-blue-600 hover:underline cursor-pointer"
+                  >
+                    {i.label}
+                  </li>
+                ))}
+              </motion.ul>
+            )}
+          </div>
+
           {user?.role !== "coach" && (
             <NavLink
               to={"/coaches/new"}
