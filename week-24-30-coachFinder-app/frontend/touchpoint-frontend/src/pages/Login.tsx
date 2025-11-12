@@ -1,9 +1,10 @@
 //pages/login.tsx
-import { useReducer, FormEvent, ChangeEvent } from "react";
+import { useReducer, FormEvent, ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../lib/axiosClient";
 import { useAuthStore } from "../store/authStore";
 import { useUserStore } from "../store/userStore";
+import FlashMessage from "../components/ui/FlashMessage";
 
 interface LoginState {
   email: string;
@@ -35,7 +36,7 @@ function reducer(state: LoginState, action: Action): LoginState {
 
 export default function Login() {
   const [state, dispatch] = useReducer(reducer, initialLoginState);
-  const { setAuth } = useAuthStore();
+  const { setAuth, pageVisit, decreasePageVisit } = useAuthStore();
   const navigate = useNavigate();
   const { setUser } = useUserStore();
 
@@ -53,11 +54,11 @@ export default function Login() {
         email: payload.email,
         role: payload.role,
       };
-      console.log("user ->", res.data.user);
+      console.log("A User just logged in ->", res.data.user);
 
       setAuth(user, accessToken, refreshToken);
       setUser(res.data.user); //set the userStore as well
-      navigate("/dashboard");
+      navigate("/dashboard", { state: 1 }); //For flash message
     } catch (err: any) {
       console.error("Login failed:", err.response?.data || err.message);
       alert("Invalid credentials");
@@ -66,6 +67,16 @@ export default function Login() {
 
   return (
     <div>
+      {/* FlashMessage if there's one */}
+      {pageVisit === 0 && (
+        <FlashMessage
+          message={"You are Logged out."}
+          type="info"
+          duration={5000}
+          onClose={() => decreasePageVisit(pageVisit)}
+        />
+      )}
+      {/* Login Form */}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 w-[300px] mx-auto my-10 p-6 border rounded-lg shadow-md"

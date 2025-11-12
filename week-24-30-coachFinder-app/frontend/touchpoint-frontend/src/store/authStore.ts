@@ -16,6 +16,10 @@ interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
+  pageVisit: number;
+
+  increasePageVisit: (numb: number) => void;
+  decreasePageVisit: (numb: number) => void;
 
   setAuth: (
     user: UserFromTokenPayload,
@@ -33,13 +37,24 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   accessToken: null,
   refreshToken: null,
   isAuthenticated: false,
+  pageVisit: 0,
+
+  // for flash messages
+  increasePageVisit: (numb) => set({ pageVisit: numb + 1 }),
+  decreasePageVisit: (numb) => set({ pageVisit: numb - 1 }),
 
   //When login/register succeeds
   setAuth: (user, accessToken, refreshToken) => {
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
     localStorage.setItem("user", JSON.stringify(user));
-    set({ user, accessToken, refreshToken, isAuthenticated: true });
+    set({
+      user,
+      accessToken,
+      refreshToken,
+      isAuthenticated: true,
+      pageVisit: 1,
+    });
   },
 
   //logout handler
@@ -55,11 +70,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       console.warn("Logout warning", err);
     } finally {
       localStorage.clear();
+
       set({
         user: null,
         accessToken: null,
         refreshToken: null,
         isAuthenticated: false,
+        pageVisit: 0,
       });
     }
   },
