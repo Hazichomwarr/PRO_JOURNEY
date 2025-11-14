@@ -7,7 +7,7 @@ export default function Register() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center bg-gray-50">
+    <div className="mt-6 flex flex-col max-h-[90vh] items-center justify-center bg-gray-50">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-lg rounded-2xl bg-white p-8 shadow-md space-y-4"
