@@ -14,6 +14,7 @@ export interface UserFormValues {
   state: string;
   role: "coach" | "buddy" | "seeker" | "";
   birthDate: string;
+  image?: File | string | null;
 }
 
 export const initialRegisterState: UserFormValues = {
@@ -27,11 +28,16 @@ export const initialRegisterState: UserFormValues = {
   state: "",
   role: "",
   birthDate: "",
+  image: "",
 };
 
 // ---- Reducer ----
 type Action =
-  | { type: "SET_FIELD"; field: keyof UserFormValues; value: string }
+  | {
+      type: "SET_FIELD";
+      field: keyof UserFormValues;
+      value: UserFormValues[keyof UserFormValues];
+    }
   | { type: "RESET" };
 
 function reducer(state: UserFormValues, action: Action): UserFormValues {
@@ -83,12 +89,9 @@ export function useRegisterForm() {
       console.log("Registration error:", error.response?.data || error.message);
       useFlashStore
         .getState()
-        .addFlash(
-          error.response?.data?.message || "Registration failed. Try again.",
-          "error"
-        );
+        .addFlash("Something went wrong. Try again later", "info");
     }
   };
 
-  return { state, handleChange, handleSubmit };
+  return { state, dispatch, handleChange, handleSubmit };
 }

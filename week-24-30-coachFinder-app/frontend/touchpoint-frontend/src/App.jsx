@@ -20,6 +20,7 @@ import SessionWatcher from "./components/SessionWatcher";
 import AppearanceMode from "./pages/dashboard/AppearanceMode";
 import EditUserProfile from "./pages/dashboard/EditUserProfile";
 import ChangePassword from "./pages/dashboard/ChangePassword";
+import WrapperWithTransition from "./components/ui/WrapperWithTransition";
 
 export default function App() {
   const restoreSession = useAuthStore((s) => s.restoreSession);
@@ -34,38 +35,100 @@ export default function App() {
         <Navbar />
         <Routes>
           <Route path="/" index element={<Home />} />
-          <Route path="/home" element={<Home />} />
+          <Route
+            path="/home"
+            element={
+              <WrapperWithTransition>
+                <Home />
+              </WrapperWithTransition>
+            }
+          />
           <Route
             path="/login"
             element={
               <PublicRoute>
-                <Login />
+                <WrapperWithTransition>
+                  <Login />
+                </WrapperWithTransition>
               </PublicRoute>
             }
           />
-          <Route path="/register" element={<Register />} />
-          <Route path="/coaches" element={<CoachList />} />
+          <Route
+            path="/register"
+            element={
+              <WrapperWithTransition>
+                <Register />
+              </WrapperWithTransition>
+            }
+          />
+          <Route
+            path="/coaches"
+            element={
+              <WrapperWithTransition>
+                <CoachList />
+              </WrapperWithTransition>
+            }
+          />
           <Route
             path="/coaches/new"
             element={
               <ProtectedRoute>
-                <CoachRegistration />
+                <WrapperWithTransition>
+                  <CoachRegistration />
+                </WrapperWithTransition>
               </ProtectedRoute>
             }
           />
-          <Route path="/coach/:id" element={<CoachDetail />} />
+          <Route
+            path="/coach/:id"
+            element={
+              <WrapperWithTransition>
+                <CoachDetail />
+              </WrapperWithTransition>
+            }
+          />
           <Route
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <WrapperWithTransition>
+                  <Dashboard />
+                </WrapperWithTransition>
               </ProtectedRoute>
             }
           >
-            <Route index element={<RoleBasedDashboard />} />
-            <Route path="overview" element={<RoleBasedDashboard />} />
-            <Route path="find" element={<FindCoach />} />
-            <Route path="messages" element={<Messages />} />
+            <Route
+              index
+              element={
+                <WrapperWithTransition>
+                  <RoleBasedDashboard />
+                </WrapperWithTransition>
+              }
+            />
+            <Route
+              path="overview"
+              element={
+                <WrapperWithTransition>
+                  <RoleBasedDashboard />
+                </WrapperWithTransition>
+              }
+            />
+            <Route
+              path="find"
+              element={
+                <WrapperWithTransition>
+                  <FindCoach />
+                </WrapperWithTransition>
+              }
+            />
+            <Route
+              path="messages"
+              element={
+                <WrapperWithTransition>
+                  <Messages />
+                </WrapperWithTransition>
+              }
+            />
             <Route path="settings" element={<AccountSettings />}>
               <Route path="appearance" element={<AppearanceMode />} />
               <Route path="edit-profile" element={<EditUserProfile />} />

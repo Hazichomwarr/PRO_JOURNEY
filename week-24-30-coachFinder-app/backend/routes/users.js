@@ -29,7 +29,7 @@ router.get("/:id", async (req, res) => {
       .collection("users")
       .findOne(
         { _id: new ObjectId(id) },
-        { projection: { password: 0, dateBirth: 0 } }
+        { projection: { password: 0, confirmPassword: 0, dateBirth: 0 } }
       );
     if (!user) return res.status(404).json({ error: "User not found" });
     res.status(200).json(user);
@@ -50,10 +50,10 @@ router.put("/:id", async (req, res) => {
       .findOne({ _id: new ObjectId(id) });
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    //if pwd provided
-    if (password && password === confirmPassword) {
-      values.password = await bcrypt.hash(password, 12);
-    }
+    // //if pwd provided
+    // if (password && password === confirmPassword) {
+    //   values.password = await bcrypt.hash(password, 12);
+    // }
 
     //now update user in db
     const result = await db
@@ -79,7 +79,7 @@ router.get("/me", authWithToken(), async (req, res) => {
       .collection("users")
       .findOne(
         { _id: new ObjectId(req.user.id) },
-        { projection: { password: 0 } }
+        { projection: { password: 0, confirmPassword: 0, dateBirth: 0 } }
       );
 
     if (!user) return res.status(404).json({ message: "User not found" });

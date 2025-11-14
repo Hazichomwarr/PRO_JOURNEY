@@ -2,7 +2,6 @@
 import { create } from "zustand";
 import axiosClient from "../lib/axiosClient";
 import refreshClient from "../lib/axiosClient";
-import { usePageTracker } from "./pageTracker";
 import { useFlashStore } from "./flashStore";
 
 interface UserFromTokenPayload {

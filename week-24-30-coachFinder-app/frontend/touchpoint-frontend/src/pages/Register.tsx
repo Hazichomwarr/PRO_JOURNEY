@@ -1,3 +1,4 @@
+import InputField from "../components/ui/InputField";
 import { useRegisterForm } from "../hooks/useRegisterForm";
 import { useNavigate } from "react-router-dom";
 
@@ -17,67 +18,62 @@ export default function Register() {
 
         {/* --- First & Last Name --- */}
         <div className="grid grid-cols-2 gap-3">
-          <input
+          <InputField
+            value={state.firstName}
+            changeFn={handleChange("firstName")}
             type="text"
             placeholder="First Name"
-            value={state.firstName}
-            onChange={handleChange("firstName")}
-            className="border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none"
           />
-          <input
+          <InputField
+            value={state.lastName}
+            changeFn={handleChange("lastName")}
             type="text"
             placeholder="Last Name"
-            value={state.lastName}
-            onChange={handleChange("lastName")}
-            className="border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none"
           />
         </div>
 
-        {/* --- Email --- */}
-        <input
-          type="email"
-          placeholder="Email"
-          value={state.email}
-          onChange={handleChange("email")}
-          className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none"
-        />
+        {/* --- Email & Phone --- */}
+        <div className="grid grid-cols-2 gap-3">
+          <InputField
+            value={state.email}
+            changeFn={handleChange("email")}
+            type="email"
+            placeholder="Email"
+          />
 
-        {/* --- Phone --- */}
-        <input
-          type="tel"
-          placeholder="Phone"
-          value={state.phone}
-          onChange={handleChange("phone")}
-          className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none"
-        />
+          <InputField
+            value={state.phone}
+            changeFn={handleChange("phone")}
+            type="tel"
+            placeholder="Phone"
+          />
+        </div>
 
         {/* --- Address City & State --- */}
         <div className="grid grid-cols-2 gap-3">
-          <input
+          <InputField
+            value={state.city}
+            changeFn={handleChange("city")}
             type="text"
             placeholder="City"
-            value={state.city}
-            onChange={handleChange("city")}
-            className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none"
           />
-          <input
+
+          <InputField
+            value={state.state}
+            changeFn={handleChange("state")}
             type="text"
             placeholder="State/Country"
-            value={state.state}
-            onChange={handleChange("state")}
-            className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none"
           />
         </div>
 
         {/* --- Birth Date --- */}
         <label className="flex items-center gap-2 text-gray-600">
           DOB
-          <input
+          <InputField
+            value={state.birthDate}
+            changeFn={handleChange("birthDate")}
             type="date"
             placeholder="Birth Date"
-            value={state.birthDate}
-            onChange={handleChange("birthDate")}
-            className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none"
           />
         </label>
 
@@ -99,20 +95,30 @@ export default function Register() {
         </div>
 
         {/* --- Passwords --- */}
-        <input
-          type="password"
-          placeholder="Password"
+
+        <InputField
           value={state.password}
-          onChange={handleChange("password")}
-          className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none"
+          changeFn={handleChange("password")}
+          type="text"
+          placeholder="Password"
         />
-        <input
-          type="password"
-          placeholder="Confirm Password"
+
+        <InputField
           value={state.confirmPassword}
-          onChange={handleChange("confirmPassword")}
-          className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none"
+          changeFn={handleChange("confirmPassword")}
+          type="text"
+          placeholder="Confirm Password"
         />
+
+        {/* ---IMAGE/AVATAR---
+        <label className=" flex items-center gap-6 text-gray-700">
+          <span>Add Picture (or an Avatar) </span>
+          <InputField
+            value={state.image || ""}
+            changeFn={handleChange("image")}
+            type="file"
+          />
+        </label> */}
 
         {/* --- Submit --- */}
         <button

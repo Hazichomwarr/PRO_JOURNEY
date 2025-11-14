@@ -1,5 +1,10 @@
-import React from "react";
-
+// pages/dashboard/EditUserprofile.tsx
+import UserProfileForm from "../../components/layout/UserProfileForm";
+import WrapperWithTransition from "../../components/ui/WrapperWithTransition";
 export default function EditUserProfile() {
-  return <div>EditUserProfile</div>;
+  return (
+    <WrapperWithTransition>
+      <UserProfileForm />
+    </WrapperWithTransition>
+  );
 }
