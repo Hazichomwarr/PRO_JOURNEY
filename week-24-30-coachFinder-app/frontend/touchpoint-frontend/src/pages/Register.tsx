@@ -15,7 +15,6 @@ export default function Register() {
         <h2 className="text-2xl font-semibold text-center text-gray-700">
           Create Your User Account
         </h2>
-
         {/* --- First & Last Name --- */}
         <div className="grid grid-cols-2 gap-3">
           <InputField
@@ -31,7 +30,6 @@ export default function Register() {
             placeholder="Last Name"
           />
         </div>
-
         {/* --- Email & Phone --- */}
         <div className="grid grid-cols-2 gap-3">
           <InputField
@@ -48,7 +46,6 @@ export default function Register() {
             placeholder="Phone"
           />
         </div>
-
         {/* --- Address City & State --- */}
         <div className="grid grid-cols-2 gap-3">
           <InputField
@@ -65,7 +62,6 @@ export default function Register() {
             placeholder="State/Country"
           />
         </div>
-
         {/* --- Birth Date --- */}
         <label className="flex items-center gap-2 text-gray-600">
           DOB
@@ -76,7 +72,6 @@ export default function Register() {
             placeholder="Birth Date"
           />
         </label>
-
         {/* --- Role --- */}
         <div className="space-y-2">
           <label className="text-gray-700 font-medium">
@@ -93,33 +88,28 @@ export default function Register() {
             </select>
           </label>
         </div>
-
         {/* --- Passwords --- */}
-
         <InputField
           value={state.password}
           changeFn={handleChange("password")}
           type="text"
           placeholder="Password"
         />
-
         <InputField
           value={state.confirmPassword}
           changeFn={handleChange("confirmPassword")}
           type="text"
           placeholder="Confirm Password"
         />
-
-        {/* ---IMAGE/AVATAR---
+        ---IMAGE/AVATAR---
         <label className=" flex items-center gap-6 text-gray-700">
           <span>Add Picture (or an Avatar) </span>
           <InputField
-            value={state.image || ""}
+            value={state.image || ""} //<- Type 'string | File' is not assignable to type 'string | number | null | undefined'.
             changeFn={handleChange("image")}
             type="file"
           />
-        </label> */}
-
+        </label>
         {/* --- Submit --- */}
         <button
           type="submit"

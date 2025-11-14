@@ -1,143 +1,201 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { useAuthStore } from "./store/authStore";
+import SessionWatcher from "./components/SessionWatcher";
+import ProtectedRoute from "./components/layout/ProtectedRoute";
+import PublicRoute from "./components/layout/PublicRoute";
+import WrapperWithTransition from "./components/ui/WrapperWithTransition";
+
+// Layouts
+import Navbar from "./components/layout/Navbar";
+import DashboardLayout from "./components/layout/dashboard/DashboardLayout";
+
+// Public pages
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import CoachList from "./pages/CoachList";
 import CoachDetail from "./pages/CoachDetail";
-import Dashboard from "./pages/dashboard/Dashboard";
-import NotFound from "./pages/NotFound";
-import Navbar from "./components/layout/Navbar";
-import { useEffect } from "react";
-import { useAuthStore } from "./store/authStore";
-import ProtectedRoute from "./components/layout/ProtectedRoute";
-import FindCoach from "./pages/dashboard/FindCoach";
-import AccountSettings from "./pages/dashboard/AccountSettings";
-import Messages from "./pages/dashboard/Messages";
 import CoachRegistration from "./pages/CoachRegistration";
-import PublicRoute from "./components/layout/PublicRoute";
+import NotFound from "./pages/NotFound";
+
+// Dashboard pages
 import RoleBasedDashboard from "./components/layout/dashboard/RoleBasedDashboard";
-import SessionWatcher from "./components/SessionWatcher";
+import FindCoach from "./pages/dashboard/FindCoach";
+import Messages from "./pages/dashboard/Messages";
+import AccountSettings from "./pages/dashboard/AccountSettings";
 import AppearanceMode from "./pages/dashboard/AppearanceMode";
 import EditUserProfile from "./pages/dashboard/EditUserProfile";
 import ChangePassword from "./pages/dashboard/ChangePassword";
-import WrapperWithTransition from "./components/ui/WrapperWithTransition";
 
 export default function App() {
   const restoreSession = useAuthStore((s) => s.restoreSession);
 
+  // Restore auth session on load
   useEffect(() => {
     restoreSession();
   }, [restoreSession]);
+
   return (
-    <>
-      <Router>
-        <SessionWatcher />
-        <Navbar />
-        <Routes>
-          <Route path="/" index element={<Home />} />
+    <Router>
+      <SessionWatcher />
+
+      {/* Static navigation */}
+      <Navbar />
+
+      <Routes>
+        {/* PUBLIC ROUTES */}
+        <Route
+          path="/"
+          element={
+            <WrapperWithTransition>
+              <Home />
+            </WrapperWithTransition>
+          }
+        />
+
+        <Route
+          path="/home"
+          element={
+            <WrapperWithTransition>
+              <Home />
+            </WrapperWithTransition>
+          }
+        />
+
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <WrapperWithTransition>
+                <Login />
+              </WrapperWithTransition>
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path="/register"
+          element={
+            <WrapperWithTransition>
+              <Register />
+            </WrapperWithTransition>
+          }
+        />
+
+        <Route
+          path="/coaches"
+          element={
+            <WrapperWithTransition>
+              <CoachList />
+            </WrapperWithTransition>
+          }
+        />
+
+        <Route
+          path="/coach/:id"
+          element={
+            <WrapperWithTransition>
+              <CoachDetail />
+            </WrapperWithTransition>
+          }
+        />
+
+        <Route
+          path="/coaches/new"
+          element={
+            <ProtectedRoute>
+              <WrapperWithTransition>
+                <CoachRegistration />
+              </WrapperWithTransition>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* DASHBOARD ROUTES (static layout + animated pages) */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout /> {/* ⬅️ Stays mounted, does NOT animate */}
+            </ProtectedRoute>
+          }
+        >
           <Route
-            path="/home"
+            index
             element={
               <WrapperWithTransition>
-                <Home />
+                <RoleBasedDashboard />
               </WrapperWithTransition>
             }
           />
+
           <Route
-            path="/login"
-            element={
-              <PublicRoute>
-                <WrapperWithTransition>
-                  <Login />
-                </WrapperWithTransition>
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/register"
+            path="overview"
             element={
               <WrapperWithTransition>
-                <Register />
+                <RoleBasedDashboard />
               </WrapperWithTransition>
             }
           />
+
           <Route
-            path="/coaches"
+            path="find"
             element={
               <WrapperWithTransition>
-                <CoachList />
+                <FindCoach />
               </WrapperWithTransition>
             }
           />
+
           <Route
-            path="/coaches/new"
-            element={
-              <ProtectedRoute>
-                <WrapperWithTransition>
-                  <CoachRegistration />
-                </WrapperWithTransition>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/coach/:id"
+            path="messages"
             element={
               <WrapperWithTransition>
-                <CoachDetail />
+                <Messages />
               </WrapperWithTransition>
             }
           />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <WrapperWithTransition>
-                  <Dashboard />
-                </WrapperWithTransition>
-              </ProtectedRoute>
-            }
-          >
+
+          {/* SETTINGS */}
+          <Route path="settings" element={<AccountSettings />}>
             <Route
-              index
+              path="appearance"
               element={
                 <WrapperWithTransition>
-                  <RoleBasedDashboard />
+                  <AppearanceMode />
                 </WrapperWithTransition>
               }
             />
             <Route
-              path="overview"
+              path="edit-profile"
               element={
                 <WrapperWithTransition>
-                  <RoleBasedDashboard />
+                  <EditUserProfile />
                 </WrapperWithTransition>
               }
             />
             <Route
-              path="find"
+              path="change-password"
               element={
                 <WrapperWithTransition>
-                  <FindCoach />
+                  <ChangePassword />
                 </WrapperWithTransition>
               }
             />
-            <Route
-              path="messages"
-              element={
-                <WrapperWithTransition>
-                  <Messages />
-                </WrapperWithTransition>
-              }
-            />
-            <Route path="settings" element={<AccountSettings />}>
-              <Route path="appearance" element={<AppearanceMode />} />
-              <Route path="edit-profile" element={<EditUserProfile />} />
-              <Route path="change-password" element={<ChangePassword />} />
-            </Route>
           </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
-    </>
+        </Route>
+
+        {/* 404 */}
+        <Route
+          path="*"
+          element={
+            <WrapperWithTransition>
+              <NotFound />
+            </WrapperWithTransition>
+          }
+        />
+      </Routes>
+    </Router>
   );
 }
