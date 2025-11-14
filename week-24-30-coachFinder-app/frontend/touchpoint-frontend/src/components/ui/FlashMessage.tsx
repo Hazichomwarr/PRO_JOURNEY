@@ -3,22 +3,24 @@ import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Props {
+  id: number;
   message: string;
   type?: "success" | "error" | "info";
-  onClose: () => void;
+  onClose: (id: number) => void;
   duration?: number;
 }
 
 export default function FlashMessage({
+  id,
   message,
   type = "info",
   onClose,
-  duration = 10000,
+  duration = 5000,
 }: Props) {
   //Autoclose after "duration"
   useEffect(() => {
     const timer = setTimeout(() => {
-      onClose();
+      onClose(id);
     }, duration);
     return () => clearTimeout(timer);
   }, [duration, onClose]);
@@ -43,7 +45,7 @@ export default function FlashMessage({
       >
         <span className="text-sm sm:text-base">{message}</span>
         <button
-          onClick={onClose}
+          onClick={() => onClose(id)}
           className="ml-4 text-gray-500 hover:text-gray-800"
         >
           <X className="w-4 h-4" />

@@ -1,40 +1,21 @@
 //components/layout/dashboard/Topbar.tsx
 import { Bell } from "lucide-react";
 import { useUserStore } from "../../../store/userStore";
-import { useAuthStore } from "../../../store/authStore";
 import { useMessagesStore } from "../../../store/messagesStore";
-import FlashMessage from "../../ui/FlashMessage";
 
 export default function Topbar() {
   const user = useUserStore((s) => s.user);
   const role = user?.role;
-  const messages = useMessagesStore((s) => s.messages);
-
-  // For Flash message
-  const { pageVisit, increasePageVisit } = useAuthStore();
-
-  const handleCloseFlash = () => {
-    increasePageVisit(pageVisit);
-    console.log("page visit (in close fn):", pageVisit);
-  };
-  const unreadMsgCount = messages.filter((m) => !m.isRead).length;
-
   console.log("(inside Topbar.tsx) LoggedIn-User ->", user);
+
+  const messages = useMessagesStore((s) => s.messages);
+  const unreadMsgCount = messages.filter((m) => !m.isRead).length;
 
   return (
     <header className="flex items-center justify-between bg-white shadow px-6 py-3 sticky top-0 z-10">
       <h2 className="text-lg font-semibold text-gray-800">
         Welcome back, {user?.firstName ?? "User"} 👋
       </h2>
-
-      {/* Flash Message at first visit (if there's one) */}
-      {pageVisit === 1 && (
-        <FlashMessage
-          message={"Logged In successfully!"}
-          onClose={handleCloseFlash}
-          type="success"
-        />
-      )}
 
       <div className="flex items-center gap-5">
         <button className="relative text-gray-600 hover:text-blue-600">

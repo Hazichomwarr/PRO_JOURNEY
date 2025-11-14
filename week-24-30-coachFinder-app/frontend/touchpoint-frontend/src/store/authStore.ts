@@ -2,6 +2,8 @@
 import { create } from "zustand";
 import axiosClient from "../lib/axiosClient";
 import refreshClient from "../lib/axiosClient";
+import { usePageTracker } from "./pageTracker";
+import { useFlashStore } from "./flashStore";
 
 interface UserFromTokenPayload {
   id: string;
@@ -16,10 +18,6 @@ interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
-  pageVisit: number;
-
-  increasePageVisit: (numb: number) => void;
-  decreasePageVisit: (numb: number) => void;
 
   setAuth: (
     user: UserFromTokenPayload,
@@ -37,11 +35,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   accessToken: null,
   refreshToken: null,
   isAuthenticated: false,
-  pageVisit: 0,
-
-  // for flash messages
-  increasePageVisit: (numb) => set({ pageVisit: numb + 1 }),
-  decreasePageVisit: (numb) => set({ pageVisit: numb - 1 }),
 
   //When login/register succeeds
   setAuth: (user, accessToken, refreshToken) => {
@@ -53,7 +46,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       accessToken,
       refreshToken,
       isAuthenticated: true,
-      pageVisit: 1,
     });
   },
 
@@ -61,6 +53,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   logout: async () => {
     try {
       const refreshToken = localStorage.getItem("refreshToken");
+
       if (refreshToken) {
         await axiosClient.delete("/auth/logout", {
           data: { token: refreshToken },
@@ -76,8 +69,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         accessToken: null,
         refreshToken: null,
         isAuthenticated: false,
-        pageVisit: 0,
       });
+
+      //Reset page tracker store
+      useFlashStore.getState().addFlash("You have logged out.", "info");
     }
   },
 

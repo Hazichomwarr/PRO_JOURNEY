@@ -4,6 +4,7 @@ import { useAuthStore } from "../../store/authStore";
 import { useMessagesStore } from "../../store/messagesStore";
 import { ChevronDown, ChevronUp, Trash2Icon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useFlashStore } from "../../store/flashStore";
 
 //Pages/dashboard/Messages.tsx
 export default function Messages() {
@@ -18,11 +19,10 @@ export default function Messages() {
     if (openMessageId !== id) markAsRead(id);
   };
 
-  // //delete message fn
-  // const handleDeleteMessage = (id: string) => {
-  //   deleteMessage(id);
-  //   console.log("message deleted successfully!");
-  // };
+  const handleDelete = (id: string) => {
+    deleteMessage(id);
+    useFlashStore.getState().addFlash("Message deleted successfully", "error");
+  };
 
   //auto-fetch Logged in user (coach) messages right away
   useEffect(() => {
@@ -75,7 +75,7 @@ export default function Messages() {
                     <p className="text-gray-600 mt-5 italic">{msg.content}</p>
                   )}
                 </div>
-                <button onClick={() => deleteMessage(msg._id)}>
+                <button onClick={() => handleDelete(msg._id)}>
                   <Trash2Icon color="red" size={25} />
                 </button>
               </motion.li>

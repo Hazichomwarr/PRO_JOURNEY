@@ -28,51 +28,53 @@ export default function App() {
     restoreSession();
   }, [restoreSession]);
   return (
-    <Router>
-      <SessionWatcher />
-      <Navbar />
-      <Routes>
-        <Route path="/" index element={<Home />} />
-        <Route path="/home" element={<Home />} />
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
-        <Route path="/register" element={<Register />} />
-        <Route path="/coaches" element={<CoachList />} />
-        <Route
-          path="/coaches/new"
-          element={
-            <ProtectedRoute>
-              <CoachRegistration />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/coach/:id" element={<CoachDetail />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<RoleBasedDashboard />} />
-          <Route path="overview" element={<RoleBasedDashboard />} />
-          <Route path="find" element={<FindCoach />} />
-          <Route path="messages" element={<Messages />} />
-          <Route path="settings" element={<AccountSettings />}>
-            <Route path="appearance" element={<AppearanceMode />} />
-            <Route path="edit-profile" element={<EditUserProfile />} />
-            <Route path="change-password" element={<ChangePassword />} />
+    <>
+      <Router>
+        <SessionWatcher />
+        <Navbar />
+        <Routes>
+          <Route path="/" index element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route path="/register" element={<Register />} />
+          <Route path="/coaches" element={<CoachList />} />
+          <Route
+            path="/coaches/new"
+            element={
+              <ProtectedRoute>
+                <CoachRegistration />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/coach/:id" element={<CoachDetail />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<RoleBasedDashboard />} />
+            <Route path="overview" element={<RoleBasedDashboard />} />
+            <Route path="find" element={<FindCoach />} />
+            <Route path="messages" element={<Messages />} />
+            <Route path="settings" element={<AccountSettings />}>
+              <Route path="appearance" element={<AppearanceMode />} />
+              <Route path="edit-profile" element={<EditUserProfile />} />
+              <Route path="change-password" element={<ChangePassword />} />
+            </Route>
           </Route>
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Router>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
+    </>
   );
 }
