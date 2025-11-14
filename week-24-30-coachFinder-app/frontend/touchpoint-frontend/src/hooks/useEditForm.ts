@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axiosClient from "../lib/axiosClient";
+import { useFlashStore } from "../store/flashStore";
 
 interface Reviewer {
   firstName: string;
@@ -113,10 +114,18 @@ export function useEditForm() {
       console.log("status response ->", res.status);
       setCoach((prev) => (prev ? { ...prev, ...res.data } : null));
       setIsEditing(false);
+      useFlashStore
+        .getState()
+        .addFlash("Profile edited successfully!", "success");
     } catch (err: any) {
       console.error("Update failed:", err);
 
-      alert(`Update failed: ${err.message || "Please try again."}`);
+      useFlashStore
+        .getState()
+        .addFlash(
+          `Update failed: ${err.message || "Please try again."}`,
+          "error"
+        );
     }
   };
 

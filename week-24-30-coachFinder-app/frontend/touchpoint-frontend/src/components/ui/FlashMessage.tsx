@@ -15,7 +15,7 @@ export default function FlashMessage({
   message,
   type = "info",
   onClose,
-  duration = 5000,
+  duration = 3000,
 }: Props) {
   //Autoclose after "duration"
   useEffect(() => {

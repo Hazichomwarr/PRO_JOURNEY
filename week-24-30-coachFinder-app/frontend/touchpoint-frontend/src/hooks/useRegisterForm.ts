@@ -1,6 +1,7 @@
 import { useReducer } from "react";
 import axiosClient from "../lib/axiosClient";
 import { useNavigate } from "react-router-dom";
+import { useFlashStore } from "../store/flashStore";
 
 export interface UserFormValues {
   firstName: string;
@@ -71,17 +72,21 @@ export function useRegisterForm() {
     try {
       const res = await axiosClient.post("/auth/register", state);
       const { confirmPassword, ...newUser } = res.data;
-      console.log("Registered user:", newUser);
+      console.log("New Registered user:", newUser);
 
-      alert("Registration successful! Please log in.");
+      useFlashStore
+        .getState()
+        .addFlash("Registration successful! Please log in.", "success");
       navigate("/login");
       dispatch({ type: "RESET" });
     } catch (error: any) {
-      console.error(
-        "Registration error:",
-        error.response?.data || error.message
-      );
-      alert(error.response?.data?.message || "Registration failed. Try again.");
+      console.log("Registration error:", error.response?.data || error.message);
+      useFlashStore
+        .getState()
+        .addFlash(
+          error.response?.data?.message || "Registration failed. Try again.",
+          "error"
+        );
     }
   };
 
