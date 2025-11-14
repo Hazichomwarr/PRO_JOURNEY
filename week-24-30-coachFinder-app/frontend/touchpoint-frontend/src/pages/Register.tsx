@@ -3,7 +3,7 @@ import { useRegisterForm } from "../hooks/useRegisterForm";
 import { useNavigate } from "react-router-dom";
 
 export default function Register() {
-  const { state, handleChange, handleSubmit } = useRegisterForm();
+  const { state, handleChange, dispatch, handleSubmit } = useRegisterForm();
   const navigate = useNavigate();
 
   return (
@@ -101,15 +101,20 @@ export default function Register() {
           type="text"
           placeholder="Confirm Password"
         />
-        ---IMAGE/AVATAR---
-        <label className=" flex items-center gap-6 text-gray-700">
+        {/* ---IMAGE/AVATAR--- */}
+        {/* <label className=" flex items-center gap-6 text-gray-700">
           <span>Add Picture (or an Avatar) </span>
           <InputField
-            value={state.image || ""} //<- Type 'string | File' is not assignable to type 'string | number | null | undefined'.
-            changeFn={handleChange("image")}
+            changeFn={(e) =>
+              dispatch({
+                type: "SET_FIELD",
+                field: "image",
+                value: e.target.files?.[0] || null,
+              })
+            }
             type="file"
           />
-        </label>
+        </label> */}
         {/* --- Submit --- */}
         <button
           type="submit"

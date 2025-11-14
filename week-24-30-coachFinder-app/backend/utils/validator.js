@@ -14,7 +14,7 @@ const signupSchema = Joi.object({
   city: Joi.string().required(),
   state: Joi.string().required(),
   birthDate: Joi.date().less("now").allow(""),
-  image: Joi.string().uri().allow(""),
+  image: Joi.string().allow(""),
   interest: Joi.string().allow(""),
   role: Joi.string().required(),
 });
