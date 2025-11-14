@@ -2,7 +2,6 @@
 import { create } from "zustand";
 import axiosClient from "../lib/axiosClient";
 import { useAuthStore } from "./authStore";
-import { User } from "lucide-react";
 
 interface Message {
   _id: string;
@@ -18,6 +17,7 @@ interface MessageState {
   isLoading: boolean;
   error: string | null;
   unreadCount: number;
+
   fetchUnreadCount: () => Promise<void>;
   fetchMessages: () => Promise<void>;
   deleteMessage: (id: string) => Promise<void>;
