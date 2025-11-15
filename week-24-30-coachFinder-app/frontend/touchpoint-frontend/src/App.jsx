@@ -14,14 +14,13 @@ import DashboardLayout from "./components/layout/dashboard/DashboardLayout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import CoachList from "./pages/CoachList";
-import CoachDetail from "./pages/CoachDetail";
-import CoachRegistration from "./pages/CoachRegistration";
 import NotFound from "./pages/NotFound";
 
 // Dashboard pages
 import RoleBasedDashboard from "./components/layout/dashboard/RoleBasedDashboard";
 import FindCoach from "./pages/dashboard/FindCoach";
+import CoachDetail from "./pages/CoachDetail";
+import CoachRegistration from "./pages/CoachRegistration";
 import Messages from "./pages/dashboard/Messages";
 import AccountSettings from "./pages/dashboard/AccountSettings";
 import AppearanceMode from "./pages/dashboard/AppearanceMode";
@@ -79,15 +78,6 @@ export default function App() {
           element={
             <WrapperWithTransition>
               <Register />
-            </WrapperWithTransition>
-          }
-        />
-
-        <Route
-          path="/coaches"
-          element={
-            <WrapperWithTransition>
-              <CoachList />
             </WrapperWithTransition>
           }
         />
