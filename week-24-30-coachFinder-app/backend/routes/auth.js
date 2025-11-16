@@ -86,10 +86,12 @@ router.post("/login", async (req, res) => {
   const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN);
 
   //store refresh token in DB
-  await db
-    .collection("refreshTokens")
-    .insertOne({ token: refreshToken, userId: user._id, createAt: new Date() });
-  //console.log("6. Access Token saved in DB successfully!");
+  await db.collection("refreshTokens").insertOne({
+    token: refreshToken,
+    userId: user._id,
+    createAt: new Date(),
+    expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30), // 30 days
+  });
 
   //Data for the frontEnd
   res.json({ accessToken, refreshToken, user: userData });

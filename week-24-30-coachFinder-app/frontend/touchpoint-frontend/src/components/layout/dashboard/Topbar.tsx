@@ -1,10 +1,10 @@
 //components/layout/dashboard/Topbar.tsx
 import { Bell } from "lucide-react";
-import { useUserStore } from "../../../store/userStore";
 import { useMessagesStore } from "../../../store/messagesStore";
+import { useAuthStore } from "../../../store/authStore";
 
 export default function Topbar() {
-  const user = useUserStore((s) => s.user);
+  const user = useAuthStore((s) => s.userInfo);
   const role = user?.role;
   console.log("(inside Topbar.tsx) LoggedIn-User ->", user);
 

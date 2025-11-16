@@ -3,6 +3,7 @@ import { create } from "zustand";
 import axiosClient from "../lib/axiosClient";
 import refreshClient from "../lib/axiosClient";
 import { useFlashStore } from "./flashStore";
+import { UserPublic } from "./userStore";
 
 interface UserFromTokenPayload {
   id: string;
@@ -14,15 +15,21 @@ interface UserFromTokenPayload {
 
 interface AuthState {
   user: UserFromTokenPayload | null;
+  userInfo: UserPublic | null;
   accessToken: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
 
   setAuth: (
     user: UserFromTokenPayload,
+    userInfo: UserPublic,
     access: string,
     refresh: string
   ) => void;
+
+  setUser: (user: UserPublic) => void;
+  clearUser: () => void;
+
   logout: () => void;
   restoreSession: () => Promise<void>;
   updateRole: (newRole: string) => void;
@@ -34,14 +41,17 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   accessToken: null,
   refreshToken: null,
   isAuthenticated: false,
+  userInfo: null,
 
   //When login/register succeeds
-  setAuth: (user, accessToken, refreshToken) => {
+  setAuth: (user, userInfo, accessToken, refreshToken) => {
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
     localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("userInfo", JSON.stringify(userInfo));
     set({
       user,
+      userInfo,
       accessToken,
       refreshToken,
       isAuthenticated: true,
@@ -68,11 +78,24 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         accessToken: null,
         refreshToken: null,
         isAuthenticated: false,
+        userInfo: null,
       });
 
       //Reset page tracker store
       useFlashStore.getState().addFlash("You have logged out.", "info");
     }
+  },
+
+  //get and set user info
+  setUser: (infos) => {
+    set({ userInfo: infos });
+    localStorage.setItem("userInfo", JSON.stringify(infos));
+  },
+
+  //Clear user info
+  clearUser: () => {
+    set({ userInfo: null });
+    localStorage.removeItem("userInfo");
   },
 
   //Auto-hydrate state from localStorage

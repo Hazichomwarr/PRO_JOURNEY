@@ -64,7 +64,10 @@ router.patch("/:id", upload.single("image"), async (req, res) => {
     }
     const updatedUser = await db
       .collection("users")
-      .findOne({ _id: new ObjectId(id) });
+      .findOne(
+        { _id: new ObjectId(id) },
+        { projection: { password: 0, confirmPassword: 0 } }
+      );
 
     return res.status(200).json(updatedUser);
   } catch (err) {
@@ -87,7 +90,7 @@ router.get("/me", authWithToken(), async (req, res) => {
 
     if (!user) return res.status(404).json({ message: "User not found" });
     console.log("User found:", user.email);
-    res.status(200).json(user);
+    return res.status(200).json(user);
   } catch (err) {
     console.error("Error fetching user:", err);
     res.status(500).json({ message: "Server error" });

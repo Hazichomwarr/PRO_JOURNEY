@@ -3,9 +3,6 @@ import { useReducer, FormEvent, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../lib/axiosClient";
 import { useAuthStore } from "../store/authStore";
-import { useUserStore } from "../store/userStore";
-import FlashMessage from "../components/ui/FlashMessage";
-import { usePageTracker } from "../store/pageTracker";
 import { useFlashStore } from "../store/flashStore";
 
 interface LoginState {
@@ -42,14 +39,12 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  const { setUser } = useUserStore();
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     try {
       const res = await axiosClient.post("/auth/login", state);
-      const { accessToken, refreshToken } = res.data;
+      const { accessToken, refreshToken, user: userInfo } = res.data;
 
       //decode or fetch user from token if needed
       const payload = JSON.parse(atob(accessToken.split(".")[1]));
@@ -60,8 +55,7 @@ export default function Login() {
       };
       // console.log("A User just logged in ->", res.data.user);
 
-      setAuth(user, accessToken, refreshToken);
-      setUser(res.data.user); //set the userStore as well
+      setAuth(user, userInfo, accessToken, refreshToken);
 
       //flash a success and redirect
       useFlashStore.getState().addFlash("Logged in successfully!", "success");

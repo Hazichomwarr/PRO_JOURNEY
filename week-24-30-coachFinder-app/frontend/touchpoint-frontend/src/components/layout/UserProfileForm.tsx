@@ -6,11 +6,10 @@ import { useNavigate } from "react-router-dom";
 import axiosClient from "../../lib/axiosClient";
 import InputField from "../../components/ui/InputField";
 import { useAuthStore } from "../../store/authStore";
-import { useUserStore } from "../../store/userStore";
 
 export default function EditUserProfile() {
   const navigate = useNavigate();
-  const userInfo = useAuthStore((s) => s.user);
+  const { user, setUser } = useAuthStore();
 
   const { state, dispatch, handleChange } = useRegisterForm();
   const [loading, setLoading] = useState(true);
@@ -18,12 +17,12 @@ export default function EditUserProfile() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axiosClient.get(`/users/${userInfo?.id}`);
+        const res = await axiosClient.get(`/users/${user?.id}`);
         console.log("res.data ->", res.data);
-        const user = res.data;
+        const userData = res.data;
 
         // preload reducer fields
-        Object.entries(user).forEach(([key, value]) => {
+        Object.entries(userData).forEach(([key, value]) => {
           if (key === "image") {
             dispatch({
               type: "SET_FIELD",
@@ -66,17 +65,17 @@ export default function EditUserProfile() {
       if (state.image instanceof File) {
         formData.append("image", state.image);
       }
-      const res = await axiosClient.patch(`/users/${userInfo?.id}`, formData, {
+      const res = await axiosClient.patch(`/users/${user?.id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      // //Auto refresh the UI to get the updated data
-      // useUserStore.getState().setUser(res.data);
+      //Auto refresh the UI to get the updated data
+      setUser(res.data);
 
       useFlashStore
         .getState()
         .addFlash("Profile Updated successfully!", "success");
-      navigate(-1);
+      navigate("/dashboard/overview");
     } catch (err: any) {
       console.log("Registration error:", err.response?.data || err.message);
       useFlashStore
