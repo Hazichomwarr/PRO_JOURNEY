@@ -1,5 +1,4 @@
 //components/layout/UpgradeModal.tsx
-
 interface UpgradeRoleModalProps {
   onConfirm: () => void;
   onCancel: () => void;

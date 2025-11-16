@@ -59,7 +59,13 @@ export function useRegisterForm() {
   const handleChange =
     (field: keyof UserFormValues) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-      dispatch({ type: "SET_FIELD", field, value: e.target.value });
+      let value: any = e.target.value;
+
+      if (field === "image" && e.target instanceof HTMLInputElement) {
+        value = e.target.files?.[0] || null; //File Object
+      }
+
+      dispatch({ type: "SET_FIELD", field, value });
     };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -76,7 +82,27 @@ export function useRegisterForm() {
     }
 
     try {
-      const res = await axiosClient.post("/auth/register", state);
+      const formData = new FormData();
+
+      formData.append("firstName", state.firstName);
+      formData.append("lastName", state.lastName);
+      formData.append("email", state.email);
+      formData.append("password", state.password);
+      formData.append("confirmPassword", state.confirmPassword);
+      formData.append("phone", state.phone);
+      formData.append("city", state.city);
+      formData.append("state", state.state);
+      formData.append("role", state.role);
+      formData.append("birthDate", state.birthDate);
+
+      //Append file ONLY if file object exists
+      if (state.image instanceof File) {
+        formData.append("image", state.image);
+      }
+
+      const res = await axiosClient.post("/auth/register", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       const { confirmPassword, ...newUser } = res.data;
       console.log("New Registered user:", newUser);
 

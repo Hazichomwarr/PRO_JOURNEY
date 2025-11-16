@@ -3,6 +3,7 @@ import React, { useReducer } from "react";
 import { CoachFormValues } from "../models/coach";
 import axiosClient from "../lib/axiosClient";
 import { useAuthStore } from "../store/authStore";
+import { useUserStore } from "../store/userStore";
 
 interface CoachFormState {
   values: CoachFormValues;
@@ -141,6 +142,7 @@ export function useCoachRegistration() {
 
       // 2️⃣ Update Zustand store
       updateRole("coach");
+      const user = useUserStore.getState().user;
 
       // 3️⃣ Wait one microtask tick for store propagation
       await new Promise((r) => setTimeout(r, 0));

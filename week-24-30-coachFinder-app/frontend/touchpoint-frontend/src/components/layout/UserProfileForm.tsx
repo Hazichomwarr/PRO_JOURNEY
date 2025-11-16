@@ -1,3 +1,4 @@
+//components/layout/UserProfileForm.tsx
 import React, { useEffect, useState } from "react";
 import { useRegisterForm } from "../../hooks/useRegisterForm";
 import { useFlashStore } from "../../store/flashStore";
@@ -5,10 +6,11 @@ import { useNavigate } from "react-router-dom";
 import axiosClient from "../../lib/axiosClient";
 import InputField from "../../components/ui/InputField";
 import { useAuthStore } from "../../store/authStore";
+import { useUserStore } from "../../store/userStore";
 
 export default function EditUserProfile() {
   const navigate = useNavigate();
-  const userInfo = useAuthStore((state) => state.user);
+  const userInfo = useAuthStore((s) => s.user);
 
   const { state, dispatch, handleChange } = useRegisterForm();
   const [loading, setLoading] = useState(true);
@@ -51,11 +53,30 @@ export default function EditUserProfile() {
     e.preventDefault();
 
     try {
-      await axiosClient.patch(`/users/${userInfo?.id}`, state);
+      const formData = new FormData();
+
+      formData.append("firstName", state.firstName);
+      formData.append("lastName", state.lastName);
+      formData.append("email", state.email);
+      formData.append("phone", state.phone);
+      formData.append("city", state.city);
+      formData.append("state", state.state);
+
+      //Append file ONLY if file object exists
+      if (state.image instanceof File) {
+        formData.append("image", state.image);
+      }
+      const res = await axiosClient.patch(`/users/${userInfo?.id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      // //Auto refresh the UI to get the updated data
+      // useUserStore.getState().setUser(res.data);
+
       useFlashStore
         .getState()
         .addFlash("Profile Updated successfully!", "success");
-      navigate("/dashboard");
+      navigate(-1);
     } catch (err: any) {
       console.log("Registration error:", err.response?.data || err.message);
       useFlashStore
@@ -70,7 +91,7 @@ export default function EditUserProfile() {
     <div className="w-full">
       <form
         className="w-full max-w-lg rounded-2xl bg-white p-8 shadow-md space-y-4"
-        onSubmit={() => alert("Submitted!")}
+        onSubmit={handleUpdate}
       >
         <h2 className="text-2xl font-semibold text-center text-gray-700">
           Update your Profile
@@ -128,16 +149,7 @@ export default function EditUserProfile() {
         <label className="flex items-center gap-6 text-gray-700">
           <span>{state.image ? "Change Picture" : "Add Picture"}</span>
 
-          <input
-            type="file"
-            onChange={(e) =>
-              dispatch({
-                type: "SET_FIELD",
-                field: "image",
-                value: e.target.files?.[0] ?? null,
-              })
-            }
-          />
+          <input type="file" onChange={handleChange("image")} />
         </label>
 
         {/* Save button*/}

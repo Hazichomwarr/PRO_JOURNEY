@@ -2,7 +2,6 @@
 import { create } from "zustand";
 import { User } from "../models/user";
 import { createJSONStorage, persist } from "zustand/middleware";
-import axiosClient from "../lib/axiosClient";
 
 export type UserPublic = Omit<User, "password" | "confirmPassword"> & {
   id: string;

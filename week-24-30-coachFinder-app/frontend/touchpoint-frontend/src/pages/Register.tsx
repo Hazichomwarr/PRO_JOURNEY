@@ -102,19 +102,10 @@ export default function Register() {
           placeholder="Confirm Password"
         />
         {/* ---IMAGE/AVATAR--- */}
-        {/* <label className=" flex items-center gap-6 text-gray-700">
+        <label className=" flex items-center gap-6 text-gray-700">
           <span>Add Picture (or an Avatar) </span>
-          <InputField
-            changeFn={(e) =>
-              dispatch({
-                type: "SET_FIELD",
-                field: "image",
-                value: e.target.files?.[0] || null,
-              })
-            }
-            type="file"
-          />
-        </label> */}
+          <InputField changeFn={handleChange("image")} type="file" />
+        </label>
         {/* --- Submit --- */}
         <button
           type="submit"

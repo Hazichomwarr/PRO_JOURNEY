@@ -3,42 +3,53 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { validateSignup } = require("../utils/validator");
-// const authWithToken = require("../middleware/authWithToken");
-// const { ObjectId } = require("mongodb");
+const upload = require("../middleware/upload");
 
 const router = express.Router();
 
 // REGISTER ROUTE
-router.post("/register", async (req, res) => {
+router.post("/register", upload.single("image"), async (req, res) => {
   const db = req.app.locals.db;
 
   const { error, value } = validateSignup(req.body);
   if (error) {
     return res.status(400).json(error.details);
   }
-  console.log("value:", value);
 
-  //Omit confirmPassword value
+  //Extract URL from cloudinary
+  const imageURL = req.file ? req.file.path : "";
+
+  //Omit 'password' and 'confirmPassword' value
   const { confirmPassword, password, ...values } = value;
 
-  //Check email's uniqueness
-  const existing = await db
-    .collection("users")
-    .findOne({ email: values.email });
-  if (existing)
-    return res.status(409).json({ message: "email already exists" });
+  //Attach image URL
+  const payload = { ...values, image: imageURL };
 
-  //Add newUser to db with hashed password
-  const hashed = await bcrypt.hash(password, 12);
-  const newUser = await db
-    .collection("users")
-    .insertOne({ ...values, password: hashed });
-  res.status(201).json({
-    id: newUser.insertedId.toString(),
-    firstName: values.firstName,
-    lastName: values.lastName,
-    email: values.email,
-  });
+  try {
+    //Check email's uniqueness
+    const existing = await db
+      .collection("users")
+      .findOne({ email: values.email });
+    if (existing)
+      return res.status(409).json({ message: "email already exists" });
+
+    //Add newUser to db with hashed password
+    const hashed = await bcrypt.hash(password, 12);
+    const newUser = await db
+      .collection("users")
+      .insertOne({ ...payload, password: hashed });
+
+    // return json
+    res.status(201).json({
+      id: newUser.insertedId.toString(),
+      firstName: payload.firstName,
+      lastName: payload.lastName,
+      email: payload.email,
+    });
+  } catch (err) {
+    console.log("registration error", err);
+    res.status(500).json({ error: "Server Error" });
+  }
 });
 
 //LOGIN ROUTE

@@ -3,6 +3,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const authWithToken = require("../middleware/authWithToken");
 const { ObjectId } = require("mongodb");
+const upload = require("../middleware/upload");
 
 const router = express.Router();
 
@@ -39,33 +40,35 @@ router.get("/:id", async (req, res) => {
 });
 
 //UPDATE A USER
-router.put("/:id", async (req, res) => {
+router.patch("/:id", upload.single("image"), async (req, res) => {
   const db = req.app.locals.db;
   const { id } = req.params;
-  const { confirmPassword, password, ...values } = req.body;
+  const payload = { ...req.body };
+
+  //Extract URL from cloudinary
+  const imageURL = req.file ? req.file.path : undefined; // undefined means untouched
+
+  //Attach Image URL
+  if (imageURL) {
+    payload.image = imageURL;
+  }
 
   try {
-    const user = await db
-      .collection("users")
-      .findOne({ _id: new ObjectId(id) });
-    if (!user) return res.status(404).json({ error: "User not found" });
-
-    // //if pwd provided
-    // if (password && password === confirmPassword) {
-    //   values.password = await bcrypt.hash(password, 12);
-    // }
-
-    //now update user in db
+    //Now update user in db
     const result = await db
       .collection("users")
-      .updateOne({ _id: new ObjectId(id) }, { $set: values });
+      .updateOne({ _id: new ObjectId(id) }, { $set: payload });
 
     if (result.modifiedCount === 0) {
       return res.status(404).json({ error: "User not found" });
     }
-    res.status(200).json({ message: "User updated" });
+    const updatedUser = await db
+      .collection("users")
+      .findOne({ _id: new ObjectId(id) });
+
+    return res.status(200).json(updatedUser);
   } catch (err) {
-    res.status(400).json({ error: "Invalid User ID" });
+    return res.status(400).json({ error: "Invalid User ID" });
   }
 });
 
