@@ -1,13 +1,13 @@
 //pages/CoachDetails.tsx
 import { Clock, DollarSign, Star, Pencil, X } from "lucide-react";
-import { useUserStore } from "../store/userStore";
 import { useEditForm } from "../hooks/useEditForm";
 import EditForm from "../components/layout/coach/EditForm";
 import { useState } from "react";
 import MessageModal from "../components/layout/coach/MessageModal";
+import { useAuthStore } from "../store/authStore";
 
 export default function CoachDetail() {
-  const { user: loggedInUser } = useUserStore();
+  const { userInfo: loggedInUser } = useAuthStore();
   const [showMessageModal, setShowMessageModal] = useState(false);
 
   const {
@@ -47,7 +47,7 @@ export default function CoachDetail() {
         />
         <div>
           <h1 className="text-sm text-gray-600">
-            {user.firstName} {user.lastName}
+            {user?.firstName} {user?.lastName}
           </h1>
           <p className="text-2xl font-semibold text-gray-800">
             {expertise.join(" - ")}
@@ -174,8 +174,8 @@ export default function CoachDetail() {
           onClose={() => setShowMessageModal(false)}
           coachId={coachId!}
           coachName={user.firstName}
-          userName={loggedInUser!.firstName}
-          userId={loggedInUser!.id}
+          userName={loggedInUser?.firstName}
+          userId={loggedInUser?.id}
         />
       )}
     </section>

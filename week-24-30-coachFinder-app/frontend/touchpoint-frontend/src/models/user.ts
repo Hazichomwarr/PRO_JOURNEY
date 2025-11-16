@@ -16,6 +16,8 @@ export interface User {
   role: "coach" | "buddy" | "seeker" | "";
 }
 
+export type UserPublic = Partial<User>;
+
 export type UserFormValues = Omit<User, "id">;
 
 export type UserUpdateFields = Omit<

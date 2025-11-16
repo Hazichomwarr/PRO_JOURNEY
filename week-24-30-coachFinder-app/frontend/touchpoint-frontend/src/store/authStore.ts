@@ -3,7 +3,7 @@ import { create } from "zustand";
 import axiosClient from "../lib/axiosClient";
 import refreshClient from "../lib/axiosClient";
 import { useFlashStore } from "./flashStore";
-import { UserPublic } from "./userStore";
+import { UserPublic } from "../models/user";
 
 interface UserFromTokenPayload {
   id: string;

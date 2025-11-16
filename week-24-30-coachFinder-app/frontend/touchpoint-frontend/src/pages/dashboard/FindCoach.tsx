@@ -13,17 +13,6 @@ export default function FindCoach() {
 
   return (
     <section className="flex flex-col p-6 gap-6">
-      {/* <h2 className="text-2xl font-semibold mb-4">
-        Search a Coach based on your goals:
-      </h2> */}
-
-      {/* <h2 className="text-3xl font-bold mb-6 text-gray-900">
-        Search a <span className="text-orange-500">Coach</span> Based on Your{" "}
-        <span className="bg-gradient-to-r from-orange-400 to-pink-500 bg-clip-text text-transparent">
-          Goals
-        </span>
-      </h2> */}
-
       <h2 className="text-2xl font-bold mb-6 text-gray-800 tracking-tight">
         <span className="text-blue-600">Find</span> a Coach Based on Your Goals
       </h2>

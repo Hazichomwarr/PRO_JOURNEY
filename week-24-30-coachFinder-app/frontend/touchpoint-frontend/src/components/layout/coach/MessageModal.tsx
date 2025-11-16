@@ -5,8 +5,8 @@ import axiosClient from "../../../lib/axiosClient";
 interface Props {
   coachId: string;
   coachName: string;
-  userId: string;
-  userName: string;
+  userId?: string;
+  userName?: string;
   onClose: () => void;
 }
 export default function MessageModal({

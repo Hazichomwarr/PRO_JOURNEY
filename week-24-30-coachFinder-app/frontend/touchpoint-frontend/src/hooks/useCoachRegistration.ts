@@ -3,7 +3,6 @@ import React, { useReducer } from "react";
 import { CoachFormValues } from "../models/coach";
 import axiosClient from "../lib/axiosClient";
 import { useAuthStore } from "../store/authStore";
-import { useUserStore } from "../store/userStore";
 
 interface CoachFormState {
   values: CoachFormValues;
@@ -98,43 +97,6 @@ export function useCoachRegistration() {
   const { updateRole } = useAuthStore();
   const userRole = useAuthStore((state) => state.user?.role);
 
-  // const handleUpgrade = async (onSuccess?: () => void) => {
-  //   console.log(
-  //     "accessToken in localStorage just before patch ->",
-  //     localStorage.getItem("accessToken")
-  //   );
-
-  //   try {
-  //     const token = localStorage.getItem("accessToken");
-
-  //     console.log("accessToken present?", !!token);
-  //     if (token) {
-  //       try {
-  //         const payload = JSON.parse(atob(token.split(".")[1]));
-  //         console.log("decoded access token payload ->", payload);
-  //       } catch (err) {
-  //         console.log("⚠️ couldn't decode token:", err);
-  //       }
-  //     }
-  //     console.log("axiosClient.baseURL ->", axiosClient.defaults.baseURL);
-  //     console.log(
-  //       "axiosClient default Authorization ->",
-  //       axiosClient.defaults.headers?.common?.Authorization
-  //     );
-
-  //     console.log("➡️ About to PATCH /users/upgrade-role");
-  //     await axiosClient.patch("/users/upgrade-role", { role: "coach" });
-  //     updateRole("coach");
-
-  //     if (onSuccess) onSuccess(); //component closes modal
-  //     alert("role upgraded to coach successfully!!");
-  //     navigate("/coaches/new");
-  //   } catch (error: any) {
-  //     console.log("Upgrade error:", error.response?.data || error.message);
-  //     alert(`Failed to upgrade role. ${error.message} || Please try again`);
-  //   }
-  // };
-
   const handleUpgrade = async (onSuccess?: () => void) => {
     try {
       // 1️⃣ Send request to backend
@@ -142,7 +104,6 @@ export function useCoachRegistration() {
 
       // 2️⃣ Update Zustand store
       updateRole("coach");
-      const user = useUserStore.getState().user;
 
       // 3️⃣ Wait one microtask tick for store propagation
       await new Promise((r) => setTimeout(r, 0));
@@ -217,13 +178,6 @@ export function useCoachRegistration() {
     }
 
     dispatch({ type: "SET_LOADING", value: true });
-
-    // // Fetch fresh role from backend before proceeding
-    // const { data: user } = await axiosClient.get("/users/me");
-    // if (user.role !== "coach") {
-    //   console.log("user freshly fresh with updated role ->", user.role);
-    //   alert("Please wait a moment and try again after your role updates.");
-    // }
 
     try {
       await axiosClient.post("/coaches", {
