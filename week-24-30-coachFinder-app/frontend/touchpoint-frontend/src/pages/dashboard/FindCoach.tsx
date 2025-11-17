@@ -15,7 +15,7 @@ export default function FindCoach() {
     if (userInfo?.role !== "coach") return (result = true); // if not a coach just set true
     const fullname = userInfo.firstName + " " + userInfo.lastName;
     const found = filteredCoaches.find((c) => c.name === fullname);
-    if (found !== undefined || found !== null) return (result = true);
+    if (found !== undefined || found !== null) return (result = false);
     return result;
   };
 
