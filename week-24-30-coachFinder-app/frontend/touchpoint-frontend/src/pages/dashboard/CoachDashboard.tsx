@@ -3,17 +3,30 @@ import { useEffect } from "react";
 import { useAuthStore } from "../../store/authStore";
 import { useDashboardStore } from "../../store/dashboardStore";
 import StatCard from "../../components/ui/StatCard";
+import { useNavigate } from "react-router-dom";
 
 export default function CoachDashboard() {
   const { user } = useAuthStore();
   const { stats, fetchStats, loading, error } = useDashboardStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user?.role === "coach") fetchStats("coach");
   }, [user]);
 
   if (loading) return <p className="text-center">Loading dashboard...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
+  if (error)
+    return (
+      <p>
+        <span className="text-red-500">{error}</span>
+        <span
+          className=" cursor-pointer hover:underline hover:text-blue-800"
+          onClick={() => navigate("/dashboard/find")}
+        >
+          (click here to check your coach profile)
+        </span>
+      </p>
+    );
   if (!stats) return null;
 
   return (

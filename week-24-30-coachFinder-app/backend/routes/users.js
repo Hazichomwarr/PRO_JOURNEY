@@ -1,6 +1,5 @@
 //users.js
 const express = require("express");
-const bcrypt = require("bcrypt");
 const authWithToken = require("../middleware/authWithToken");
 const { ObjectId } = require("mongodb");
 const upload = require("../middleware/upload");
@@ -37,6 +36,31 @@ router.get("/:id", async (req, res) => {
   } catch (err) {
     res.status(400).json({ error: "Invalid ID" });
   }
+});
+
+//Upgrade role from user to coach
+router.patch("/upgrade-role", authWithToken(), async (req, res) => {
+  console.log("inside -> /users/upgrade-role");
+  // console.log("userID ->", userId);
+
+  const db = req.app.locals.db;
+  const { role } = req.body;
+
+  console.log("Incoming upgrade body:", req.body);
+  console.log("req.user from token:", req.user);
+
+  const result = await db
+    .collection("users")
+    .updateOne({ _id: new ObjectId(req.user.id) }, { $set: { role: role } });
+
+  if (result.matchedCount === 0)
+    return res.status(404).json({ message: "User not found" });
+
+  console.log("user found and updated role to coach");
+
+  const updatedUser = { ...req.user, role };
+
+  res.json({ user: updatedUser });
 });
 
 //UPDATE A USER
@@ -95,40 +119,6 @@ router.get("/me", authWithToken(), async (req, res) => {
     console.error("Error fetching user:", err);
     res.status(500).json({ message: "Server error" });
   }
-});
-
-//Upgrade role from user to coach
-router.patch("/upgrade-role", authWithToken(), async (req, res) => {
-  console.log(
-    "🔁 /users/me/role called, req.user:",
-    req.user,
-    "body:",
-    req.body
-  );
-
-  const db = req.app.locals.db;
-  const userId = new ObjectId(req.user.id);
-  console.log("userID ->", userId);
-  const { role } = req.body;
-
-  console.log("Incoming upgrade body:", req.body);
-  console.log("req.user from token:", req.user);
-  console.log(
-    "🧾 ObjectId check:",
-    req.user?.id && ObjectId.isValid(req.user.id)
-  );
-
-  const result = await db
-    .collection("users")
-    .updateOne({ _id: userId }, { $set: { role: role } });
-  console.log("user found ->", result);
-
-  if (!result.matchedCount)
-    return res.status(404).json({ message: "User not found" });
-
-  const updatedUser = { ...req.user, role };
-
-  res.json({ user: updatedUser });
 });
 
 //DELETE A USER

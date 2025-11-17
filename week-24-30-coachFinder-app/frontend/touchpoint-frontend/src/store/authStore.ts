@@ -86,7 +86,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 
-  //get and set user info
+  //set user info
   setUser: (infos) => {
     set({ userInfo: infos });
     localStorage.setItem("userInfo", JSON.stringify(infos));

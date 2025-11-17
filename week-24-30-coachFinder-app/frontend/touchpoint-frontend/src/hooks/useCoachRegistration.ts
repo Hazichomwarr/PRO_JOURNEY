@@ -3,6 +3,7 @@ import React, { useReducer } from "react";
 import { CoachFormValues } from "../models/coach";
 import axiosClient from "../lib/axiosClient";
 import { useAuthStore } from "../store/authStore";
+import { useFlashStore } from "../store/flashStore";
 
 interface CoachFormState {
   values: CoachFormValues;
@@ -95,20 +96,36 @@ function reducer(state: CoachFormState, action: Action): CoachFormState {
 export function useCoachRegistration() {
   const [state, dispatch] = useReducer(reducer, initialCoachDocState);
   const { updateRole } = useAuthStore();
-  const userRole = useAuthStore((state) => state.user?.role);
+  const user = useAuthStore((state) => state.user);
 
   const handleUpgrade = async (onSuccess?: () => void) => {
+    console.log("inside handle role upgrade");
+    console.log("user Id ->", user?.id);
     try {
-      // 1️⃣ Send request to backend
-      await axiosClient.patch("/users/upgrade-role", { role: "coach" });
+      // 1. Send request to backend
+      await axiosClient.patch("/users/upgrade-role", {
+        role: "coach",
+      });
 
-      // 2️⃣ Update Zustand store
+      // await fetch("http://localhost:3000/api/users/upgrade-role", {
+      //   method: "PATCH",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     id: user?.id,
+      //     role: "coach",
+      //   }),
+      // });
+
+      //2. Update Zustand store
       updateRole("coach");
 
-      // 3️⃣ Wait one microtask tick for store propagation
+      // 3. Wait one microtask tick for store propagation
       await new Promise((r) => setTimeout(r, 0));
-
-      alert("Role upgraded to coach successfully!");
+      useFlashStore
+        .getState()
+        .addFlash("Role upgraded to coach successfully!", "success");
       if (onSuccess) onSuccess(); // closes modal
     } catch (error: any) {
       console.error("Upgrade error:", error.response?.data || error.message);
@@ -173,8 +190,8 @@ export function useCoachRegistration() {
     }
     console.log("no errors in fields");
 
-    if (userRole === "coach") {
-      console.log("user role is", userRole);
+    if (user?.role === "coach") {
+      console.log("user role is", user.role);
     }
 
     dispatch({ type: "SET_LOADING", value: true });
@@ -186,7 +203,9 @@ export function useCoachRegistration() {
       }); //<- hardcoded 'coach' while looking for a better way
       dispatch({ type: "SET_SUCCESS", value: true });
       dispatch({ type: "RESET_FORM" });
-      alert("Coach registered successfully!");
+      useFlashStore
+        .getState()
+        .addFlash("Coach registered successfully!", "success");
     } catch (error: any) {
       if (error.response?.status === 403) {
         console.log("bad request from handleSubmit catch block");

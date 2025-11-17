@@ -16,6 +16,7 @@ app.use(
   cors({
     origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
     credentials: true,
+    // methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
   })
 );
 
@@ -26,7 +27,6 @@ app.use(express.json());
   app.locals.db = db;
 
   app.use("/api/auth", authRoutes);
-  console.log("✅ auth routes mounted");
   app.use("/api/users", userRoutes);
   app.use("/api/coaches", coachRoutes);
   app.use("/api/dashboard", dashboardRoutes);

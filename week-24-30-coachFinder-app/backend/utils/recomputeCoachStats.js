@@ -24,3 +24,4 @@ async function recomputeCoachesStats(db, coachId) {
     }
   );
 }
+module.exports = recomputeCoachesStats;

@@ -14,7 +14,7 @@ import {
 import useLogout from "../../../hooks/useLogout";
 import { useAuthStore } from "../../../store/authStore";
 import { useMessagesStore } from "../../../store/messagesStore";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Sidebar() {
   const { handleLogout } = useLogout();
@@ -23,11 +23,6 @@ export default function Sidebar() {
 
   const navigate = useNavigate();
   const location = useLocation();
-
-  const fetchUnreadCount = useMessagesStore((s) => s.fetchUnreadCount);
-  useEffect(() => {
-    fetchUnreadCount(); // very light call
-  }, []);
 
   const unreadMsgCount = useMessagesStore((s) => s.unreadCount);
 

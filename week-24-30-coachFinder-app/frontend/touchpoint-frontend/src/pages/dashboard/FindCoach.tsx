@@ -2,17 +2,45 @@
 import { useNavigate } from "react-router-dom";
 import { useCoachData } from "../../hooks/useCoachData";
 import { Coach } from "../../models/coach";
+import { useAuthStore } from "../../store/authStore";
+import { TriangleAlertIcon } from "lucide-react";
 
 export default function FindCoach() {
   const { isLoading, error, filteredCoaches, setExpertise } = useCoachData();
+  const userInfo = useAuthStore((s) => s.userInfo);
   const navigate = useNavigate();
-  // console.table(filteredCoaches);
+
+  let found;
+
+  if (userInfo?.role === "coach") {
+    const fullname = userInfo.firstName + " " + userInfo.lastName;
+    found = filteredCoaches.find((c) => c.name === fullname);
+  }
+
   if (isLoading)
     return <p className="mt-4 text-gray-500 text-center">Loading...</p>;
   if (error) return <p className="text-red-500 mt-4">{error}</p>;
 
   return (
     <section className="flex flex-col p-6 gap-6">
+      {/* If details not found in DB, role upgraded but hasn't fill out coach form */}
+      {found === undefined && (
+        <div className="flex items-center gap-3 border outline-orange-200 p-3 txt-center bg-orange-100">
+          <TriangleAlertIcon />{" "}
+          <p>
+            Your Account needs attention. Please{" "}
+            <span
+              className=" cursor-pointer hover:underline text-blue-500"
+              onClick={() => navigate("/coaches/new")}
+            >
+              click here
+            </span>{" "}
+            to finish your coach registration.
+          </p>
+        </div>
+      )}
+
+      {/* HEADER */}
       <h2 className="text-2xl font-bold mb-6 text-gray-800 tracking-tight">
         <span className="text-blue-600">Find</span> a Coach Based on Your Goals
       </h2>
@@ -26,6 +54,8 @@ export default function FindCoach() {
                transition duration-200 ease-in-out"
         onChange={(e) => setExpertise(e.target.value)}
       />
+
+      {/* All coaches */}
       <ul className="space-y-3">
         {filteredCoaches.map((c: Coach) => (
           <li

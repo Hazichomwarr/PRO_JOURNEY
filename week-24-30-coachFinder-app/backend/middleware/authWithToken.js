@@ -4,7 +4,6 @@ const { ObjectId } = require("mongodb");
 
 function authWithToken(requiredRole = null) {
   return async (req, res, next) => {
-    // const db = req.app.locals.db;
     try {
       const authHeader = req.headers["authorization"];
       console.log(
