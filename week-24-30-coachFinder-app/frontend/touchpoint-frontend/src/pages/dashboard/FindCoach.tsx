@@ -10,12 +10,14 @@ export default function FindCoach() {
   const userInfo = useAuthStore((s) => s.userInfo);
   const navigate = useNavigate();
 
-  let found;
-
-  if (userInfo?.role === "coach") {
+  const isFound = (): boolean => {
+    let result = false;
+    if (userInfo?.role !== "coach") return (result = true); // if not a coach just set true
     const fullname = userInfo.firstName + " " + userInfo.lastName;
-    found = filteredCoaches.find((c) => c.name === fullname);
-  }
+    const found = filteredCoaches.find((c) => c.name === fullname);
+    if (found !== undefined || found !== null) return (result = true);
+    return result;
+  };
 
   if (isLoading)
     return <p className="mt-4 text-gray-500 text-center">Loading...</p>;
@@ -24,7 +26,7 @@ export default function FindCoach() {
   return (
     <section className="flex flex-col p-6 gap-6">
       {/* If details not found in DB, role upgraded but hasn't fill out coach form */}
-      {found === undefined && (
+      {!isFound() && (
         <div className="flex items-center gap-3 border outline-orange-200 p-3 txt-center bg-orange-100">
           <TriangleAlertIcon />{" "}
           <p>
