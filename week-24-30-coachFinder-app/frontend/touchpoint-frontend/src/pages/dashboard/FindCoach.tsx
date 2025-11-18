@@ -12,17 +12,16 @@ export default function FindCoach() {
   const navigate = useNavigate();
 
   const isFound = (): boolean => {
-    let result = true;
-    if (!isCoach) return result;
+    let result: boolean;
 
     const fullname = userInfo?.firstName + " " + userInfo?.lastName;
     console.log("first+last name ->", fullname);
 
     const found = filteredCoaches.find((c) => c.name === fullname.trim());
     console.log("found coach ->", found);
-    if (found !== undefined || found !== null) return (result = false);
-    console.log();
-    return result;
+    if (found === undefined || found === null) return (result = false);
+
+    return (result = true);
   };
 
   if (isLoading)
@@ -64,7 +63,6 @@ export default function FindCoach() {
       />
 
       {/* All coaches */}
-
       <ul className="space-y-3">
         {filteredCoaches.map((c: Coach) => (
           <li

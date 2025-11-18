@@ -5,10 +5,13 @@ import EditForm from "../components/layout/coach/EditForm";
 import { useState } from "react";
 import MessageModal from "../components/layout/coach/MessageModal";
 import { useAuthStore } from "../store/authStore";
+import { useNavigate } from "react-router-dom";
 
 export default function CoachDetail() {
   const { userInfo: loggedInUser } = useAuthStore();
   const [showMessageModal, setShowMessageModal] = useState(false);
+
+  const navigate = useNavigate();
 
   const {
     coach,
@@ -62,7 +65,7 @@ export default function CoachDetail() {
         </div>
       </div>
 
-      {/* Only show Edit button if this is the coach’s own profile */}
+      {/* Only show Edit button only to th profile owner */}
       {loggedInUser?.firstName === user.firstName &&
         loggedInUser?.role === "coach" && (
           <button
@@ -70,7 +73,7 @@ export default function CoachDetail() {
             className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow-sm transition-all hover:scale-[1.02]"
           >
             <Pencil size={16} />
-            Edit Profile
+            Edit infos
           </button>
         )}
 
@@ -100,17 +103,25 @@ export default function CoachDetail() {
         </div>
       </div>
 
-      {/* Call to Action(except can't write to yourself) */}
+      {/* Call to Action(can't write to yourself) */}
       {loggedInUser?.firstName === user.firstName &&
       loggedInUser?.role === "coach" ? (
         <></>
       ) : (
-        <button
-          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all"
-          onClick={() => setShowMessageModal(true)}
-        >
-          Message Coach
-        </button>
+        <div className="flex flex-col items-center gap-2">
+          <button
+            className="w-full bg-gradient-to-r from-green-600 to-stone-600 text-white py-3 rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all"
+            onClick={() => setShowMessageModal(true)}
+          >
+            Message Coach
+          </button>
+          <button
+            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all"
+            onClick={() => navigate("/sessions/new")}
+          >
+            Book a seession (first 30 mins free)
+          </button>
+        </div>
       )}
 
       {/* Reviews */}

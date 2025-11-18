@@ -28,6 +28,9 @@ import EditUserProfile from "./pages/dashboard/EditUserProfile";
 import ChangePassword from "./pages/dashboard/ChangePassword";
 import DeleteAccount from "./pages/dashboard/DeleteAccount";
 
+// Sessions
+import SessionRegistration from "./pages/sessions/SessionRegistration";
+
 export default function App() {
   const restoreSession = useAuthStore((s) => s.restoreSession);
 
@@ -177,6 +180,9 @@ export default function App() {
             <Route path="delete-account" element={<DeleteAccount />} />
           </Route>
         </Route>
+
+        {/* Sessions routes */}
+        <Route path="/sessions/new" element={<SessionRegistration />} />
 
         {/* 404 */}
         <Route
