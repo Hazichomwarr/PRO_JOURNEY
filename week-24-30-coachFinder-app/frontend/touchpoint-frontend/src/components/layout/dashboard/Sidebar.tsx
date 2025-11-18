@@ -56,6 +56,7 @@ export default function Sidebar() {
     { label: "Appearance", path: "appearance" },
     { label: "Edit Profile", path: "edit-profile" },
     { label: "Change Password", path: "change-password" },
+    { label: "Delete Account", path: "delete-account" },
   ];
 
   return (
@@ -117,7 +118,11 @@ export default function Sidebar() {
                       // setIsOpen((prev) => !prev);
                       navigate(`/dashboard/settings/${i.path}`);
                     }}
-                    className="text-gray-600 hover:text-blue-600 hover:underline cursor-pointer"
+                    className={`${
+                      i.path === "delete-account"
+                        ? "text-red-400 hover:text-red-600"
+                        : "text-gray-600 "
+                    }   text-sm/4 italic cursor-pointer hover:underline`}
                   >
                     {i.label}
                   </li>

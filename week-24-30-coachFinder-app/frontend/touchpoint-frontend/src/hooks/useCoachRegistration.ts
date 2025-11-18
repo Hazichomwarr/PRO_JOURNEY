@@ -4,6 +4,7 @@ import { CoachFormValues } from "../models/coach";
 import axiosClient from "../lib/axiosClient";
 import { useAuthStore } from "../store/authStore";
 import { useFlashStore } from "../store/flashStore";
+import { useNavigate } from "react-router-dom";
 
 interface CoachFormState {
   values: CoachFormValues;
@@ -97,6 +98,8 @@ export function useCoachRegistration() {
   const [state, dispatch] = useReducer(reducer, initialCoachDocState);
   const { updateRole } = useAuthStore();
   const user = useAuthStore((state) => state.user);
+
+  const navigate = useNavigate();
 
   const handleUpgrade = async (onSuccess?: () => void) => {
     console.log("inside handle role upgrade");
@@ -203,6 +206,7 @@ export function useCoachRegistration() {
       }); //<- hardcoded 'coach' while looking for a better way
       dispatch({ type: "SET_SUCCESS", value: true });
       dispatch({ type: "RESET_FORM" });
+      navigate(-1);
       useFlashStore
         .getState()
         .addFlash("Coach registered successfully!", "success");

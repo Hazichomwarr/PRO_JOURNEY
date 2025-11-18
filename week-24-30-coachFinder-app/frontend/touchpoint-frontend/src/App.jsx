@@ -26,6 +26,7 @@ import AccountSettings from "./pages/dashboard/AccountSettings";
 import AppearanceMode from "./pages/dashboard/AppearanceMode";
 import EditUserProfile from "./pages/dashboard/EditUserProfile";
 import ChangePassword from "./pages/dashboard/ChangePassword";
+import DeleteAccount from "./pages/dashboard/DeleteAccount";
 
 export default function App() {
   const restoreSession = useAuthStore((s) => s.restoreSession);
@@ -173,6 +174,7 @@ export default function App() {
                 </WrapperWithTransition>
               }
             />
+            <Route path="delete-account" element={<DeleteAccount />} />
           </Route>
         </Route>
 

@@ -12,6 +12,8 @@ const EXPERTISE_OPTIONS = [
   "Coding",
   "Motivation",
   "Spirituality",
+  "Chef-cuisine",
+  "Therapist",
 ];
 
 export default function ExpertiseSelector({ selected, onToggle }: Props) {

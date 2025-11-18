@@ -7,7 +7,7 @@ export default function FlashRenderer() {
   const removeFlash = useFlashStore((s) => s.removeFlash);
 
   return (
-    <div className="fixed bottom-10 right-4 z-[9999] flex flex-col gap-3">
+    <div className="fixed top-20 right-4 z-[9999] flex flex-col gap-3">
       <AnimatePresence>
         {flashes.map((f) => (
           <FlashMessage

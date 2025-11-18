@@ -8,14 +8,20 @@ import { TriangleAlertIcon } from "lucide-react";
 export default function FindCoach() {
   const { isLoading, error, filteredCoaches, setExpertise } = useCoachData();
   const userInfo = useAuthStore((s) => s.userInfo);
+  const isCoach = userInfo?.role === "coach";
   const navigate = useNavigate();
 
   const isFound = (): boolean => {
-    let result = false;
-    if (userInfo?.role !== "coach") return (result = true); // if not a coach just set true
-    const fullname = userInfo.firstName + " " + userInfo.lastName;
-    const found = filteredCoaches.find((c) => c.name === fullname);
+    let result = true;
+    if (!isCoach) return result;
+
+    const fullname = userInfo?.firstName + " " + userInfo?.lastName;
+    console.log("first+last name ->", fullname);
+
+    const found = filteredCoaches.find((c) => c.name === fullname.trim());
+    console.log("found coach ->", found);
     if (found !== undefined || found !== null) return (result = false);
+    console.log();
     return result;
   };
 
@@ -26,7 +32,7 @@ export default function FindCoach() {
   return (
     <section className="flex flex-col p-6 gap-6">
       {/* If details not found in DB, role upgraded but hasn't fill out coach form */}
-      {!isFound() && (
+      {isFound() === false && (
         <div className="flex items-center gap-3 border outline-orange-200 p-3 txt-center bg-orange-100">
           <TriangleAlertIcon />{" "}
           <p>
@@ -58,6 +64,7 @@ export default function FindCoach() {
       />
 
       {/* All coaches */}
+
       <ul className="space-y-3">
         {filteredCoaches.map((c: Coach) => (
           <li

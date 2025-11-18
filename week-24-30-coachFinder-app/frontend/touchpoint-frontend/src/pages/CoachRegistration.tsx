@@ -48,13 +48,6 @@ export default function CoachRegistration() {
             className="border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none col-span-2"
             placeholder="Write a short catching bio about yourself here..."
           ></textarea>
-          {/* <input
-            type="number"
-            placeholder="Hourly Rate"
-            value={state.values.hourlyRate ?? ""}
-            onChange={handleChange("hourlyRate")}
-            className="border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none"
-          /> */}
           <InputField
             type="number"
             placeholder="Hourly Rate"
