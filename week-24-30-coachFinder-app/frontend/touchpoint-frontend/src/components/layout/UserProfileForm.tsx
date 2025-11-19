@@ -156,7 +156,7 @@ export default function EditUserProfile() {
           type="submit"
           className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded transition-all"
         >
-          Save
+          {loading ? "Saving..." : "Save"}
         </button>
       </form>
     </div>

@@ -15,10 +15,12 @@ import useLogout from "../../../hooks/useLogout";
 import { useAuthStore } from "../../../store/authStore";
 import { useMessagesStore } from "../../../store/messagesStore";
 import { useState } from "react";
+import ConfirmLogoutModal from "../ConfirmLogoutModal";
 
 export default function Sidebar() {
   const { handleLogout } = useLogout();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); //for collapsible setting items
+  const [isRequest, setIsRequest] = useState(false); //for confirm logout modal
   const user = useAuthStore((s) => s.user);
 
   const navigate = useNavigate();
@@ -34,7 +36,7 @@ export default function Sidebar() {
     },
     {
       to: "/dashboard/find",
-      label: "Coaches catalog",
+      label: "Find Coaches",
       icon: <ScanSearch size={18} />,
     },
     {
@@ -60,7 +62,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className=" flex flex-col justify-between p-4 space-y-6 w-64 h-screen bg-white shadow-md">
+    <div className=" flex flex-col p-4 space-y-6 w-64 h-screen bg-white shadow-md">
       <div>
         <h1 className="text-xl font-bold mb-8 text-blue-600">Dashboard</h1>
         <nav className="space-y-3">
@@ -143,12 +145,19 @@ export default function Sidebar() {
       </div>
 
       {/* Logout */}
-      <button
-        className="flex items-center gap-2 text-gray-600 hover:text-red-600 transition-colors"
-        onClick={handleLogout}
-      >
-        <LogOut size={18} /> Logout
-      </button>
+      <div className="mt-auto  pt-4 border-t border-gray-200">
+        <button
+          className="flex items-center ml-3 gap-2 text-gray-600 hover:text-red-600 transition-colors"
+          onClick={() => setIsRequest(true)}
+        >
+          <LogOut size={18} /> Logout
+        </button>
+        <ConfirmLogoutModal
+          isRequest={isRequest}
+          setIsRequest={setIsRequest}
+          onLogout={handleLogout}
+        />
+      </div>
     </div>
   );
 }
