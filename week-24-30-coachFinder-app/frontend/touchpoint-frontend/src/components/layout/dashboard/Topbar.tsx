@@ -4,12 +4,18 @@ import { useMessagesStore } from "../../../store/messagesStore";
 import { useAuthStore } from "../../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import { useCoachStore } from "../../../store/coachStore";
+import Tooltip from "../../ui/Tooltip";
 
 export default function Topbar() {
   const userInfo = useAuthStore((s) => s.userInfo);
   const coachId = useCoachStore((s) => s.coachId);
 
   const unreadMsgCount = useMessagesStore((s) => s.unreadCount);
+
+  const handleclick = () => {
+    if (userInfo?.role !== "coach") navigate("/dashboard");
+    navigate(`/coach/${coachId}`);
+  };
 
   const navigate = useNavigate();
 
@@ -25,20 +31,12 @@ export default function Topbar() {
           onClick={() => navigate("/dashboard/messages")}
         >
           <Bell size={20} />
-
           {/* Red Dot */}
           {unreadMsgCount > 0 && (
             <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
           )}
-
           {/* Tooltip */}
-          <span
-            className="absolute left-1/2 -translate-x-1/2 -bottom-8 
-                   bg-gray-800 text-white text-xs px-2 py-1 rounded-md opacity-0
-                   group-hover:opacity-100 transition pointer-events-none whitespace-nowrap"
-          >
-            inbox
-          </span>
+          <Tooltip text={"inbox"} /> {/*this tooltip works*/}
         </button>
 
         {/* User avatar */}
@@ -46,14 +44,19 @@ export default function Topbar() {
           <div
             aria-roledescription="button"
             role="button"
-            onClick={() => navigate(`/coach/${coachId}`)}
+            onClick={handleclick}
+            className="relative group"
           >
             <img
               src={userInfo?.image ?? "/avatar-placeholder.png"}
               alt="avatar"
               className="w-10 h-9 object-cover bg-gray-400 rounded cursor-pointer hover:scale-125 transition-all"
             />
+            {/* Avatar Tooltip */}
+            <Tooltip text={"profile"} /> {/* this doesn't work */}
           </div>
+
+          {/* User Role display */}
           <span className="font-semibold">
             {userInfo?.role ? userInfo.role.toUpperCase() : "Member"}
           </span>

@@ -37,7 +37,7 @@ function reducer(state: LoginState, action: Action): LoginState {
 export default function Login() {
   const [state, dispatch] = useReducer(reducer, initialLoginState);
   const { setAuth } = useAuthStore();
-  const setCoachId = useCoachStore((s) => s.SetCoachId);
+  const fetCoachId = useCoachStore((s) => s.fetchCoachId);
 
   const navigate = useNavigate();
 
@@ -59,8 +59,7 @@ export default function Login() {
       setAuth(user, userInfo, accessToken, refreshToken);
 
       if (user.role === "coach") {
-        setCoachId();
-        console.log("logged in coach Id: ->", useCoachStore.getState().coachId);
+        await fetCoachId();
       }
 
       //flash a success and redirect
