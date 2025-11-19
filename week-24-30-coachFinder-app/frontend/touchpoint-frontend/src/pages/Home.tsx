@@ -1,7 +1,9 @@
 // pages/Home.tsx
 import { Link } from "react-router-dom";
+import { useAuthStore } from "../store/authStore";
 
 export default function Home() {
+  const role = useAuthStore((s) => s.user?.role);
   return (
     <>
       <section className="flex flex-col md:flex-row items-center justify-between mx-auto my-12 w-[85%]">
@@ -14,20 +16,30 @@ export default function Home() {
             empower them — anytime, anywhere.
           </p>
 
-          <div className="flex items-center gap-4">
+          {role !== "coach" ? (
+            <div className="flex items-center gap-4">
+              <Link
+                to={"/dashboard/find"}
+                className="bg-blue-600 font-medium px-3 py-2 rounded transition-colors duration-300 text-white hover:bg-blue-700"
+              >
+                Find a Coach
+              </Link>
+
+              <Link
+                to={"/coaches/new"}
+                className="bg-orange-600 font-medium px-3 py-2 rounded transition-colors duration-300 text-white hover:bg-orange-700"
+              >
+                Become a Coach
+              </Link>
+            </div>
+          ) : (
             <Link
-              to={"/dashboard/find"}
-              className="bg-blue-600 font-medium px-3 py-2 rounded transition-colors duration-300 text-white hover:bg-blue-700"
-            >
-              Find a Coach
-            </Link>
-            <Link
-              to={"/coaches/new"}
+              to={"/dashboard/overview"}
               className="bg-orange-600 font-medium px-3 py-2 rounded transition-colors duration-300 text-white hover:bg-orange-700"
             >
-              Become a Coach
+              Go to your dashboard
             </Link>
-          </div>
+          )}
         </header>
 
         <img

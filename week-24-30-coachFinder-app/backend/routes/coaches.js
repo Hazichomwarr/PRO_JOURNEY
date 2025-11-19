@@ -72,6 +72,7 @@ router.get("/", authWithToken(), async (req, res) => {
 
 // ✅ Get coachId of logged-in user
 router.get("/by-user", authWithToken(), async (req, res) => {
+  console.log("inside coaches/by-user...");
   const db = req.app.locals.db;
   const userId = req.user.id; // comes from your token payload
 

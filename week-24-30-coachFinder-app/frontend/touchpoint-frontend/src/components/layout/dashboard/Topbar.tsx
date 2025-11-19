@@ -3,9 +3,11 @@ import { Bell } from "lucide-react";
 import { useMessagesStore } from "../../../store/messagesStore";
 import { useAuthStore } from "../../../store/authStore";
 import { useNavigate } from "react-router-dom";
+import { useCoachStore } from "../../../store/coachStore";
 
 export default function Topbar() {
   const userInfo = useAuthStore((s) => s.userInfo);
+  const coachId = useCoachStore((s) => s.coachId);
 
   const unreadMsgCount = useMessagesStore((s) => s.unreadCount);
 
@@ -41,11 +43,17 @@ export default function Topbar() {
 
         {/* User avatar */}
         <div className="flex items-center gap-6">
-          <img
-            src={userInfo?.image ?? "/avatar-placeholder.png"}
-            alt="avatar"
-            className="w-10 h-9 object-cover bg-gray-400 rounded hover:scale-125 transition-all"
-          />
+          <div
+            aria-roledescription="button"
+            role="button"
+            onClick={() => navigate(`/coach/${coachId}`)}
+          >
+            <img
+              src={userInfo?.image ?? "/avatar-placeholder.png"}
+              alt="avatar"
+              className="w-10 h-9 object-cover bg-gray-400 rounded cursor-pointer hover:scale-125 transition-all"
+            />
+          </div>
           <span className="font-semibold">
             {userInfo?.role ? userInfo.role.toUpperCase() : "Member"}
           </span>

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axiosClient from "../lib/axiosClient";
 import { useAuthStore } from "../store/authStore";
 import { useFlashStore } from "../store/flashStore";
+import { useCoachStore } from "../store/coachStore";
 
 interface LoginState {
   email: string;
@@ -36,6 +37,7 @@ function reducer(state: LoginState, action: Action): LoginState {
 export default function Login() {
   const [state, dispatch] = useReducer(reducer, initialLoginState);
   const { setAuth } = useAuthStore();
+  const setCoachId = useCoachStore((s) => s.SetCoachId);
 
   const navigate = useNavigate();
 
@@ -53,9 +55,13 @@ export default function Login() {
         email: payload.email,
         role: payload.role,
       };
-      // console.log("A User just logged in ->", res.data.user);
 
       setAuth(user, userInfo, accessToken, refreshToken);
+
+      if (user.role === "coach") {
+        setCoachId();
+        console.log("logged in coach Id: ->", useCoachStore.getState().coachId);
+      }
 
       //flash a success and redirect
       useFlashStore.getState().addFlash("Logged in successfully!", "success");
