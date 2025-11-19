@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useFlashStore } from "../../store/flashStore";
 import { AnimatePresence, motion } from "framer-motion";
+import ModalShell from "../../components/ui/ModalShell";
 
 //pages/dashboard/DeleteAccountsticky-xl-top
 export default function DeleteAccount() {
@@ -31,7 +32,7 @@ export default function DeleteAccount() {
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className="bg-white p-6 rounded-md w-[90%] max-w-md"
       >
-        <p className="text-red-500 text-xl font-light mb-6">
+        <p className="text-red-700 text-xl font-light mb-6">
           This action is irreversible. All your data and activities will be
           deleted.
         </p>
@@ -50,6 +51,7 @@ export default function DeleteAccount() {
           </button>
         </div>
       </motion.div>
+      //{" "}
     </div>
   );
 }

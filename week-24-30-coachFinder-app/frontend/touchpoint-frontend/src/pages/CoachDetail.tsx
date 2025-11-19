@@ -1,11 +1,12 @@
 //pages/CoachDetails.tsx
-import { Clock, DollarSign, Star, Pencil, X } from "lucide-react";
+import { Clock, DollarSign, Star, Pencil, X, DotIcon } from "lucide-react";
 import { useEditForm } from "../hooks/useEditForm";
 import EditForm from "../components/layout/coach/EditForm";
 import { useState } from "react";
 import MessageModal from "../components/layout/coach/MessageModal";
 import { useAuthStore } from "../store/authStore";
 import { useNavigate } from "react-router-dom";
+import ModalShell from "../components/ui/ModalShell";
 
 export default function CoachDetail() {
   const { userInfo: loggedInUser } = useAuthStore();
@@ -37,7 +38,23 @@ export default function CoachDetail() {
     reviews,
     averageRating,
     totalReviews,
-  } = coach;
+  } = coach || {};
+
+  // Format availability: accept array or string
+  const lastIndexItem = availability[availability.length - 1];
+
+  const availabilityDisplay = Array.isArray(availability) ? (
+    availability.map((a, idx) => (
+      <div className="flex items-center gap-1">
+        <li key={idx}>{a}</li>
+
+        {/* No dot after last item */}
+        {a !== lastIndexItem && <DotIcon />}
+      </div>
+    ))
+  ) : (
+    <li>{availability}</li>
+  );
 
   return (
     <section className="max-w-3xl mx-auto p-6 bg-gradient-to-br from-gray-50 to-white border border-gray-100 rounded-3xl shadow-xl space-y-8">
@@ -78,27 +95,23 @@ export default function CoachDetail() {
         )}
 
       {/* BIO */}
-      <div className="shadow-md p-6 rounded-full bg-stone-50">
+      <div className="shadow-sm p-6 rounded-2xl bg-stone-50">
         <h2 className="text-lg font-semibold text-blue-500">About me</h2>
-        <p className="text-gray-600 leading-relaxed">{bio}</p>
+        <p className="text-gray-600 leading-relaxed mt-2">{bio}</p>
       </div>
 
       {/* Details */}
-      <div className="flex justify-between">
-        <div className="flex items-center gap-2 text-gray-700">
-          <Clock size={16} />
-          <span className="font-semibold text-blue-500">Availability</span>
-          <ul className="flex gap-2">
-            {Array.isArray(availability) ? (
-              availability.map((a, idx) => <li key={idx}>{a} |</li>)
-            ) : (
-              <li>{availability}</li>
-            )}
-          </ul>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="flex items-center gap-1 text-gray-700">
+          <Clock size={18} />
+          <span className=" mr-2 font-semibold text-blue-500">
+            Availability
+          </span>
+          <ul className="flex items-center gap-2">{availabilityDisplay}</ul>
         </div>
-        <div className="flex items-center gap-2 text-gray-700">
-          <DollarSign size={16} />
-          <span className="font-semibold text-blue-500">Hourly Rate:</span>
+        <div className="flex items-center gap-1 text-gray-700">
+          <DollarSign size={18} />
+          <span className="mr-2 font-semibold text-blue-500">Hourly Rate:</span>
           <span>${hourlyRate}/hr</span>
         </div>
       </div>
@@ -110,7 +123,7 @@ export default function CoachDetail() {
       ) : (
         <div className="flex flex-col items-center gap-2">
           <button
-            className="w-full bg-gradient-to-r from-green-600 to-stone-600 text-white py-3 rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all"
+            className="w-full bg-gradient-to-r from-green-600 to-green-800 text-white py-3 rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all"
             onClick={() => setShowMessageModal(true)}
           >
             Message Coach
@@ -119,7 +132,7 @@ export default function CoachDetail() {
             className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all"
             onClick={() => navigate("/sessions/new")}
           >
-            Book a seession (first 30 mins free)
+            Book a free session
           </button>
         </div>
       )}
@@ -157,30 +170,32 @@ export default function CoachDetail() {
         )}
       </div>
 
+      {/* Edit-Form */}
       {isEditing && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl shadow-lg w-full max-w-lg p-6 relative">
-            <button
-              className="absolute top-4 right 4 text-gray-500 hover:text-gray-700"
-              onClick={() => setIsEditing(false)}
-            >
-              <X size={20} />
-            </button>
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">
-              Edit Profile
-            </h2>
+        <ModalShell open={isEditing} onClose={() => setIsEditing(false)}>
+          <button
+            className="absolute top-4 right 4 text-gray-500 hover:text-gray-700"
+            onClick={() => setIsEditing(false)}
+          >
+            <X size={20} />
+          </button>
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">
+            Edit Profile
+          </h2>
 
-            {/* Edit-Form */}
-            <EditForm
-              changeFn={handleChange}
-              submitFn={handleSubmit}
-              coach={coach}
-            />
-          </div>
-        </div>
+          <EditForm
+            changeFn={handleChange}
+            submitFn={handleSubmit}
+            coach={coach}
+          />
+        </ModalShell>
       )}
 
-      {showMessageModal && (
+      {/* {showMessageModal && ( */}
+      <ModalShell
+        open={showMessageModal}
+        onClose={() => setShowMessageModal(false)}
+      >
         <MessageModal
           onClose={() => setShowMessageModal(false)}
           coachId={coachId!}
@@ -188,7 +203,8 @@ export default function CoachDetail() {
           userName={loggedInUser?.firstName}
           userId={loggedInUser?.id}
         />
-      )}
+      </ModalShell>
+      {/* )} */}
     </section>
   );
 }

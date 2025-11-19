@@ -40,42 +40,40 @@ export default function MessageModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-6 space-y-4 relative">
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
-        >
-          X
-        </button>
-        {sent ? (
-          <p className="text-green-600 text-center font-medium">
-            Message sent successfully!
-          </p>
-        ) : (
-          <>
-            <h2 className="text-lg font-semibold text-gray-800 mb-2">
-              Message this coach
-            </h2>
-            <textarea
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder={`Write your message to ${coachName}...`}
-              className="w-full border rounded-lg p-3 text-sm focus:ring focus:ring-blue-200"
-              rows={4}
-            ></textarea>
+    <>
+      <button
+        onClick={onClose}
+        className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+      >
+        X
+      </button>
+      {sent ? (
+        <p className="text-green-600 text-center font-medium">
+          Message sent successfully!
+        </p>
+      ) : (
+        <>
+          <h2 className="text-lg font-semibold text-gray-800 mb-2">
+            Message this coach
+          </h2>
+          <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder={`Write your message to ${coachName}...`}
+            className="w-full border rounded-lg p-3 text-sm focus:ring focus:ring-blue-200"
+            rows={4}
+          ></textarea>
 
-            {message.length > 0 && (
-              <button
-                className="w-full bg-blue-600 text-white py-2 rounded-lg shadow hover:bg-blue-700"
-                onClick={handleSend}
-              >
-                {isloading ? "Sending..." : "Send Message"}
-              </button>
-            )}
-          </>
-        )}
-      </div>
-    </div>
+          {message.length > 0 && (
+            <button
+              className="w-full bg-blue-600 text-white py-2 rounded-lg shadow hover:bg-blue-700"
+              onClick={handleSend}
+            >
+              {isloading ? "Sending..." : "Send Message"}
+            </button>
+          )}
+        </>
+      )}
+    </>
   );
 }

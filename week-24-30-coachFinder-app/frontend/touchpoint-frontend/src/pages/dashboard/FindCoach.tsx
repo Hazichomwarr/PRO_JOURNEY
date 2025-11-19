@@ -14,6 +14,7 @@ export default function FindCoach() {
   const isFound = (): boolean => {
     let result: boolean;
 
+    if (!isCoach) return (result = true); //don't bother if not a coach
     const fullname = userInfo?.firstName + " " + userInfo?.lastName;
     console.log("first+last name ->", fullname);
 

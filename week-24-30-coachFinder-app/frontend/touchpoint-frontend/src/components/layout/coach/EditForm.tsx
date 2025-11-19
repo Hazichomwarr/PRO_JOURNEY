@@ -63,84 +63,71 @@ export default function EditForm({
     }
   };
 
-  // const handleAvailabilityChange = (
-  //   e: React.ChangeEvent<HTMLSelectElement>
-  // ) => {
-  //   const selected = Array.from(e.target.selectedOptions, (opt) => opt.value);
-  //   if (dispatch) {
-  //     dispatch({ type: "TOGGLE_AVAILABILITY", values: selected });
-  //   } else {
-  //     changeFn("availability")(e);
-  //   }
-  // };
-
   return (
-    <div className="fixed inset-0 bg-black/10 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white rounded-3xl shadow-2xl w-[50%] max-w-lg max-h-[90vh] p-8 relative border border-gray-100 overflow-y-auto">
-        <form onSubmit={submitFn} className="space-y-4 text-gray-700">
-          {/* BIO */}
-          <div>
-            <label className="block text-sm font-medium mb-1">Bio</label>
-            <textarea
-              value={bio}
-              onChange={changeFn("bio")}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
-              rows={4}
-            />
-          </div>
-
-          {/* HOURLY RATE */}
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Hourly Rate ($)
-            </label>
-            <input
-              type="number"
-              value={hourlyRate}
-              onChange={changeFn("hourlyRate")}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
-
-          {/* EXPERTISE SELECTOR */}
-          <div>
-            <label className="block text-sm font-medium mb-1">Expertise</label>
-            <ExpertiseSelector
-              selected={expertise}
-              onToggle={handleExpertiseToggle}
-            />
-          </div>
-
-          {/* AVAILABILITY SELECT */}
-          <AvailabilitySelect
-            onChange={(slots) => {
-              if (dispatch) {
-                dispatch({ type: "TOGGLE_AVAILABILITY", values: slots });
-              } else {
-                const fakeEvent = {
-                  target: { value: slots.join(",") },
-                } as React.ChangeEvent<HTMLSelectElement>;
-                changeFn("availability")(fakeEvent);
-              }
-            }}
-            selected={AVAILABILITY_OPTIONS}
+    <>
+      <form onSubmit={submitFn} className="space-y-4 text-gray-700">
+        {/* BIO */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Bio</label>
+          <textarea
+            value={bio}
+            onChange={changeFn("bio")}
+            className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
+            rows={4}
           />
-          {/* SUBMIT BUTTON */}
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-          >
-            Save Changes
-          </button>
-        </form>
+        </div>
+
+        {/* HOURLY RATE */}
+        <div>
+          <label className="block text-sm font-medium mb-1">
+            Hourly Rate ($)
+          </label>
+          <input
+            type="number"
+            value={hourlyRate}
+            onChange={changeFn("hourlyRate")}
+            className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
+
+        {/* EXPERTISE SELECTOR */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Expertise</label>
+          <ExpertiseSelector
+            selected={expertise}
+            onToggle={handleExpertiseToggle}
+          />
+        </div>
+
+        {/* AVAILABILITY SELECT */}
+        <AvailabilitySelect
+          onChange={(slots) => {
+            if (dispatch) {
+              dispatch({ type: "TOGGLE_AVAILABILITY", values: slots });
+            } else {
+              const fakeEvent = {
+                target: { value: slots.join(",") },
+              } as React.ChangeEvent<HTMLSelectElement>;
+              changeFn("availability")(fakeEvent);
+            }
+          }}
+          selected={AVAILABILITY_OPTIONS}
+        />
+        {/* SUBMIT BUTTON */}
         <button
-          type="button"
-          className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition mt-4"
-          onClick={() => navigate(-1)} //with pure js -> window.history.back()
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
         >
-          Cancel
+          Save Changes
         </button>
-      </div>
-    </div>
+      </form>
+      <button
+        type="button"
+        className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition mt-4"
+        onClick={() => navigate(-1)} //with pure js -> window.history.back()
+      >
+        Cancel
+      </button>
+    </>
   );
 }
