@@ -6,7 +6,7 @@ import SeekerDashboard from "../../../pages/dashboard/SeekerDashboard";
 import { useAuthStore } from "../../../store/authStore";
 
 export default function RoleBasedDashboard() {
-  const { user } = useAuthStore();
+  const user = useAuthStore((s) => s.user);
 
   if (!user) return <div className="text-center p-6">Loading dashboard...</div>;
 

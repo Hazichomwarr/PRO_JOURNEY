@@ -1,7 +1,7 @@
 //pages/CoachDetails.tsx
 import { Clock, DollarSign, Star, Pencil, X, DotIcon } from "lucide-react";
 import { useEditForm } from "../hooks/useEditForm";
-import EditForm from "../components/layout/coach/EditForm";
+import EditForm from "../components/layout/coach/CoachEditForm";
 import { useState } from "react";
 import MessageModal from "../components/layout/coach/MessageModal";
 import { useAuthStore } from "../store/authStore";

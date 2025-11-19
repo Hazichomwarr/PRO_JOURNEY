@@ -5,9 +5,7 @@ import { useAuthStore } from "../../../store/authStore";
 import { useNavigate } from "react-router-dom";
 
 export default function Topbar() {
-  const user = useAuthStore((s) => s.userInfo);
-  const role = user?.role;
-  console.log("(inside Topbar.tsx) LoggedIn-User ->", user);
+  const userInfo = useAuthStore((s) => s.userInfo);
 
   const unreadMsgCount = useMessagesStore((s) => s.unreadCount);
 
@@ -16,19 +14,10 @@ export default function Topbar() {
   return (
     <header className="flex items-center justify-between bg-white shadow px-6 py-3 sticky top-0 z-10">
       <h2 className="text-lg font-semibold text-gray-800">
-        Welcome back, {user?.firstName ?? "User"} 👋
+        Welcome back, {userInfo?.firstName ?? "User"} 👋
       </h2>
 
       <div className="flex items-center gap-5">
-        {/* <button
-          className="relative text-gray-600 hover:text-blue-600 hover:scale-150"
-          onClick={() => navigate("/dashboard/messages")}
-        >
-          <Bell size={20} />
-          {unreadMsgCount > 0 && (
-            <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          )}
-        </button> */}
         <button
           className="relative group text-gray-600 hover:text-blue-600 transition hover:scale-110 active:scale-100"
           onClick={() => navigate("/dashboard/messages")}
@@ -53,12 +42,12 @@ export default function Topbar() {
         {/* User avatar */}
         <div className="flex items-center gap-6">
           <img
-            src={user?.image ?? "/avatar-placeholder.png"}
+            src={userInfo?.image ?? "/avatar-placeholder.png"}
             alt="avatar"
             className="w-10 h-9 object-cover bg-gray-400 rounded hover:scale-125 transition-all"
           />
           <span className="font-semibold">
-            {role ? role.toUpperCase() : "Member"}
+            {userInfo?.role ? userInfo.role.toUpperCase() : "Member"}
           </span>
         </div>
       </div>

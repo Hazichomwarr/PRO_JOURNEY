@@ -71,7 +71,7 @@ export default function CoachRegistration() {
           type="submit"
           className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded transition-all"
         >
-          Submit
+          {state.loading ? "Saving..." : "Submit"}
         </button>
 
         {/* Go Back Button */}

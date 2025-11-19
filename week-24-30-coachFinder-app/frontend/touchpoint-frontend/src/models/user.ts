@@ -1,5 +1,7 @@
 //models/user.ts
 
+export type TypeRole = "coach" | "buddy" | "seeker";
+
 export interface User {
   id: string;
   firstName: string;
@@ -13,7 +15,7 @@ export interface User {
   dateBirth?: string;
   image?: string;
   interest?: string;
-  role: "coach" | "buddy" | "seeker" | "";
+  role: TypeRole;
 }
 
 export type UserPublic = Partial<User>;

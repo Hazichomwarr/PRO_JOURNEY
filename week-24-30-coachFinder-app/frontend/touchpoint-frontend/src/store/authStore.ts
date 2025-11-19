@@ -3,7 +3,7 @@ import { create } from "zustand";
 import axiosClient from "../lib/axiosClient";
 import refreshClient from "../lib/axiosClient";
 import { useFlashStore } from "./flashStore";
-import { UserPublic } from "../models/user";
+import { TypeRole, UserPublic } from "../models/user";
 
 interface UserFromTokenPayload {
   id: string;
@@ -32,7 +32,7 @@ interface AuthState {
 
   logout: () => void;
   restoreSession: () => Promise<void>;
-  updateRole: (newRole: string) => void;
+  updateRole: (newRole: TypeRole) => void;
   checkAccessExpiry: () => void;
   refreshAccessToken: () => Promise<boolean>;
 }
@@ -103,12 +103,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const accessToken = localStorage.getItem("accessToken");
     const refreshToken = localStorage.getItem("refreshToken");
     const user = localStorage.getItem("user");
+    const userInfo = localStorage.getItem("userInfo");
 
     if (accessToken && refreshToken && user) {
       set({
         accessToken,
         refreshToken,
         user: JSON.parse(user),
+        userInfo: userInfo ? JSON.parse(userInfo) : null,
         isAuthenticated: true,
       });
 
@@ -156,13 +158,18 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   //Update Role (seeker -> coach)
-  updateRole: (newRole) => {
-    const current = get().user;
-    if (!current) return;
+  updateRole: (newRole: TypeRole) => {
+    const currentUser = get().user;
+    const currentUserInfo = get().userInfo;
+    if (!currentUser) return;
 
-    const updatedUser = { ...current, role: newRole };
-    set({ user: updatedUser });
+    const updatedUser = { ...currentUser, role: newRole };
+    const updatedUserInfo = { ...currentUserInfo, role: newRole };
+
     localStorage.setItem("user", JSON.stringify(updatedUser));
+    localStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
+
+    set({ user: updatedUser, userInfo: updatedUserInfo });
 
     console.log("Role updated to:", newRole);
   },

@@ -186,9 +186,11 @@ export function useCoachRegistration() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     console.log("inside handleSubmit");
     if (!validateForm()) {
       console.log("error in form fields ->", state.errors);
+
       return;
     }
     console.log("no errors in fields");
@@ -203,19 +205,16 @@ export function useCoachRegistration() {
       await axiosClient.post("/coaches", {
         data: state.values,
         role: "coach",
-      }); //<- hardcoded 'coach' while looking for a better way
+      });
       dispatch({ type: "SET_SUCCESS", value: true });
       dispatch({ type: "RESET_FORM" });
-      navigate(-1);
+      dispatch({ type: "SET_LOADING", value: false });
+      navigate(-2);
       useFlashStore
         .getState()
         .addFlash("Coach registered successfully!", "success");
     } catch (error: any) {
-      if (error.response?.status === 403) {
-        console.log("bad request from handleSubmit catch block");
-      } else {
-        console.error(error.response?.data?.message || "Something went wrong");
-      }
+      console.error(error.response?.data?.message || "Something went wrong");
     } finally {
       dispatch({ type: "SET_LOADING", value: false });
     }

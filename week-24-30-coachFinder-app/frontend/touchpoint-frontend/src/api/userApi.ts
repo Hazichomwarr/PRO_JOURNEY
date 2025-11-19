@@ -1,6 +1,6 @@
 //api/userApi.ts
 import axiosClient from "../lib/axiosClient";
-import { UserPublic } from "../store/userStore";
+import { UserPublic } from "../models/user";
 
 export const getCurrentUser = async () => {
   try {

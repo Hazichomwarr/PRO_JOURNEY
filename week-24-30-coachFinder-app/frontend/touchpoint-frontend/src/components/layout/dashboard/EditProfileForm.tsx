@@ -1,12 +1,16 @@
 //components/layout/EditProfileForm.tsx
 import React, { useState } from "react";
 import { updateUser } from "../../../api/userApi";
-import { UserPublic, useUserStore } from "../../../store/userStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAuthStore } from "../../../store/authStore";
+import { UserPublic } from "../../../models/user";
+import { useFlashStore } from "../../../store/flashStore";
+import { useNavigate } from "react-router-dom";
 
 export default function EditProfileForm() {
-  const { user, setUser } = useUserStore();
+  const { userInfo: user, setUser } = useAuthStore();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     firstName: user?.firstName ?? "",
@@ -16,10 +20,6 @@ export default function EditProfileForm() {
     city: user?.city ?? "",
     state: user?.state ?? "",
   });
-
-  // const [status, setStatus] = useState<"idle" | "saving" | "done" | "error">(
-  //   "idle"
-  // );
 
   const { mutate, isPending, isSuccess } = useMutation({
     mutationFn: updateUser,
@@ -40,6 +40,13 @@ export default function EditProfileForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user.id) {
+      useFlashStore
+        .getState()
+        .addFlash("Logout and login to try again", "info", 6000);
+      navigate("/dashboard");
+      return;
+    }
     mutate({ id: user.id, updates: formData });
   };
 

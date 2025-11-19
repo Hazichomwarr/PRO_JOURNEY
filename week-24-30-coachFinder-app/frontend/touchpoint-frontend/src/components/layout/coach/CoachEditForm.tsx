@@ -1,5 +1,5 @@
 //components/layout/coach/EditForm.tsx
-import React from "react";
+import React, { useState } from "react";
 import ExpertiseSelector from "./ExpertiseSelector";
 import { CoachDetail } from "../../../hooks/useEditForm";
 import AvailabilitySelect from "./AvailabilitySelect";
@@ -43,6 +43,7 @@ export default function EditForm({
   dispatch,
 }: EditFormProps) {
   const { bio, expertise, availability, hourlyRate } = coach;
+
   const navigate = useNavigate();
 
   const handleExpertiseToggle = (value: string) => {

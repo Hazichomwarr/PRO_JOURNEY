@@ -104,6 +104,8 @@ export function useEditForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    setLoading(true);
+
     try {
       const res = await axiosClient.put(`coaches/${id}`, {
         bio: coach?.bio,
@@ -113,6 +115,7 @@ export function useEditForm() {
       });
       console.log("status response ->", res.status);
       setCoach((prev) => (prev ? { ...prev, ...res.data } : null));
+      setLoading(false);
       setIsEditing(false);
       useFlashStore
         .getState()
@@ -126,6 +129,8 @@ export function useEditForm() {
           `Update failed: ${err.message || "Please try again."}`,
           "error"
         );
+    } finally {
+      setLoading(false);
     }
   };
 
