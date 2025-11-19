@@ -56,6 +56,9 @@ export default function CoachDetail() {
     <li>{availability}</li>
   );
 
+  const isCoach = loggedInUser?.role === "coach";
+  const isProfileOwner = loggedInUser?.firstName === user.firstName && isCoach;
+
   return (
     <section className="max-w-3xl mx-auto p-6 bg-gradient-to-br from-gray-50 to-white border border-gray-100 rounded-3xl shadow-xl space-y-8">
       {/* HEADER */}
@@ -83,16 +86,15 @@ export default function CoachDetail() {
       </div>
 
       {/* Only show Edit button only to th profile owner */}
-      {loggedInUser?.firstName === user.firstName &&
-        loggedInUser?.role === "coach" && (
-          <button
-            onClick={() => setIsEditing(true)}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow-sm transition-all hover:scale-[1.02]"
-          >
-            <Pencil size={16} />
-            Edit infos
-          </button>
-        )}
+      {isProfileOwner && (
+        <button
+          onClick={() => setIsEditing(true)}
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow-sm transition-all hover:scale-[1.02]"
+        >
+          <Pencil size={16} />
+          Edit infos
+        </button>
+      )}
 
       {/* BIO */}
       <div className="shadow-sm p-6 rounded-2xl bg-stone-50">
@@ -117,8 +119,7 @@ export default function CoachDetail() {
       </div>
 
       {/* Call to Action(can't write to yourself) */}
-      {loggedInUser?.firstName === user.firstName &&
-      loggedInUser?.role === "coach" ? (
+      {isProfileOwner ? (
         <></>
       ) : (
         <div className="flex flex-col items-center gap-2">
@@ -128,12 +129,16 @@ export default function CoachDetail() {
           >
             Message Coach
           </button>
-          <button
-            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all"
-            onClick={() => navigate("/sessions/new")}
-          >
-            Book a free session
-          </button>
+
+          {/* only seekers can book a sessions */}
+          {!isCoach && (
+            <button
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all"
+              onClick={() => navigate("/sessions/new")}
+            >
+              Book a free session
+            </button>
+          )}
         </div>
       )}
 
