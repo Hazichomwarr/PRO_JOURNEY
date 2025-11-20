@@ -1,7 +1,10 @@
-import { useReducer } from "react";
+//hooks/useRegistrationForm.ts
+import React, { useReducer, useState } from "react";
 import axiosClient from "../lib/axiosClient";
 import { useNavigate } from "react-router-dom";
 import { useFlashStore } from "../store/flashStore";
+import { UserFormErrors } from "../models/user";
+import { formatPhone, validateForm } from "../utils/formConfig";
 
 export interface UserFormValues {
   firstName: string;
@@ -15,6 +18,7 @@ export interface UserFormValues {
   role: "coach" | "buddy" | "seeker" | "";
   birthDate: string;
   image?: File | string | null;
+  interests?: string[];
 }
 
 export const initialRegisterState: UserFormValues = {
@@ -29,7 +33,12 @@ export const initialRegisterState: UserFormValues = {
   role: "",
   birthDate: "",
   image: "",
+  interests: [],
 };
+
+export type UserFormEvent =
+  | React.ChangeEvent<HTMLInputElement>
+  | React.ChangeEvent<HTMLSelectElement>;
 
 // ---- Reducer ----
 type Action =
@@ -54,30 +63,29 @@ function reducer(state: UserFormValues, action: Action): UserFormValues {
 // ---- Hook ----
 export function useRegisterForm() {
   const [state, dispatch] = useReducer(reducer, initialRegisterState);
+  const [errors, setErrors] = useState<UserFormErrors>({});
+
   const navigate = useNavigate();
 
-  const handleChange =
-    (field: keyof UserFormValues) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-      let value: any = e.target.value;
+  const handleChange = (field: keyof UserFormValues) => (e: UserFormEvent) => {
+    let value: any = e.target.value;
 
-      if (field === "image" && e.target instanceof HTMLInputElement) {
-        value = e.target.files?.[0] || null; //File Object
-      }
+    if (field === "image" && e.target instanceof HTMLInputElement) {
+      value = e.target.files?.[0] || null; //File Object
+    }
+    if (field === "phone" && e.target instanceof HTMLInputElement) {
+      value = formatPhone(e.target.value);
+    }
 
-      dispatch({ type: "SET_FIELD", field, value });
-    };
+    dispatch({ type: "SET_FIELD", field, value });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // --- Basic validation ---
-    if (state.password !== state.confirmPassword) {
-      alert("Passwords do not match.");
-      return;
-    }
-    if (!state.role) {
-      alert("Please select a role.");
+    const validationErrors: UserFormErrors = validateForm(state);
+    if (Object.keys(validationErrors).length !== 0) {
+      setErrors(validationErrors);
       return;
     }
 
@@ -119,5 +127,5 @@ export function useRegisterForm() {
     }
   };
 
-  return { state, dispatch, handleChange, handleSubmit };
+  return { state, dispatch, errors, setErrors, handleChange, handleSubmit };
 }

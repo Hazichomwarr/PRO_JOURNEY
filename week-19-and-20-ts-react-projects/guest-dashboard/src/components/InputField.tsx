@@ -25,29 +25,18 @@ export default function InputField({
         {label}
       </label>
 
-      {name === "phone" ? (
-        <input
-          value={value}
-          onChange={onChange}
-          name={name}
-          type={type}
-          placeholder={placeholder || "000-000-0000"}
-          className={`w-full rounded-lg p-2 border ${
-            error ? "border-red-500" : "border-gray-300"
-          } focus:ring-2 focus:ring-blue-500`}
-        />
-      ) : (
-        <input
-          className={`w-full rounded-lg p-2 border ${
-            error ? "border-red-500" : "border-gray-300"
-          } focus:ring-2 focus:ring-blue-500`}
-          name={name}
-          id={name}
-          type={type}
-          value={value}
-          onChange={onChange}
-        />
-      )}
+      <input
+        value={value}
+        onChange={onChange}
+        name={name}
+        id={name}
+        type={type}
+        placeholder={name === "phone" ? "Phone: 000-000-0000" : placeholder}
+        className={`w-full rounded-lg p-2 border ${
+          error ? "border-red-500" : "border-gray-300"
+        } focus:ring-2 focus:ring-blue-500`}
+      />
+
       {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>
   );

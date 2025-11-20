@@ -1,10 +1,55 @@
-import InputField from "../components/ui/InputField";
+//pages/Register.tsx(it should coordinate the form (not do form things))
 import { useRegisterForm } from "../hooks/useRegisterForm";
 import { useNavigate } from "react-router-dom";
+import { validateForm } from "../utils/formConfig";
+// import { ALL_INTERESTS, validateForm } from "../utils/formConfig";
+
+// Components
+import ContactInfosFields from "../components/layout/seeker/ContactInfosFields";
+import RoleInterestFields from "../components/layout/seeker/RoleInterestFields";
+import IdentificationFields from "../components/layout/seeker/IdentificationFields";
+import { useState } from "react";
+import { UserFormErrors, UserFormValues } from "../models/user";
+import ValidationSummaryPannel from "../components/layout/ValidationSummaryPannel";
+import UserFormNavigation from "../components/layout/seeker/UserFormNavigation";
+import MultiStepLabels from "../components/layout/seeker/MultiStepLabels";
+
+const stepFields: Record<number, (keyof UserFormValues)[]> = {
+  1: ["firstName", "lastName", "phone", "email", "city", "state", "birthDate"],
+  2: ["role"], //interests coming soon
+  3: ["password", "confirmPassword", "image"],
+};
+
+const stepLabels: Record<number, string> = {
+  1: "Info",
+  2: "Interest",
+  3: "identity",
+};
 
 export default function Register() {
-  const { state, handleChange, dispatch, handleSubmit } = useRegisterForm();
+  const { state, errors, setErrors, handleChange, handleSubmit } =
+    useRegisterForm();
   const navigate = useNavigate();
+
+  // Multi-step-actions
+  const [step, setStep] = useState<number>(1);
+  const stepLength = Object.keys(stepFields).length;
+
+  function handleNext() {
+    const allErrors = validateForm(state); //ex: {firstName: "name required", ...}
+
+    const currentStepFields = stepFields[step]; //ex: [pwd, confirmPwd, img]
+    const currentStepErrors: UserFormErrors = {};
+    currentStepFields.forEach((field) => {
+      if (allErrors[field]) currentStepErrors[field] = allErrors[field];
+    });
+    setErrors(currentStepErrors);
+
+    if (Object.keys(currentStepErrors).length === 0) {
+      let nextStep = step + 1;
+      setStep(nextStep);
+    }
+  }
 
   return (
     <div className="mt-6 flex flex-col max-h-[90vh] items-center justify-center bg-gray-50">
@@ -12,117 +57,67 @@ export default function Register() {
         onSubmit={handleSubmit}
         className="w-full max-w-lg rounded-2xl bg-white p-8 shadow-md space-y-4"
       >
+        {/* Form Header */}
         <h2 className="text-2xl font-semibold text-center text-gray-700">
           Create Your User Account
         </h2>
-        {/* --- First & Last Name --- */}
-        <div className="grid grid-cols-2 gap-3">
-          <InputField
-            value={state.firstName}
-            changeFn={handleChange("firstName")}
-            type="text"
-            placeholder="First Name"
-          />
-          <InputField
-            value={state.lastName}
-            changeFn={handleChange("lastName")}
-            type="text"
-            placeholder="Last Name"
-          />
-        </div>
-        {/* --- Email & Phone --- */}
-        <div className="grid grid-cols-2 gap-3">
-          <InputField
-            value={state.email}
-            changeFn={handleChange("email")}
-            type="email"
-            placeholder="Email"
-          />
 
-          <InputField
-            value={state.phone}
-            changeFn={handleChange("phone")}
-            type="tel"
-            placeholder="Phone"
-          />
-        </div>
-        {/* --- Address City & State --- */}
-        <div className="grid grid-cols-2 gap-3">
-          <InputField
-            value={state.city}
-            changeFn={handleChange("city")}
-            type="text"
-            placeholder="City"
-          />
+        {/* Multi Step Labels Indicators */}
+        <MultiStepLabels
+          step={step}
+          stepLabels={stepLabels}
+          stepLength={stepLength}
+        />
 
-          <InputField
-            value={state.state}
-            changeFn={handleChange("state")}
-            type="text"
-            placeholder="State/Country"
+        {/* Show summary panel if errors exist */}
+        <ValidationSummaryPannel errors={errors} variant="warning" />
+
+        {/* ---Contact Fields--- */}
+        {step === 1 && (
+          <ContactInfosFields
+            values={state}
+            errors={errors}
+            onchange={handleChange}
           />
-        </div>
-        {/* --- Birth Date --- */}
-        <label className="flex items-center gap-2 text-gray-600">
-          DOB
-          <InputField
-            value={state.birthDate}
-            changeFn={handleChange("birthDate")}
-            type="date"
-            placeholder="Birth Date"
+        )}
+        {/* --- Role & Interests Fields--- */}
+        {step === 2 && (
+          <RoleInterestFields
+            values={state}
+            errors={errors}
+            onchange={handleChange}
           />
-        </label>
-        {/* --- Role --- */}
-        <div className="space-y-2">
-          <label className="text-gray-700 font-medium">
-            How do you want to use TouchPoint?
-            <select
-              value={state.role}
-              onChange={handleChange("role")}
-              className="w-full border p-2 rounded bg-white focus:ring-2 focus:ring-blue-500 outline-none"
-            >
-              <option value="">Select Role</option>
-              <option value="coach">Coach - help others grow</option>
-              <option value="buddy">Buddy - find someone to grow with</option>
-              <option value="seeker">Seeker - Looking for help</option>
-            </select>
-          </label>
-        </div>
-        {/* --- Passwords --- */}
-        <InputField
-          value={state.password}
-          changeFn={handleChange("password")}
-          type="text"
-          placeholder="Password"
+        )}
+
+        {/* --- Passwords & Image Fields --- */}
+        {step === 3 && (
+          <IdentificationFields
+            values={state}
+            errors={errors}
+            onchange={handleChange}
+          />
+        )}
+
+        {/* Step Buttons */}
+        <UserFormNavigation
+          step={step}
+          setStep={setStep}
+          onNext={handleNext}
+          stepLength={stepLength}
+          setErrors={setErrors}
+          errors={errors}
         />
-        <InputField
-          value={state.confirmPassword}
-          changeFn={handleChange("confirmPassword")}
-          type="text"
-          placeholder="Confirm Password"
-        />
-        {/* ---IMAGE/AVATAR--- */}
-        <label className=" flex items-center gap-6 text-gray-700">
-          <span>Add Picture (or an Avatar) </span>
-          <InputField changeFn={handleChange("image")} type="file" />
-        </label>
-        {/* --- Submit --- */}
-        <button
-          type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded transition-all"
-        >
-          Register
-        </button>
       </form>
-      <p className="text-center pb-2">
-        Already Have an Account ?{" "}
+
+      <aside className="text-center pb-2">
+        Already Have an Account ?
         <button
           onClick={() => navigate("/login")}
-          className="text-orange-600 font-semibold underline"
+          className="ml-2 text-orange-600 font-semibold underline"
         >
           Login
         </button>
-      </p>
+      </aside>
     </div>
   );
 }
