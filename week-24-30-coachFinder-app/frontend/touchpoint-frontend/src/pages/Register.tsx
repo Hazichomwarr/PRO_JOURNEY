@@ -16,14 +16,14 @@ import MultiStepLabels from "../components/layout/seeker/MultiStepLabels";
 
 const stepFields: Record<number, (keyof UserFormValues)[]> = {
   1: ["firstName", "lastName", "phone", "email", "city", "state", "birthDate"],
-  2: ["role"], //interests coming soon
+  2: ["role"], //'interests' coming soon
   3: ["password", "confirmPassword", "image"],
 };
 
 const stepLabels: Record<number, string> = {
   1: "Info",
   2: "Interest",
-  3: "identity",
+  3: "identification",
 };
 
 export default function Register() {

@@ -17,17 +17,19 @@ export default function IdentificationFields({
     <div className="grid grid-cols-1 gap-3">
       <InputField
         value={values.password}
+        type="password"
         changeFn={onchange("password")}
-        type="text"
         placeholder="Password"
         error={errors.password}
+        name="password"
       />
       <InputField
         value={values.confirmPassword}
+        type="password"
         changeFn={onchange("confirmPassword")}
-        type="text"
         placeholder="Confirm Password"
         error={errors.confirmPassword}
+        name="confirmPassword"
       />
 
       {/* ---IMAGE/AVATAR--- */}

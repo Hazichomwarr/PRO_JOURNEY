@@ -1,4 +1,5 @@
 import { UserFormErrors, UserFormValues } from "../models/user";
+import { LoginErrors, LoginState } from "../pages/Login";
 
 export const ALL_INTERESTS = [
   "Cooking",
@@ -56,6 +57,21 @@ export function validateForm(values: UserFormValues): UserFormErrors {
   //confirmpassword match
   if (values.password !== values.confirmPassword)
     errors.confirmPassword = "Passwords do not match.";
+
+  return errors;
+}
+
+export function validateLoginForm(values: LoginState): LoginErrors {
+  let errors: LoginErrors = {};
+
+  //Email error check
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
+    errors.email = "Enter a valid email.";
+  }
+
+  //Password erros check
+  if (values.password.length < 8 || !values.password)
+    errors.password = "Incorrect password.";
 
   return errors;
 }

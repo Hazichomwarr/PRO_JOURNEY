@@ -1,19 +1,25 @@
 //pages/login.tsx
-import { useReducer, FormEvent, ChangeEvent } from "react";
+import { useReducer, FormEvent, ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../lib/axiosClient";
 import { useAuthStore } from "../store/authStore";
 import { useFlashStore } from "../store/flashStore";
 import { useCoachStore } from "../store/coachStore";
+import InputField from "../components/ui/InputField";
+import { validateLoginForm } from "../utils/formConfig";
 
-interface LoginState {
+export interface LoginState {
   email: string;
   password: string;
 }
 
+export interface LoginErrors {
+  email?: string;
+  password?: string;
+}
+
 type Action =
-  | { type: "SET_EMAIL"; payload: string }
-  | { type: "SET_PASSWORD"; payload: string }
+  | { type: "SET_FIELD"; field: keyof LoginState; payload: string }
   | { type: "RESET" };
 
 const initialLoginState: LoginState = {
@@ -23,10 +29,8 @@ const initialLoginState: LoginState = {
 
 function reducer(state: LoginState, action: Action): LoginState {
   switch (action.type) {
-    case "SET_EMAIL":
-      return { ...state, email: action.payload };
-    case "SET_PASSWORD":
-      return { ...state, password: action.payload };
+    case "SET_FIELD":
+      return { ...state, [action.field]: action.payload };
     case "RESET":
       return initialLoginState;
     default:
@@ -36,24 +40,35 @@ function reducer(state: LoginState, action: Action): LoginState {
 
 export default function Login() {
   const [state, dispatch] = useReducer(reducer, initialLoginState);
+  const [errors, setErrors] = useState<LoginErrors>({});
   const { setAuth } = useAuthStore();
   const fetCoachId = useCoachStore((s) => s.fetchCoachId);
 
   const navigate = useNavigate();
 
+  const handleChange =
+    (field: keyof LoginState) => (e: ChangeEvent<HTMLInputElement>) =>
+      dispatch({ type: "SET_FIELD", field, payload: e.target.value });
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    const loginErrors = validateLoginForm(state);
+    if (Object.keys(loginErrors).length > 0) {
+      setErrors(loginErrors);
+      return;
+    }
 
     try {
       const res = await axiosClient.post("/auth/login", state);
       const { accessToken, refreshToken, user: userInfo } = res.data;
 
       //decode or fetch user from token if needed
-      const payload = JSON.parse(atob(accessToken.split(".")[1]));
+      //const payload = JSON.parse(atob(accessToken.split(".")[1]));
       const user = {
-        id: payload.id,
-        email: payload.email,
-        role: payload.role,
+        id: userInfo.id,
+        email: userInfo.email,
+        role: userInfo.role,
       };
 
       setAuth(user, userInfo, accessToken, refreshToken);
@@ -62,12 +77,12 @@ export default function Login() {
         await fetCoachId();
       }
 
-      //flash a success and redirect
+      //flash a success msg and redirect
       useFlashStore.getState().addFlash("Logged in successfully!", "success");
       navigate("/dashboard");
     } catch (err: any) {
       console.error("Login failed:", err.response?.data || err.message);
-      alert("Invalid credentials");
+      useFlashStore.getState().addFlash("Invalid credentials.", "error");
     }
   };
 
@@ -82,27 +97,24 @@ export default function Login() {
 
         <label className="flex flex-col gap-1">
           <span className="font-medium">Email</span>
-          <input
+
+          <InputField
             type="email"
             value={state.email}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              dispatch({ type: "SET_EMAIL", payload: e.target.value })
-            }
-            className="border rounded p-2"
-            required
+            error={errors.email}
+            changeFn={handleChange("email")}
           />
         </label>
 
         <label className="flex flex-col gap-1">
           <span className="font-medium">Password</span>
-          <input
-            type="text"
+
+          <InputField
+            type="password"
             value={state.password}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              dispatch({ type: "SET_PASSWORD", payload: e.target.value })
-            }
-            className="border rounded p-2"
-            required
+            error={errors.password}
+            name="password"
+            changeFn={handleChange("password")}
           />
         </label>
 
@@ -114,10 +126,10 @@ export default function Login() {
         </button>
       </form>
       <p className="text-center pb-2">
-        Don't have an Account?{" "}
+        Don't have an Account?
         <button
           onClick={() => navigate("/register")}
-          className="text-orange-600 font-semibold underline"
+          className="ml-2 text-orange-600 font-semibold underline"
         >
           Register
         </button>
