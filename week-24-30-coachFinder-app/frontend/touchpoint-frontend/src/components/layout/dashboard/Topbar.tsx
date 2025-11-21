@@ -14,7 +14,7 @@ export default function Topbar() {
 
   const handleclick = () => {
     if (userInfo?.role !== "coach") navigate("/dashboard");
-    navigate(`/coach/${coachId}`);
+    else navigate(`/coach/${coachId}`);
   };
 
   const navigate = useNavigate();
@@ -48,12 +48,12 @@ export default function Topbar() {
             className="relative group"
           >
             <img
-              src={userInfo?.image ?? "/avatar-placeholder.png"}
+              src={userInfo?.image?.toString() ?? "/avatar-placeholder.png"}
               alt="avatar"
               className="w-10 h-9 object-cover bg-gray-400 rounded cursor-pointer hover:scale-125 transition-all"
             />
             {/* Avatar Tooltip */}
-            <Tooltip text={"profile"} /> {/* this doesn't work */}
+            <Tooltip text={"profile"} />
           </div>
 
           {/* User Role display */}
