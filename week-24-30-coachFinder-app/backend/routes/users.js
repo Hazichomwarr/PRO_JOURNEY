@@ -122,16 +122,24 @@ router.get("/me", authWithToken(), async (req, res) => {
 });
 
 //DELETE A USER
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authWithToken(), async (req, res) => {
   const db = req.app.locals.db;
   const { id } = req.params;
 
   try {
-    const result = await db
+    const deletedUser = await db
       .collection("users")
       .deleteOne({ _id: new ObjectId(id) });
-    if (result.deletedCount === 0) {
+    if (deletedUser.deletedCount === 0) {
       return res.status(404).json({ error: "User not found" });
+    }
+    if (req.user.role === "coach") {
+      const deletedUserCoach = await db
+        .collection("coach")
+        .deleteOne({ userId: new ObjectId(id) });
+      if (deletedUserCoach.deletedCount === 0) {
+        return res.status(404).json({ error: "User is not a coach" });
+      }
     }
     res.status(200).json({ message: "success" });
   } catch (err) {

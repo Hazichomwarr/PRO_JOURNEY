@@ -2,7 +2,7 @@
 import { useReducer, FormEvent, ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../lib/axiosClient";
-import { useAuthStore } from "../store/authStore";
+import { useAuthStore, UserFromTokenPayload } from "../store/authStore";
 import { useFlashStore } from "../store/flashStore";
 import { useCoachStore } from "../store/coachStore";
 import InputField from "../components/ui/InputField";
@@ -65,7 +65,7 @@ export default function Login() {
 
       //decode or fetch user from token if needed
       //const payload = JSON.parse(atob(accessToken.split(".")[1]));
-      const user = {
+      const user: UserFromTokenPayload = {
         id: userInfo.id,
         email: userInfo.email,
         role: userInfo.role,

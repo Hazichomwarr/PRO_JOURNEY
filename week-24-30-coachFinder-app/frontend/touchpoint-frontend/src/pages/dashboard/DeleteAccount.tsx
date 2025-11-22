@@ -1,15 +1,29 @@
+//pages/dashboard/DeleteAccount.tsx
 import { useNavigate } from "react-router-dom";
 import { useFlashStore } from "../../store/flashStore";
-import { AnimatePresence, motion } from "framer-motion";
-import ModalShell from "../../components/ui/ModalShell";
+import { motion } from "framer-motion";
+// import ModalShell from "../../components/ui/ModalShell";
+import { deleteUser } from "../../api/userApi";
+import { useAuthStore } from "../../store/authStore";
 
-//pages/dashboard/DeleteAccountsticky-xl-top
 export default function DeleteAccount() {
   const navigate = useNavigate();
 
-  const handleDelete = () => {
+  const userId = useAuthStore((s) => s.user?.id);
+  const logout = useAuthStore((s) => s.logout);
+
+  if (!userId) {
+    useFlashStore.getState().addFlash("Something went wrong!");
+    return;
+  }
+
+  const handleDelete = async () => {
+    await deleteUser(userId);
+    logout();
+    navigate("/");
+
     useFlashStore.getState().addFlash(
-      `Your account has been deleted. We're sorry to see you go.
+      `Your account and all your data has been deleted.
         Come back soon.`,
       "error",
       8000

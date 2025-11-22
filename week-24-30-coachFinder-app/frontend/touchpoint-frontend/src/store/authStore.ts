@@ -5,7 +5,7 @@ import refreshClient from "../lib/axiosClient";
 import { useFlashStore } from "./flashStore";
 import { TypeRole, UserPublic } from "../models/user";
 
-interface UserFromTokenPayload {
+export interface UserFromTokenPayload {
   id: string;
   email: string;
   role: string;

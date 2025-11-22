@@ -26,7 +26,7 @@ export const updateUser = async ({
   }
 };
 
-//for future : delete user
+//delete user
 export const deleteUser = async (id: string) => {
   try {
     const res = await axiosClient.delete(`/users/${id}`);
