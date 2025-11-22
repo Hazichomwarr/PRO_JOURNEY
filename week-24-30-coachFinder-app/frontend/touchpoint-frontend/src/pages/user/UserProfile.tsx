@@ -2,21 +2,26 @@ import { MapPin, Mail, Phone, User, Edit } from "lucide-react";
 import { Info } from "../../components/ui/Info";
 import { useAuthStore } from "../../store/authStore";
 import { useNavigate } from "react-router-dom";
+import { normalizeImageSrc } from "../../utils/formConfig";
 
 export default function UserProfile() {
   const { userInfo: user } = useAuthStore();
+  console.log("user inside profile ->", user);
 
   const navigate = useNavigate();
 
   if (!user) {
     return <p className="text-center mt-6 text-gray-500">No Profile Found</p>;
   }
+  //safe guard type of image src
+  const imageSrc = normalizeImageSrc(user.image);
+
   return (
     <div className="w-full max-w-4xl mx-auto p-6 space-y-6">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 bg-white rounded-2xl shadow p-6">
         <img
-          src={user.image || "/avatar-placeholder.png"}
+          src={imageSrc || "/avatar-placeholder.png"}
           alt="avatar"
           className="w-28 h-28 rounded-xl object-cover shadow-sm"
         />

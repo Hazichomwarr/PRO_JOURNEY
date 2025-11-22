@@ -20,6 +20,7 @@ export interface UserFormValues {
   city: string;
   state: string;
   role: "coach" | "buddy" | "seeker" | "";
+  bio: string;
   birthDate: string;
   image?: File | string | null;
   interests?: string[];
@@ -35,6 +36,7 @@ export const initialRegisterState: UserFormValues = {
   city: "",
   state: "",
   role: "",
+  bio: "",
   birthDate: "",
   image: "",
   interests: [],
@@ -107,6 +109,7 @@ export function useRegisterForm() {
       formData.append("state", state.state);
       formData.append("role", state.role);
       formData.append("birthDate", state.birthDate);
+      formData.append("bio", state.bio);
 
       //Append file ONLY if file object exists
       if (state.image instanceof File) {

@@ -16,17 +16,17 @@ export default function RoleInterestFields({
 }: Props) {
   return (
     <div className="flex flex-col w-full gap-3">
-      <TextAreaField
-        value={values.bio}
-        error={errors.bio}
-        changeFn={onchange("bio")}
-        placeholder="Tell us about yourself (How can we help you?)..."
-      />
       <SelectInputfield
         value={values.role}
         changeFn={onchange("role")}
         error={errors.role}
         label="How do you want to use TouchPoint?"
+      />
+      <TextAreaField
+        value={values.bio}
+        error={errors.bio}
+        changeFn={onchange("bio")}
+        placeholder="Tell us about yourself (How can we help you?)..."
       />
 
       {/* InterestMultiSelect here (coming soon) */}
