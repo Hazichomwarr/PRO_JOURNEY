@@ -1,5 +1,6 @@
 import { UserFormEvent } from "../../../hooks/useRegisterForm";
 import { UserFormErrors, UserFormValues } from "../../../models/user";
+import TextAreaField from "../../ui/TextAreaField";
 import SelectInputfield from "./SelectInputfield";
 
 interface Props {
@@ -14,7 +15,13 @@ export default function RoleInterestFields({
   onchange,
 }: Props) {
   return (
-    <div>
+    <div className="flex flex-col w-full gap-3">
+      <TextAreaField
+        value={values.bio}
+        error={errors.bio}
+        changeFn={onchange("bio")}
+        placeholder="Tell us about yourself (How can we help you?)..."
+      />
       <SelectInputfield
         value={values.role}
         changeFn={onchange("role")}

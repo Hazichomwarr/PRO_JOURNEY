@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import InputField from "../components/ui/InputField";
 import GoBackButton from "../components/ui/GoBackButton";
+import TextAreaField from "../components/ui/TextAreaField";
 
 export default function CoachRegistration() {
   const {
@@ -38,8 +39,8 @@ export default function CoachRegistration() {
         <h2 className="text-2xl font-semibold text-center text-gray-700">
           Become a Coach
         </h2>
-        <div className="flex flex-col gap-4">
-          <textarea
+        <div className="flex flex-col gap-4 w-full">
+          {/* <textarea
             rows={4}
             name="bio"
             id="bio"
@@ -47,24 +48,30 @@ export default function CoachRegistration() {
             onChange={handleChange("bio")}
             className="border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none col-span-2"
             placeholder="Write a short catching bio about yourself here..."
-          ></textarea>
+          ></textarea> */}
+
+          <TextAreaField
+            value={state.values.bio}
+            changeFn={handleChange("bio")}
+            placeholder="Write a short catching bio about yourself here..."
+          />
           <InputField
             type="number"
             placeholder="Hourly Rate"
             value={state.values.hourlyRate ?? ""}
             changeFn={handleChange("hourlyRate")}
           />
-        </div>
 
-        {/* Expertise */}
-        <ExpertiseSelector
-          selected={state.values.expertise}
-          onToggle={toggleExpertise}
-        />
-        <AvailabilitySelect
-          selected={state.values.availability}
-          onChange={handleAvailabilityChange}
-        />
+          {/* Expertise */}
+          <ExpertiseSelector
+            selected={state.values.expertise}
+            onToggle={toggleExpertise}
+          />
+          <AvailabilitySelect
+            selected={state.values.availability}
+            onChange={handleAvailabilityChange}
+          />
+        </div>
 
         {/* --- Submit --- */}
         <button

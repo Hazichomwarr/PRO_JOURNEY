@@ -13,7 +13,7 @@ export interface User {
   city: string;
   state: string;
   birthDate?: string;
-  image?: string | null;
+  image?: File | string | null;
   interests?: string[];
   role: TypeRole;
   bio?: string;
@@ -23,7 +23,13 @@ export type UserPublic = Partial<User>;
 
 export type UserFormValues = Omit<User, "id">;
 
-export type UserFormErrors = Partial<Record<keyof UserFormValues, string>>;
+type BaseErrors = Partial<
+  Record<Exclude<keyof UserFormValues, "image">, string>
+>;
+
+export type UserFormErrors = BaseErrors & {
+  image?: string;
+};
 
 export type UserUpdateFields = Omit<
   User,

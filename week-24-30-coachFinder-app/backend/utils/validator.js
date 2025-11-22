@@ -17,6 +17,7 @@ const signupSchema = Joi.object({
   image: Joi.string().allow(""),
   interest: Joi.string().allow(""),
   role: Joi.string().required(),
+  bio: Joi.string().allow(""),
 });
 
 module.exports = { validateSignup: validator(signupSchema) };

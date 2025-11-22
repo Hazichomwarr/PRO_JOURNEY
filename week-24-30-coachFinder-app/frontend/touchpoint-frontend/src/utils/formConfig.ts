@@ -75,3 +75,13 @@ export function validateLoginForm(values: LoginState): LoginErrors {
 
   return errors;
 }
+
+//No use as of now (In case i need it)
+export function normalizeImageSrc(img?: string | File | null) {
+  if (!img) return "/avatar-placeholder.png";
+
+  if (img instanceof File) {
+    return URL.createObjectURL(img);
+  }
+  return img; // already a string
+}

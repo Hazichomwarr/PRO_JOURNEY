@@ -4,7 +4,11 @@ import axiosClient from "../lib/axiosClient";
 import { useNavigate } from "react-router-dom";
 import { useFlashStore } from "../store/flashStore";
 import { UserFormErrors } from "../models/user";
-import { formatPhone, validateForm } from "../utils/formConfig";
+import {
+  formatPhone,
+  normalizeImageSrc,
+  validateForm,
+} from "../utils/formConfig";
 
 export interface UserFormValues {
   firstName: string;
@@ -38,7 +42,8 @@ export const initialRegisterState: UserFormValues = {
 
 export type UserFormEvent =
   | React.ChangeEvent<HTMLInputElement>
-  | React.ChangeEvent<HTMLSelectElement>;
+  | React.ChangeEvent<HTMLSelectElement>
+  | React.ChangeEvent<HTMLTextAreaElement>;
 
 // ---- Reducer ----
 type Action =
