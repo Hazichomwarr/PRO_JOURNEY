@@ -66,7 +66,7 @@ router.post("/login", async (req, res) => {
 
   // renamed "password" bc previous name variable in use already.
   // userData to set right away the user in the userStore frontend
-  const { password: pwd, confirmPassword: confirmPwd, ...userData } = user;
+  const { password: pwd, confirmPassword: confirmPwd, _id, ...userInfo } = user;
 
   //Authenticate the password
   const ok = await bcrypt.compare(password, user.password);
@@ -94,7 +94,8 @@ router.post("/login", async (req, res) => {
   });
 
   //Data for the frontEnd
-  res.json({ accessToken, refreshToken, user: userData });
+  userInfo.id = _id; //got rid of trailing _id
+  res.json({ accessToken, refreshToken, user: userInfo });
 });
 
 //REFRESH TOKEN ROUTE

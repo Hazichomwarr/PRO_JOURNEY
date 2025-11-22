@@ -13,9 +13,10 @@ export interface User {
   city: string;
   state: string;
   birthDate?: string;
-  image?: string | File | null | undefined;
+  image?: string | null;
   interests?: string[];
   role: TypeRole;
+  bio?: string;
 }
 
 export type UserPublic = Partial<User>;

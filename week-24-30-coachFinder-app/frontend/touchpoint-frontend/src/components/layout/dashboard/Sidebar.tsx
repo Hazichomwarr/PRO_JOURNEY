@@ -5,11 +5,12 @@ import {
   Home,
   Settings,
   MessageCircle,
-  ScanSearch,
   UserPlus,
+  User2Icon,
   LogOut,
   ChevronDown,
   ChevronUp,
+  Search,
 } from "lucide-react";
 import useLogout from "../../../hooks/useLogout";
 import { useAuthStore } from "../../../store/authStore";
@@ -35,9 +36,14 @@ export default function Sidebar() {
       icon: <Home size={18} />,
     },
     {
+      to: `/user/${user?.id}`,
+      label: "My Profile",
+      icon: <User2Icon size={18} />,
+    },
+    {
       to: "/dashboard/find",
       label: "Find Coaches",
-      icon: <ScanSearch size={18} />,
+      icon: <Search size={18} />,
     },
     {
       to: "/dashboard/messages",
@@ -117,7 +123,6 @@ export default function Sidebar() {
                   <li
                     key={i.path}
                     onClick={() => {
-                      // setIsOpen((prev) => !prev);
                       navigate(`/dashboard/settings/${i.path}`);
                     }}
                     className={`${

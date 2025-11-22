@@ -8,16 +8,18 @@ import Tooltip from "../../ui/Tooltip";
 
 export default function Topbar() {
   const userInfo = useAuthStore((s) => s.userInfo);
+  const userId = userInfo?.id;
   const coachId = useCoachStore((s) => s.coachId);
 
+  console.log("userId insaide topbar:", userId);
+
   const unreadMsgCount = useMessagesStore((s) => s.unreadCount);
-
-  const handleclick = () => {
-    if (userInfo?.role !== "coach") navigate("/dashboard");
-    else navigate(`/coach/${coachId}`);
-  };
-
   const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (userInfo?.role === "coach") navigate(`/coach/${coachId}`);
+    navigate(`/user/${userId}`);
+  };
 
   return (
     <header className="flex items-center justify-between bg-white shadow px-6 py-3 sticky top-0 z-10">
@@ -36,25 +38,25 @@ export default function Topbar() {
             <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
           )}
           {/* Tooltip */}
-          <Tooltip text={"inbox"} /> {/*this tooltip works*/}
+          <Tooltip text={"inbox"} />
         </button>
 
         {/* User avatar */}
         <div className="flex items-center gap-6">
-          <div
+          <button
             aria-roledescription="button"
             role="button"
-            onClick={handleclick}
+            onClick={handleClick}
             className="relative group"
           >
             <img
-              src={userInfo?.image?.toString() ?? "/avatar-placeholder.png"}
+              src={userInfo?.image || "/avatar-placeholder.png"}
               alt="avatar"
               className="w-10 h-9 object-cover bg-gray-400 rounded cursor-pointer hover:scale-125 transition-all"
             />
             {/* Avatar Tooltip */}
             <Tooltip text={"profile"} />
-          </div>
+          </button>
 
           {/* User Role display */}
           <span className="font-semibold">

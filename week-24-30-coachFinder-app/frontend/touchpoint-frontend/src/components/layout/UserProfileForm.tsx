@@ -6,10 +6,13 @@ import { useNavigate } from "react-router-dom";
 import axiosClient from "../../lib/axiosClient";
 import InputField from "../../components/ui/InputField";
 import { useAuthStore } from "../../store/authStore";
+import GoBackButton from "../ui/GoBackButton";
 
 export default function EditUserProfile() {
   const navigate = useNavigate();
   const { user, setUser } = useAuthStore();
+
+  console.log("user in user edit form:", user);
 
   const { state, dispatch, handleChange } = useRegisterForm();
   const [loading, setLoading] = useState(true);
@@ -158,6 +161,7 @@ export default function EditUserProfile() {
         >
           {loading ? "Saving..." : "Save"}
         </button>
+        <GoBackButton />
       </form>
     </div>
   );

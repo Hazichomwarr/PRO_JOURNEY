@@ -16,11 +16,16 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 
-// Dashboard pages
-import RoleBasedDashboard from "./components/layout/dashboard/RoleBasedDashboard";
+// Coach pages
 import FindCoach from "./pages/dashboard/FindCoach";
 import CoachDetail from "./pages/CoachDetail";
 import CoachRegistration from "./pages/CoachRegistration";
+
+// User pages
+import UserProfile from "./pages/user/UserProfile";
+
+// Dashboard pages
+import RoleBasedDashboard from "./components/layout/dashboard/RoleBasedDashboard";
 import Messages from "./pages/dashboard/Messages";
 import AccountSettings from "./pages/dashboard/AccountSettings";
 import AppearanceMode from "./pages/dashboard/AppearanceMode";
@@ -103,6 +108,15 @@ export default function App() {
                 <CoachRegistration />
               </WrapperWithTransition>
             </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/user/:id"
+          element={
+            <WrapperWithTransition>
+              <UserProfile />
+            </WrapperWithTransition>
           }
         />
 
