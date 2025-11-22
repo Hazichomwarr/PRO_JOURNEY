@@ -126,6 +126,8 @@ router.delete("/:id", authWithToken(), async (req, res) => {
   const db = req.app.locals.db;
   const { id } = req.params;
 
+  if (id !== req.user.id) return res.status(403).json({ error: "Not allowed" });
+
   try {
     const deletedUser = await db
       .collection("users")
@@ -133,17 +135,13 @@ router.delete("/:id", authWithToken(), async (req, res) => {
     if (deletedUser.deletedCount === 0) {
       return res.status(404).json({ error: "User not found" });
     }
-    if (req.user.role === "coach") {
-      const deletedUserCoach = await db
-        .collection("coach")
-        .deleteOne({ userId: new ObjectId(id) });
-      if (deletedUserCoach.deletedCount === 0) {
-        return res.status(404).json({ error: "User is not a coach" });
-      }
-    }
+
+    // delete coach profile if exists (no error thrown)
+    await db.collection("coach").deleteOne({ userId: new ObjectId(id) });
+
     res.status(200).json({ message: "success" });
   } catch (err) {
-    res.status(400).json({ message: "Invalid id" }); //bad request
+    res.status(400).json({ error: "Invalid id" }); //bad request
   }
 });
 
