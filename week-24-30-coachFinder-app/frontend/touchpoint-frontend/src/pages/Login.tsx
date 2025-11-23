@@ -125,15 +125,23 @@ export default function Login() {
           Login
         </button>
       </form>
-      <p className="text-center pb-2">
-        Don't have an Account?
+      <aside className="flex flex-col">
+        <p className="text-center pb-2">
+          Don't have an Account?
+          <button
+            onClick={() => navigate("/register")}
+            className="ml-2 text-orange-600 font-semibold underline"
+          >
+            Register
+          </button>
+        </p>
         <button
-          onClick={() => navigate("/register")}
-          className="ml-2 text-orange-600 font-semibold underline"
+          onClick={() => navigate("/dashboard/settings/change-password")}
+          className="underline text-sm font-thin text-orange-700"
         >
-          Register
+          Forget Password
         </button>
-      </p>
+      </aside>
     </div>
   );
 }

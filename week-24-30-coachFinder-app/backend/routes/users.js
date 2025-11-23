@@ -3,6 +3,7 @@ const express = require("express");
 const authWithToken = require("../middleware/authWithToken");
 const { ObjectId } = require("mongodb");
 const upload = require("../middleware/upload");
+const bcrypt = require("bcrypt");
 
 const router = express.Router();
 
@@ -32,9 +33,49 @@ router.get("/:id", async (req, res) => {
         { projection: { password: 0, confirmPassword: 0, dateBirth: 0 } }
       );
     if (!user) return res.status(404).json({ error: "User not found" });
+
     res.status(200).json(user);
   } catch (err) {
-    res.status(400).json({ error: "Invalid ID" });
+    res.status(400).json({ error: "Invalid User ID" });
+  }
+});
+//change password route
+router.patch("/change-password/:id", authWithToken(), async (req, res) => {
+  const db = req.app.locals.db;
+  const { id } = req.params;
+  const { newPassword, confirmNewPassword } = req.body;
+
+  if (id !== req.user.id) {
+    return res.status(403).json({ error: "Not allowed" });
+  }
+
+  if (!newPassword || newPassword.length < 8) {
+    return res
+      .status(400)
+      .json({ error: "Password must be at least 8 characters" });
+  }
+
+  if (newPassword !== confirmNewPassword) {
+    return res.status(422).json({ error: "Passwords don't match" });
+  }
+
+  try {
+    const hashed = await bcrypt.hash(newPassword, 12);
+
+    const updated = await db
+      .collection("users")
+      .updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { password: hashed }, $unset: { refreshToken: "" } }
+      );
+
+    if (updated.matchedCount === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.status(200).json({ message: "success" });
+  } catch (err) {
+    return res.status(400).json({ error: "Invalid User ID" });
   }
 });
 
