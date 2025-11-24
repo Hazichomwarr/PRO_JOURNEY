@@ -4,7 +4,7 @@ import { useRegisterForm } from "../../hooks/useRegisterForm";
 import { useFlashStore } from "../../store/flashStore";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../../lib/axiosClient";
-import InputField from "../../components/ui/InputField";
+import InputField from "../ui/InputField";
 import { useAuthStore } from "../../store/authStore";
 import GoBackButton from "../ui/GoBackButton";
 import TextAreaField from "../ui/TextAreaField";
