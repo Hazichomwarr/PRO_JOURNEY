@@ -5,6 +5,7 @@ import { useAuthStore } from "../../store/authStore";
 import { useFlashStore } from "../../store/flashStore";
 import { passwordChangeRequest } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
+import GoBackButton from "../../components/ui/GoBackButton";
 
 export interface PasswordFormValues {
   newPassword: string;
@@ -71,7 +72,7 @@ export default function ChangePassword() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 flex flex-col gap-3">
+    <form onSubmit={handleSubmit} className="space-y-4 flex flex-col gap-2">
       <h3>New Password</h3>
       <InputField
         type="password"
@@ -95,6 +96,7 @@ export default function ChangePassword() {
       >
         Submit
       </button>
+      <GoBackButton />
     </form>
   );
 }

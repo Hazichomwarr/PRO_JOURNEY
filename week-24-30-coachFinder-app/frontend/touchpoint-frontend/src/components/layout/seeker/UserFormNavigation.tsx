@@ -40,7 +40,6 @@ export default function UserFormNavigation({
           className="ml-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 active:scale-[0.97] transition-all disabled:cursor-not-allowed disabled:bg-gray-400"
           type="button"
           onClick={onNext}
-          disabled={hasErrors}
         >
           Next
         </button>

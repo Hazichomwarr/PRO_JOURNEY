@@ -7,6 +7,7 @@ import axiosClient from "../../lib/axiosClient";
 import InputField from "../../components/ui/InputField";
 import { useAuthStore } from "../../store/authStore";
 import GoBackButton from "../ui/GoBackButton";
+import TextAreaField from "../ui/TextAreaField";
 
 export default function EditUserProfile() {
   const navigate = useNavigate();
@@ -63,6 +64,7 @@ export default function EditUserProfile() {
       formData.append("phone", state.phone);
       formData.append("city", state.city);
       formData.append("state", state.state);
+      formData.append("bio", state.bio);
 
       //Append file ONLY if file object exists
       if (state.image instanceof File) {
@@ -153,6 +155,27 @@ export default function EditUserProfile() {
 
           <input type="file" onChange={handleChange("image")} />
         </label>
+
+        {/* Bio */}
+
+        <TextAreaField
+          value={state.bio}
+          changeFn={handleChange("bio")}
+          label={
+            state.bio
+              ? "Change your Bio"
+              : state.role === "coach"
+              ? "Tell us how you want to help others?"
+              : "Tell us in which area(s) you need help from?"
+          }
+          placeholder={
+            state.bio
+              ? ""
+              : state.role === "coach"
+              ? "Ex: I want to help people in..."
+              : "Ex: I need help in... I want to learn..."
+          }
+        />
 
         {/* Save button*/}
         <button

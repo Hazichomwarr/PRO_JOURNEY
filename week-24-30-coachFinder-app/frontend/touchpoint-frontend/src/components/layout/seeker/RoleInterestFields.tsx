@@ -26,7 +26,16 @@ export default function RoleInterestFields({
         value={values.bio}
         error={errors.bio}
         changeFn={onchange("bio")}
-        placeholder="Tell us about yourself (How can we help you?)..."
+        label={
+          values.role === "coach"
+            ? "Tell us how you want to help others?"
+            : "Tell us in which area(s) you need help from?"
+        }
+        placeholder={
+          values.role === "coach"
+            ? "Ex: I want to help people in..."
+            : "Ex: I want to learn... I need help in..."
+        }
       />
 
       {/* InterestMultiSelect here (coming soon) */}

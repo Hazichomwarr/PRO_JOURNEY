@@ -68,7 +68,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className=" flex flex-col p-4 space-y-6 w-64 h-screen bg-white shadow-md">
+    <div className=" flex flex-col p-4 space-y-6 w-64 h-full bg-white shadow-md">
       <div>
         <h1 className="text-xl font-bold mb-8 text-blue-600">Dashboard</h1>
         <nav className="space-y-3">
