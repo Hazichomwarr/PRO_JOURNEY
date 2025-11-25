@@ -54,6 +54,11 @@ export function validateForm(values: UserFormValues): UserFormErrors {
   if (values.password.length < 10)
     errors.password = "Password must be at least 10 characters.";
 
+  if (!/[A-Z]/.test(values.password))
+    errors.password = "Must include at least 1 uppercase letter.";
+  if (!/[0-9]/.test(values.password))
+    errors.password = "Must include at least 1 number.";
+
   //confirmpassword match
   if (values.password !== values.confirmPassword)
     errors.confirmPassword = "Passwords do not match.";

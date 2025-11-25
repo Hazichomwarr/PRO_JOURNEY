@@ -4,6 +4,7 @@ import { useCoachData } from "../../hooks/useCoachData";
 import { Coach } from "../../models/coach";
 import { useAuthStore } from "../../store/authStore";
 import { TriangleAlertIcon } from "lucide-react";
+import AlertMessage from "../../components/ui/AlertMessage";
 
 export default function FindCoach() {
   const { isLoading, error, filteredCoaches, setExpertise } = useCoachData();
@@ -33,19 +34,11 @@ export default function FindCoach() {
     <section className="flex flex-col p-6 gap-6">
       {/* If details not found in DB, role upgraded but hasn't fill out coach form */}
       {isFound() === false && (
-        <div className="flex items-center gap-3 border outline-orange-200 p-3 txt-center bg-orange-100">
-          <TriangleAlertIcon />{" "}
-          <p>
-            Your Account needs attention. Please{" "}
-            <span
-              className=" cursor-pointer hover:underline text-blue-500"
-              onClick={() => navigate("/coaches/new")}
-            >
-              click here
-            </span>{" "}
-            to finish your coach registration.
-          </p>
-        </div>
+        <AlertMessage
+          textHeader="Your Account needs attention. Please "
+          redirectPath="/coaches/new"
+          text="to finish your coach registration "
+        />
       )}
 
       {/* HEADER */}

@@ -2,8 +2,13 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { validateSignup } = require("../utils/validator");
 const upload = require("../middleware/upload");
+const crypto = require("crypto");
+const { validateSignup } = require("../utils/validator");
+const { sendEmail } = require("../utils/sendEmail");
+const { email_html } = require("../utils/htmlTemplate");
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const router = express.Router();
 
@@ -132,6 +137,90 @@ router.post("/refresh", async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
+});
+
+//PASSWORD-RESET-REQUEST ROUTE
+router.post("/request-password-reset", async (req, res) => {
+  const db = req.app.locals.db;
+  const { email } = req.body;
+
+  const user = await db.collection("users").findOne({ email });
+  if (!user) return res.status(200).json({ message: "OK" });
+  // Always return OK — prevents email enumeration attacks
+
+  const rawToken = crypto.randomBytes(32).toString("hex");
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(rawToken)
+    .digest("hex");
+
+  await db.collection("users").updateOne(
+    { email },
+    {
+      $set: {
+        resetToken: hashedToken,
+        resetTokenExpires: Date.now() + 15 * 60 * 1000, // 15min
+      },
+    }
+  );
+
+  //for development
+  const resetURL = `http://localhost:5173/reset-password?token=${rawToken}`;
+
+  //Integrate email service
+  // await sendEmail({
+  //   to: email,
+  //   subject: "Password Reset",
+  //   // html: email_html,
+  //   html: `<p>Click <a href="${resetURL}">here</a> to reset your password.</p>`,
+  // });
+
+  await sgMail.send({
+    to: "marehamza8@gmail.com", // must be verified
+    from: "marehamza8@gmail.com", // must be verified
+    subject: "Test email from TouchPoint",
+    html: "<h1>Hello world</h1>",
+  });
+
+  console.log("DEV Reset URL:", resetURL);
+
+  res.json({ message: "Password reset link sent." });
+});
+
+//RESET PASSWORD ROUTE
+router.post("/reset-password", async (req, res) => {
+  const db = req.app.locals.db;
+  const { token, newPassword, confirmNewPassword } = req.body;
+
+  if (!newPassword.trim()) {
+    return res.status(400).json({ error: "Password too short" });
+  }
+  if (newPassword !== confirmNewPassword) {
+    return res.status(422).json({ error: "Passwords don't match" });
+  }
+
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+  const user = await db.collection("users").findOne({
+    resetToken: hashedToken,
+    resetTokenExpires: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return res.status(400).json({ error: "Invalid or expired token." });
+  }
+
+  //If user found and token valid and hasn't expired, save new password
+  const hashed = await bcrypt.hash(newPassword, 12);
+  await db.collection("users").updateOne(
+    { _id: user._id },
+    {
+      $set: { password: hashed },
+      $unset: { resetToken: "", resetTokenExpires: "" },
+    }
+  );
+
+  return res.status(200).json({ message: "Password reset successful" });
 });
 
 //LOGOUT ROUTE

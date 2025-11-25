@@ -18,6 +18,8 @@ const signupSchema = Joi.object({
   interest: Joi.string().allow(""),
   role: Joi.string().required(),
   bio: Joi.string().allow(""),
+  resetToken: Joi.string().allow(""),
+  resetTokenExpires: Joi.number().allow(),
 });
 
 module.exports = { validateSignup: validator(signupSchema) };

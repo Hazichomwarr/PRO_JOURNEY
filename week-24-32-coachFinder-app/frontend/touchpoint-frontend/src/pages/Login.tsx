@@ -136,7 +136,8 @@ export default function Login() {
           </button>
         </p>
         <button
-          onClick={() => navigate("/reset-password")}
+          type="button"
+          onClick={() => navigate("/request-password-reset")}
           className="underline text-sm font-thin text-orange-700"
         >
           Forget Password

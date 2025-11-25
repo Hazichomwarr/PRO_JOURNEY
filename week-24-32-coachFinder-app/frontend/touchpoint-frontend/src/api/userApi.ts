@@ -19,14 +19,30 @@ export const updateUser = async ({
   return res.data;
 };
 
-//( inside userApi.ts file)
-//New password handler
+//New password Change handler
 export const passwordChangeRequest = async (
   values: PasswordFormValues,
   id: string
 ) => {
-  const res = await axiosClient.patch(`/users/change-password/${id}`, values);
-  console.log("password change message ->", res.data);
+  await axiosClient.patch(`/users/change-password/${id}`, values);
+};
+
+//( inside userApi.ts file)
+//REQUEST PASSWORD RESET API
+export const requestPasswordReset = async (email: string) => {
+  await axiosClient.post("/auth/request-password-reset", { email });
+};
+
+//RESET PASSWORD  API
+export const passwordResetValues = async (
+  values: PasswordFormValues,
+  token: string
+) => {
+  await axiosClient.post(`/auth/reset-password`, {
+    token,
+    newPassword: values.newPassword,
+    confirmNewPassword: values.confirmNewPassword,
+  });
 };
 
 //delete user

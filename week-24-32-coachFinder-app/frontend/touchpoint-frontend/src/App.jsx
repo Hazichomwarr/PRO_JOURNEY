@@ -14,6 +14,7 @@ import DashboardLayout from "./components/layout/dashboard/DashboardLayout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import RequestPasswordReset from "./pages/RequestPasswordReset";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 
@@ -91,7 +92,19 @@ export default function App() {
             </WrapperWithTransition>
           }
         />
-        <Route path="/reset-password" element={<ResetPassword />} />
+
+        <Route
+          path="/reset-password"
+          element={
+            <PublicRoute>
+              <ResetPassword />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/request-password-reset"
+          element={<RequestPasswordReset />}
+        />
 
         <Route
           path="/coach/:id"
