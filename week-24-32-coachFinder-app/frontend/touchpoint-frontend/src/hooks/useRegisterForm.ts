@@ -1,6 +1,6 @@
 //hooks/useRegistrationForm.ts
 import React, { useReducer, useState } from "react";
-import axiosClient from "../lib/axiosClient";
+import { axiosClient } from "../lib/axiosClient";
 import { useNavigate } from "react-router-dom";
 import { useFlashStore } from "../store/flashStore";
 import { UserFormErrors } from "../models/user";

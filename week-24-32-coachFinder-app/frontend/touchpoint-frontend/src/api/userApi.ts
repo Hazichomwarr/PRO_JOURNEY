@@ -1,5 +1,5 @@
 //api/userApi.ts
-import axiosClient from "../lib/axiosClient";
+import { axiosClient } from "../lib/axiosClient";
 import { UserPublic } from "../models/user";
 import { PasswordFormValues } from "../pages/dashboard/ChangePassword";
 

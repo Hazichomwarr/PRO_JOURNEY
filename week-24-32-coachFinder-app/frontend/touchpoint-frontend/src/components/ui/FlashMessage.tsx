@@ -1,12 +1,13 @@
+//components/ui/FlashMessage.tsx
 import { X, CheckCircle, AlertTriangle, Info } from "lucide-react";
 import { useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface Props {
-  id: number;
+  id: string;
   message: string;
   type?: "success" | "error" | "info";
-  onClose: (id: number) => void;
+  onClose: (id: string) => void;
   duration?: number;
 }
 

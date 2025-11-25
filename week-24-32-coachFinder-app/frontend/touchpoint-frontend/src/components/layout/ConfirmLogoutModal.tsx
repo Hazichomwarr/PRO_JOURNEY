@@ -1,3 +1,4 @@
+//components/layout/ConfirmLogoutModal.tsx
 import ModalShell from "../ui/ModalShell";
 interface Props {
   onLogout: () => void;
@@ -5,7 +6,7 @@ interface Props {
   setIsRequest: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function confirmLogoutModal({
+export default function ConfirmLogoutModal({
   onLogout,
   isRequest,
   setIsRequest,

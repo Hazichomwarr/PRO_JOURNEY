@@ -1,6 +1,6 @@
 // store/dashboardStore.ts
 import { create } from "zustand";
-import axiosClient from "../lib/axiosClient";
+import { axiosClient } from "../lib/axiosClient";
 
 type Stats = {
   totalCoaches?: number;

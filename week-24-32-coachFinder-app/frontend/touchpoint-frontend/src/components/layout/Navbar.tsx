@@ -27,6 +27,7 @@ export default function Navbar() {
     if (l.auth === "any") return true;
     if (l.auth === "auth") return isAuthenticated;
     if (l.auth === "guest") return !isAuthenticated;
+    return false; //explicit return
   });
 
   return (

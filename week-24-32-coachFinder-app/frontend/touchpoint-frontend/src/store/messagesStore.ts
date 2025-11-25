@@ -1,6 +1,6 @@
 //store/messagesStore.ts
 import { create } from "zustand";
-import axiosClient from "../lib/axiosClient";
+import { axiosClient } from "../lib/axiosClient";
 import { useAuthStore } from "./authStore";
 
 interface Message {

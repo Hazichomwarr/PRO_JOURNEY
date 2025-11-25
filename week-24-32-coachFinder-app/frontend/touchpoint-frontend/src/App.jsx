@@ -1,3 +1,4 @@
+//App.tsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { useAuthStore } from "./store/authStore";

@@ -1,5 +1,5 @@
 //api/coachApi.ts
-import axiosClient from "../lib/axiosClient";
+import { axiosClient } from "../lib/axiosClient";
 import type { Coach } from "../models/coach";
 
 export const getCoachByExpertise = async (

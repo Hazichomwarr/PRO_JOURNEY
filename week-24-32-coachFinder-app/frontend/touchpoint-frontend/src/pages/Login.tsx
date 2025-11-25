@@ -1,7 +1,7 @@
 //pages/login.tsx
 import { useReducer, FormEvent, ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axiosClient from "../lib/axiosClient";
+import { axiosClient } from "../lib/axiosClient";
 import { useAuthStore, UserFromTokenPayload } from "../store/authStore";
 import { useFlashStore } from "../store/flashStore";
 import { useCoachStore } from "../store/coachStore";

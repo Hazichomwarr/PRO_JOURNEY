@@ -1,7 +1,6 @@
 //store/authStore.ts
 import { create } from "zustand";
-import axiosClient from "../lib/axiosClient";
-import refreshClient from "../lib/axiosClient";
+import { axiosClient, refreshClient } from "../lib/axiosClient";
 import { useFlashStore } from "./flashStore";
 import { TypeRole, UserPublic } from "../models/user";
 
@@ -19,6 +18,8 @@ interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
+  expiresIn: number | null;
+  isLoaded: boolean;
 
   setAuth: (
     user: UserFromTokenPayload,
@@ -42,6 +43,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   refreshToken: null,
   isAuthenticated: false,
   userInfo: null,
+  expiresIn: null,
+  isLoaded: false,
 
   //When login/register succeeds
   setAuth: (user, userInfo, accessToken, refreshToken) => {
@@ -112,6 +115,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         user: JSON.parse(user),
         userInfo: userInfo ? JSON.parse(userInfo) : null,
         isAuthenticated: true,
+        isLoaded: true,
       });
 
       // Check if access token is expired; refresh if needed
@@ -126,6 +130,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     const [, payload] = accessToken.split(".");
     const decoded = JSON.parse(atob(payload));
+    if (!decoded) {
+      console.warn("Invalid access token payload");
+      get().logout();
+      return;
+    }
+
     // const expiryMS = decoded.exp * 1000 - Date.now() - 60000; //1 min before expiry
 
     // setTimeout(() => get().refreshAccessToken(), expiryMS);
@@ -145,10 +155,37 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       const res = await refreshClient.post("/auth/refresh", { refreshToken });
       const { accessToken: newAccess } = res.data;
 
+      // 1. Persist new token
       localStorage.setItem("accessToken", newAccess);
-      set({ accessToken: newAccess, isAuthenticated: true });
-      console.log("Access token refreshed successfully!");
 
+      // 2. Decode payload to extract exp
+      const [, payload] = newAccess.split(".");
+      let decoded;
+      try {
+        decoded = JSON.parse(atob(payload));
+      } catch (e) {
+        console.warn("Failed decoding refreshed access token:", e);
+        get().logout();
+        return false;
+      }
+
+      // 3. Compute how long until expiry
+      const expiresAtMs = decoded.exp * 1000;
+      const now = Date.now();
+      const expiresInMs = expiresAtMs - now;
+
+      // 4. Update store with new access token + expiry time
+      set({
+        accessToken: newAccess,
+        isAuthenticated: true,
+        expiresIn: expiresInMs,
+      });
+
+      // 5. Schedule the next refresh (minus 1 minute buffer)
+      const delay = Math.max(expiresInMs - 60_000, 0);
+      setTimeout(() => get().refreshAccessToken(), delay);
+
+      console.log("Access token refreshed successfully!");
       return true;
     } catch (err) {
       console.warn("Failed to refresh token:", err);

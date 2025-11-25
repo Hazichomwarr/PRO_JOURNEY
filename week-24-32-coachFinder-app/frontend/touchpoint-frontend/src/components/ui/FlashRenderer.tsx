@@ -1,3 +1,4 @@
+//components/ui/FlashRenderer.tsx
 import { useFlashStore } from "../../store/flashStore";
 import FlashMessage from "./FlashMessage";
 import { AnimatePresence } from "framer-motion";
@@ -15,7 +16,7 @@ export default function FlashRenderer() {
             id={f.id}
             message={f.message}
             type={f.type}
-            onClose={removeFlash}
+            onClose={() => removeFlash(f.id)}
           />
         ))}
       </AnimatePresence>
