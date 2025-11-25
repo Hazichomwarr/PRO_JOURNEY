@@ -8,7 +8,7 @@ export default function GoBackButton() {
     <button
       type="button"
       onClick={() => navigate(-1)} // or "/dashboard" if you want fixed
-      className="flex items-center justify-center gap-2 w-full py-2 bg-stone-600 hover:bg-stone-700 text-white rounded transition-colors"
+      className="flex items-center justify-center gap-2 w-full py-2 bg-gray-400 hover:bg-gray-500 text-white rounded transition-colors"
     >
       <MoveLeft size={20} strokeWidth={2} className="text-white" />
       <span>Go Back</span>
