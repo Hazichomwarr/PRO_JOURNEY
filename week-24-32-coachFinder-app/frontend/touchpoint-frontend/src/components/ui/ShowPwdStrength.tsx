@@ -16,7 +16,7 @@ export default function ShowPwdStrength({ score, feedback }: Props) {
         <div
           className={`h-full transition-all duration-300`}
           style={{
-            width: `${(score + 1) * 20}%`,
+            width: `${score * 25}%`,
             backgroundColor:
               score <= 1
                 ? "red"

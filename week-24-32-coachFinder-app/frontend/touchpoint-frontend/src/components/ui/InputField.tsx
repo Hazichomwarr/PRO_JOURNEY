@@ -3,6 +3,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import ViewPasswordValue from "./ViewPasswordValue";
 import zxcvbn from "zxcvbn";
 import ShowPwdStrength from "./ShowPwdStrength";
+import { useLocation } from "react-router-dom";
 
 interface Props {
   type?: string;
@@ -25,6 +26,11 @@ export default function InputField({
   const [isOpen, setIsOpen] = useState(false);
   const [score, setScore] = useState<number>(0);
   const [feedback, setFeedback] = useState<string>("");
+
+  const location = useLocation();
+  const isLoginPage = location.pathname === "/login";
+
+  console.log("is login page ->", isLoginPage);
 
   const isPasswordField = ["password", "confirmPassword"].includes(name || "");
 
@@ -61,7 +67,7 @@ export default function InputField({
           <ViewPasswordValue isOpen={isOpen} setIsOpen={setIsOpen} />
         )}
       </div>
-      {name === "password" && (
+      {name === "password" && !isLoginPage && (
         <ShowPwdStrength score={score} feedback={feedback} />
       )}
       {error && <p className="text-red-500 text-sm">{error}</p>}
