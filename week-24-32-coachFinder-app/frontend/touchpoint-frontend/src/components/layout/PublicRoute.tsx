@@ -6,9 +6,9 @@ import LoadingSpinner from "../ui/LoadingSpinner";
 
 export default function PublicRoute({ children }: { children: JSX.Element }) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-  const isLoaded = useAuthStore((s) => s.isLoaded);
+  // const isLoaded = useAuthStore((s) => s.isLoaded);
 
-  if (isLoaded) return <LoadingSpinner />;
+  // if (isLoaded) return <LoadingSpinner />;
 
   return isAuthenticated ? <Navigate to="/dashboard" /> : children;
 }

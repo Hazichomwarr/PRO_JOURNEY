@@ -11,8 +11,8 @@ export default function ProtectedRouted({
   children: JSX.Element;
 }) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-  const isLoaded = useAuthStore((s) => s.isLoaded);
+  // const isLoaded = useAuthStore((s) => s.isLoaded);
 
-  if (isLoaded) return <LoadingSpinner />;
+  // if (isLoaded) return <LoadingSpinner />;
   return !isAuthenticated ? <Navigate to="/login" replace /> : children;
 }

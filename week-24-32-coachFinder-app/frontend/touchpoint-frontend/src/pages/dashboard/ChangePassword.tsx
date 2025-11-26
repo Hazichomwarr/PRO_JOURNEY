@@ -1,11 +1,13 @@
 //pages/dashboard/ChangePassword.tsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputField from "../../components/ui/InputField";
 import { useAuthStore } from "../../store/authStore";
 import { useFlashStore } from "../../store/flashStore";
 import { passwordChangeRequest } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
 import GoBackButton from "../../components/ui/GoBackButton";
+import zxcvbn from "zxcvbn";
+import ShowPwdStrength from "../../components/ui/ShowPwdStrength";
 
 export interface PasswordFormValues {
   newPassword: string;
@@ -27,15 +29,27 @@ export default function ChangePassword() {
     initialPasswordValues
   );
   const [errors, setErrors] = useState<Partial<PasswordFormValues>>({});
+  // const [score, setScore] = useState<number>(0);
+  // const [feedback, setFeedback] = useState<string>("");
 
   if (!userId) {
     useFlashStore.getState().addFlash("User Not found", "error");
     return null;
   }
 
+  // //pwd strength
+  // useEffect(() => {
+  //   const strength = zxcvbn(values.newPassword);
+
+  //   setScore(strength.score);
+  //   setFeedback(
+  //     strength.feedback.warning || strength.feedback.suggestions[0] || ""
+  //   );
+  // }, [values.newPassword]);
+
   const validateValues = (values: PasswordFormValues) => {
     let errors: Partial<PasswordFormValues> = {};
-    if (!values.newPassword.trim() || values.newPassword.length < 10) {
+    if (!values.newPassword.trim() || values.newPassword.length < 8) {
       errors.newPassword = "Password must be at least 10 chars.";
     }
     if (values.newPassword !== values.confirmNewPassword) {
@@ -74,14 +88,21 @@ export default function ChangePassword() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4 flex flex-col gap-2">
       <h3>New Password</h3>
-      <InputField
-        type="password"
-        name="password"
-        value={values.newPassword}
-        error={errors.newPassword}
-        placeholder="Enter New password"
-        changeFn={handleChange("newPassword")}
-      />
+      <div>
+        <InputField
+          type="password"
+          name="password"
+          value={values.newPassword}
+          error={errors.newPassword}
+          placeholder="Enter New password"
+          changeFn={handleChange("newPassword")}
+        />
+        {/* {values.newPassword && (
+          <ShowPwdStrength score={score} feedback={feedback} />
+        )} */}
+      </div>
+
+      {/* Confirm-Password */}
       <InputField
         type="password"
         name="confirmPassword"

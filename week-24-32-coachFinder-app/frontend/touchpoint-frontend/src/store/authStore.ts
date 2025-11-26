@@ -181,9 +181,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         expiresIn: expiresInMs,
       });
 
-      // 5. Schedule the next refresh (minus 1 minute buffer)
-      const delay = Math.max(expiresInMs - 60_000, 0);
-      setTimeout(() => get().refreshAccessToken(), delay);
+      // // 5. Schedule the next refresh (minus 1 minute buffer)
+      // const delay = Math.max(expiresInMs - 60_000, 0);
+      // setTimeout(() => get().refreshAccessToken(), delay);
 
       console.log("Access token refreshed successfully!");
       return true;

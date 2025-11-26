@@ -1,6 +1,8 @@
 //components/ui/InputField.tsx
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import ViewPasswordValue from "./ViewPasswordValue";
+import zxcvbn from "zxcvbn";
+import ShowPwdStrength from "./ShowPwdStrength";
 
 interface Props {
   type?: string;
@@ -21,8 +23,22 @@ export default function InputField({
   name,
 }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [score, setScore] = useState<number>(0);
+  const [feedback, setFeedback] = useState<string>("");
 
   const isPasswordField = ["password", "confirmPassword"].includes(name || "");
+
+  //pwd strength
+  if (name === "password" && typeof value === "string") {
+    useEffect(() => {
+      const strength = zxcvbn(value);
+      console.log("Pwd strength ->", strength);
+      setScore(strength.score);
+      setFeedback(
+        strength.feedback.warning || strength.feedback.suggestions[0] || ""
+      );
+    }, [value]);
+  }
 
   //Safe guarding input type
   const inputType = isPasswordField ? (isOpen ? "text" : "password") : type;
@@ -45,6 +61,9 @@ export default function InputField({
           <ViewPasswordValue isOpen={isOpen} setIsOpen={setIsOpen} />
         )}
       </div>
+      {name === "password" && (
+        <ShowPwdStrength score={score} feedback={feedback} />
+      )}
       {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>
   );
