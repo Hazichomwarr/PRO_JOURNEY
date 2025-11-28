@@ -141,7 +141,6 @@ axiosClient.interceptors.response.use(
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
       } catch (_) {}
-      // Redirect to login (or better: call auth store logout)
       localStorage.clear();
       return Promise.reject(refreshErr);
     } finally {

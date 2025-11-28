@@ -15,6 +15,14 @@ export const ALL_INTERESTS = [
   "Gardening",
 ];
 
+function hasNumber(val: string): boolean {
+  const numbers = "0123456789";
+  for (let num of numbers) {
+    if (val.includes(num)) return true;
+  }
+  return false;
+}
+
 export function formatPhone(value: string): string {
   const digits = value.replace(/\D/g, "").slice(0, 10);
   const parts = digits.match(/(\d{0,3})(\d{0,3})(\d{0,4})/) || [];
@@ -25,8 +33,15 @@ export function validateForm(values: UserFormValues): UserFormErrors {
   const errors: UserFormErrors = {};
   //firstname error check
   if (!values.firstName.trim()) errors.firstName = "First name is required.";
+  if (hasNumber(values.firstName) === true)
+    errors.city = "Please enter a valid first name.";
+
+  //Lastname has to be string
+  if (typeof values.lastName !== "string")
+    errors.lastName = "Please enter a valid Last Name.";
 
   //Email error check
+  if (!values.email.trim()) errors.email = "Email is a required field.";
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
     errors.email = "Enter a valid email.";
   }
@@ -39,10 +54,15 @@ export function validateForm(values: UserFormValues): UserFormErrors {
   //   }
 
   //City/town error check
-  if (!values.city.trim()) errors.city = "City(Town) is required.";
+  if (!values.city.trim()) errors.city = "City(Town) is a required field.";
+  if (typeof values.city !== "string")
+    errors.city = "Please enter a valid city name.";
 
   //State/Country error check
-  if (!values.state.trim()) errors.state = "State(Country) is required.";
+  if (!values.state.trim())
+    errors.state = "State(Country) is a required field.";
+  if (typeof values.state !== "string")
+    errors.city = "Please enter a valid state name.";
 
   //DOB error check
   if (!values.birthDate) errors.birthDate = "Date of birth is required.";
@@ -81,7 +101,6 @@ export function validateLoginForm(values: LoginState): LoginErrors {
   return errors;
 }
 
-//No use as of now (In case i need it)
 export function normalizeImageSrc(img?: string | File | null) {
   if (!img) return "/avatar-placeholder.png";
 
