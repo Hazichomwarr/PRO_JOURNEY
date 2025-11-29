@@ -23,8 +23,6 @@ function authWithToken(requiredRole = null) {
         ? authHeader.slice(7)
         : authHeader;
 
-      console.log("🔑 ENV TOKEN SECRET:", process.env.ACCESS_TOKEN);
-
       const payload = jwt.verify(token, process.env.ACCESS_TOKEN);
       const userId = payload.id || payload._id;
       if (!userId || !ObjectId.isValid(userId)) {

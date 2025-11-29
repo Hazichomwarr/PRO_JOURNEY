@@ -1,9 +1,10 @@
 //store/authStore.ts
 import { create } from "zustand";
-import { axiosClient, refreshClient } from "../lib/axiosClient";
+import { axiosClient, tokenService } from "../lib/axiosClient";
 import { useFlashStore } from "./flashStore";
 import { TypeRole, UserPublic } from "../models/user";
 
+// ---- TYPES -----------------------------------------------------
 export interface UserFromTokenPayload {
   id: string;
   email: string;
@@ -15,73 +16,78 @@ export interface UserFromTokenPayload {
 interface AuthState {
   user: UserFromTokenPayload | null;
   userInfo: UserPublic | null;
-  accessToken: string | null;
-  refreshToken: string | null;
   isAuthenticated: boolean;
-  expiresIn: number | null;
   isLoaded: boolean;
 
+  // Actions
   setAuth: (
     user: UserFromTokenPayload,
     userInfo: UserPublic,
-    access: string,
-    refresh: string
+    accessToken: string
   ) => void;
 
   setUser: (user: UserPublic) => void;
   clearUser: () => void;
 
-  logout: () => void;
+  logout: () => Promise<void>;
   restoreSession: () => Promise<void>;
   updateRole: (newRole: TypeRole) => void;
-  checkAccessExpiry: () => void;
-  refreshAccessToken: () => Promise<boolean>;
 }
+
+// ---- HELPER: Read CSRF Cookie ---------------------------------
+function getCSRF() {
+  const match = document.cookie.match(/csrfToken=([^;]+)/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+// ---- STORE -----------------------------------------------------
 export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   accessToken: null,
-  refreshToken: null,
   isAuthenticated: false,
   userInfo: null,
-  expiresIn: null,
   isLoaded: false,
 
-  //When login/register succeeds
-  setAuth: (user, userInfo, accessToken, refreshToken) => {
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("refreshToken", refreshToken);
+  /**
+   * Called when login/register succeeds.
+   * We ONLY store user + userInfo in localStorage.
+   * Access token is in-memory via tokenService.
+   */
+  setAuth: (user, userInfo, accessToken) => {
+    // Store in memory only
+    tokenService.setToken(accessToken);
+
+    // Save user profiles to localStorage
     localStorage.setItem("user", JSON.stringify(user));
     localStorage.setItem("userInfo", JSON.stringify(userInfo));
     set({
       user,
       userInfo,
-      accessToken,
-      refreshToken,
       isAuthenticated: true,
     });
   },
 
-  //logout handler
+  /**
+   * Logout:
+   * - Tells backend to clear httpOnly refresh cookie
+   * - Clears memory token
+   * - Clears persisted localStorage user data
+   */
   logout: async () => {
     try {
-      const refreshToken = localStorage.getItem("refreshToken");
-
-      if (refreshToken) {
-        await axiosClient.delete("/auth/logout", {
-          data: { token: refreshToken },
-        });
-      }
+      await axiosClient.post("/auth/logout", null, { withCredentials: true });
     } catch (err) {
       console.warn("Logout warning", err);
     } finally {
-      localStorage.clear();
+      localStorage.clear(); // or should I write: localStorage.removeItem("user"); localStorage.removeItem("userInfo");
+
+      // Clear memory token
+      tokenService.setToken(null);
 
       set({
         user: null,
-        accessToken: null,
-        refreshToken: null,
-        isAuthenticated: false,
         userInfo: null,
+        isAuthenticated: false,
       });
 
       //Reset page tracker store
@@ -103,94 +109,24 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   //Auto-hydrate state from localStorage
   restoreSession: async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    const refreshToken = localStorage.getItem("refreshToken");
     const user = localStorage.getItem("user");
     const userInfo = localStorage.getItem("userInfo");
 
-    if (accessToken && refreshToken && user) {
+    if (user) {
       set({
-        accessToken,
-        refreshToken,
         user: JSON.parse(user),
         userInfo: userInfo ? JSON.parse(userInfo) : null,
         isAuthenticated: true,
         isLoaded: true,
       });
-
-      // Check if access token is expired; refresh if needed
-      get().checkAccessExpiry();
-    }
-  },
-
-  //Decode and check access expiry
-  checkAccessExpiry: () => {
-    const { accessToken } = get();
-    if (!accessToken) return;
-
-    const [, payload] = accessToken.split(".");
-    const decoded = JSON.parse(atob(payload));
-    if (!decoded) {
-      console.warn("Invalid access token payload");
-      get().logout();
-      return;
-    }
-
-    // const expiryMS = decoded.exp * 1000 - Date.now() - 60000; //1 min before expiry
-
-    // setTimeout(() => get().refreshAccessToken(), expiryMS);
-    const delay = Math.max(decoded.exp * 1000 - Date.now() - 60000, 0);
-    setTimeout(() => get().refreshAccessToken(), delay);
-  },
-
-  //refresh token logic
-  refreshAccessToken: async () => {
-    const { refreshToken } = get();
-    if (!refreshToken) {
-      get().logout();
-      return false;
-    }
-
-    try {
-      const res = await refreshClient.post("/auth/refresh", { refreshToken });
-      const { accessToken: newAccess } = res.data;
-
-      // 1. Persist new token
-      localStorage.setItem("accessToken", newAccess);
-
-      // 2. Decode payload to extract exp
-      const [, payload] = newAccess.split(".");
-      let decoded;
-      try {
-        decoded = JSON.parse(atob(payload));
-      } catch (e) {
-        console.warn("Failed decoding refreshed access token:", e);
-        get().logout();
-        return false;
-      }
-
-      // 3. Compute how long until expiry
-      const expiresAtMs = decoded.exp * 1000;
-      const now = Date.now();
-      const expiresInMs = expiresAtMs - now;
-
-      // 4. Update store with new access token + expiry time
-      set({
-        accessToken: newAccess,
-        isAuthenticated: true,
-        expiresIn: expiresInMs,
-      });
-
-      // // 5. Schedule the next refresh (minus 1 minute buffer)
-      // const delay = Math.max(expiresInMs - 60_000, 0);
-      // setTimeout(() => get().refreshAccessToken(), delay);
-
-      console.log("Access token refreshed successfully!");
-      return true;
-    } catch (err) {
-      console.warn("Failed to refresh token:", err);
-      get().logout();
-      return false;
+      /**
+       * IMPORTANT:
+       * axiosClient will automatically refresh the access token
+       * once it encounters a 401 during startup or first API call.
+       * We do NOT trigger refresh manually here.
+       */
+    } else {
+      set({ isLoaded: true });
     }
   },
 

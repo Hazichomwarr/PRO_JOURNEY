@@ -41,10 +41,10 @@ function reducer(state: LoginState, action: Action): LoginState {
 export default function Login() {
   const [state, dispatch] = useReducer(reducer, initialLoginState);
   const [errors, setErrors] = useState<LoginErrors>({});
+  const navigate = useNavigate();
+
   const { setAuth } = useAuthStore();
   const fetCoachId = useCoachStore((s) => s.fetchCoachId);
-
-  const navigate = useNavigate();
 
   const handleChange =
     (field: keyof LoginState) => (e: ChangeEvent<HTMLInputElement>) =>
@@ -56,22 +56,22 @@ export default function Login() {
     const loginErrors = validateLoginForm(state);
     if (Object.keys(loginErrors).length > 0) {
       setErrors(loginErrors);
-      return;
+      return null;
     }
 
     try {
-      const res = await axiosClient.post("/auth/login", state);
-      const { accessToken, refreshToken, user: userInfo } = res.data;
+      const res = await axiosClient.post("/auth/login", state, {
+        withCredentials: true,
+      });
+      const { accessToken, user: userInfo } = res.data;
 
-      //decode or fetch user from token if needed
-      //const payload = JSON.parse(atob(accessToken.split(".")[1]));
       const user: UserFromTokenPayload = {
         id: userInfo.id,
         email: userInfo.email,
         role: userInfo.role,
       };
 
-      setAuth(user, userInfo, accessToken, refreshToken);
+      setAuth(user, userInfo, accessToken);
 
       if (user.role === "coach") {
         await fetCoachId();

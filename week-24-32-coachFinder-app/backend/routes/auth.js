@@ -59,35 +59,29 @@ router.post("/register", upload.single("image"), async (req, res) => {
 
 //LOGIN ROUTE
 router.post("/login", async (req, res) => {
-  // console.log("1. Inside /login");
   const db = req.app.locals.db;
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).json();
-  // console.log("2.Got email and password");
 
   const user = await db.collection("users").findOne({ email });
   if (!user) return res.status(403).json({ message: "Invalid credentials" });
-  // console.log("3.Got user from DB ->", user);
-
-  // renamed "password" bc previous name variable in use already.
-  // userData to set right away the user in the userStore frontend
-  const { password: pwd, confirmPassword: confirmPwd, _id, ...userInfo } = user;
 
   //Authenticate the password
   const ok = await bcrypt.compare(password, user.password);
   if (!ok) return res.status(403).json({ message: "Invalid credentials" });
   // console.log("4. User password verification success!");
 
-  //since authenticate, let's give the user a token
+  //since authenticated, let's give the user a token
   const payload = {
     id: user._id.toString(),
     email: user.email,
     role: user.role,
   };
+
+  /* -------------------- Generate tokens -------------------- */
   const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN, {
     expiresIn: "15m",
   });
-  //console.log("5.AccessToken created for user ->", accessToken);
   const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN);
 
   //store refresh token in DB
@@ -98,44 +92,152 @@ router.post("/login", async (req, res) => {
     expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30), // 30 days
   });
 
-  //Data for the frontEnd
+  /* --------------------- Generate CSRF token --------------------- */
+  const csrfToken = crypto.randomBytes(32).toString("hex");
+
+  /* ------------------ Set cookies (VERY IMPORTANT) ------------------ */
+  // httpOnly refresh token cookie
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: true, //Required in production(HTTPS)
+    sameSite: "strict",
+    path: "/auth/refresh", //cookie only sent to refresh endpoint
+    maxAge: 1000 * 60 * 60 * 24 * 30, //30 days
+  });
+
+  //CSRF token cookie (non-httpOnly)
+  res.cookie("XSRF-TOKEN", csrfToken, {
+    httpOnly: false, //client JS must read it
+    secure: true,
+    sameSite: "strict",
+    path: "/",
+  });
+
+  /* ------------------ Prepare final user response ------------------ */
+  // renamed "password" bc previous name variable in use already.
+  const { password: pwd, confirmPassword: confirmPwd, _id, ...userInfo } = user;
   userInfo.id = _id; //got rid of trailing _id
-  res.json({ accessToken, refreshToken, user: userInfo });
+
+  /* ------------------ Send response to FE ------------------ */
+  res.json({ accessToken, user: userInfo, csrfToken }); //csrf is optional
 });
 
-//REFRESH TOKEN ROUTE
+// SECURE REFRESH TOKEN ROUTE
 router.post("/refresh", async (req, res) => {
   const db = req.app.locals.db;
 
   try {
-    //1.get token from the post's body
-    const { refreshToken } = req.body;
-    if (!refreshToken)
-      return res.status(401).json({ message: "No refresh token" }); //unauthorized
+    /* -----------------------------------------------------------
+     1. Read refresh token from httpOnly cookie
+    ----------------------------------------------------------- */
+    const refreshToken = req.cookies.refreshToken;
+    if (!refreshToken) {
+      return res.status(401).json({ message: "No refresh token" });
+    }
 
-    //2. make sure the token is still in the db
+    /* -----------------------------------------------------------
+     2. CSRF PROTECTION: Check the double-submit CSRF token
+    ----------------------------------------------------------- */
+    const csrfCookie = req.cookies["XSRF-TOKEN"];
+    const csrfHeader = req.headers["x-csrf-token"];
+
+    if (!csrfCookie || !csrfHeader || csrfCookie !== csrfHeader) {
+      return res.status(403).json({ message: "CSRF token mismatch" });
+    }
+
+    /* -----------------------------------------------------------
+     3. Verify refresh token exists in DB
+    ----------------------------------------------------------- */
     const found = await db
       .collection("refreshTokens")
       .findOne({ token: refreshToken });
-    if (!found)
+
+    if (!found) {
       return res.status(403).json({ message: "Invalid refresh token" });
+    }
 
-    //3. make sure the token hasn't been tampered with
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN, (err, payload) => {
-      if (err) {
-        console.log("❌ Refresh token verification failed:", err.message);
-        return res.status(403).json({ message: "Token expired or invalid" });
+    /* -----------------------------------------------------------
+     4. Verify refresh token signature
+    ----------------------------------------------------------- */
+    jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN,
+      async (err, payload) => {
+        if (err) {
+          console.log("❌ Refresh token verification failed:", err.message);
+          return res.status(403).json({ message: "Invalid or expired token" });
+        }
+
+        /* -----------------------------------------------------------
+       5. Generate new access token
+      ----------------------------------------------------------- */
+        const newAccessToken = jwt.sign(
+          {
+            id: payload.id,
+            email: payload.email,
+            role: payload.role,
+          },
+          process.env.ACCESS_TOKEN,
+          { expiresIn: "15m" }
+        );
+
+        /* -----------------------------------------------------------
+       6. (Optional but recommended) Rotate refresh token
+      ----------------------------------------------------------- */
+        const newRefreshToken = jwt.sign(
+          {
+            id: payload.id,
+            email: payload.email,
+            role: payload.role,
+          },
+          process.env.REFRESH_TOKEN,
+          { expiresIn: "30d" }
+        );
+
+        // Delete the old one and store the new one
+        await db.collection("refreshTokens").deleteOne({ token: refreshToken });
+        await db.collection("refreshTokens").insertOne({
+          token: newRefreshToken,
+          userId: payload.id,
+          createAt: new Date(),
+          expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+        });
+
+        /* -----------------------------------------------------------
+       7. Send back NEW httpOnly refresh cookie
+      ----------------------------------------------------------- */
+        res.cookie("refreshToken", newRefreshToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+          path: "/auth/refresh",
+          maxAge: 1000 * 60 * 60 * 24 * 30,
+        });
+
+        /* -----------------------------------------------------------
+       8. Send CSRF cookie again (CSRF rotates each refresh)
+      ----------------------------------------------------------- */
+        const newCsrfToken = crypto.randomBytes(32).toString("hex");
+
+        res.cookie("XSRF-TOKEN", newCsrfToken, {
+          httpOnly: false,
+          secure: true,
+          sameSite: "strict",
+          path: "/",
+        });
+
+        /* -----------------------------------------------------------
+       9. Send the new access token
+      ----------------------------------------------------------- */
+        return res.json({
+          accessToken: newAccessToken,
+          csrfToken: newCsrfToken,
+        });
       }
-
-      const newAccessToken = jwt.sign(
-        { id: payload.id, email: payload.email, role: payload.role },
-        process.env.ACCESS_TOKEN,
-        { expiresIn: "15m" }
-      );
-      res.json({ accessToken: newAccessToken });
-    });
+    );
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    console.error("Refresh error:", err);
+    return res.status(500).json({ message: "Server error" });
   }
 });
 
@@ -224,14 +326,23 @@ router.post("/reset-password", async (req, res) => {
 });
 
 //LOGOUT ROUTE
-router.delete("/logout", async (req, res) => {
+router.post("/logout", async (req, res) => {
   const db = req.app.locals.db;
 
-  const { token } = req.body;
-  if (!token) return res.sendStatus(400); //bad request
+  const refreshToken = req.cookies?.refreshToken;
+  if (!refreshToken) return res.sendStatus(204);
+  // 204 even if missing → avoids leaking user existence
 
   try {
-    await db.collection("refreshTokens").deleteOne({ token });
+    await db.collection("refreshTokens").deleteOne({ token: refreshToken });
+
+    //clear the cookie
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      path: "/",
+    });
     res.sendStatus(204);
   } catch (err) {
     console.log(err);
