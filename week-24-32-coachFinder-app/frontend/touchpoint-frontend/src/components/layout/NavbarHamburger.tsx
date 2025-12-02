@@ -1,20 +1,18 @@
-import { useState } from "react";
+//components/layout/NavbarHamburger.tsx
+interface Props {
+  isOpen: boolean;
+  onToggle: any;
+}
 
-export default function NavbarHamburger() {
-  const [active, setActive] = useState(false);
-
+export default function NavbarHamburger({ onToggle, isOpen }: Props) {
   return (
-    <>
-      {active && (
-        <div
-          className="hidden text-[2rem]"
-          id="hamburger"
-          aria-label="Toggle navigation menu"
-          onClick={() => setActive((prev) => !prev)}
-        >
-          ☰
-        </div>
-      )}
-    </>
+    <button
+      className="text-[2rem] md:hidden"
+      id="hamburger"
+      aria-label="Toggle navigation menu"
+      onClick={onToggle}
+    >
+      {isOpen ? "✕" : "☰"}
+    </button>
   );
 }

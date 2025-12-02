@@ -12,11 +12,6 @@ export default function RequestPasswordReset() {
 
   const navigate = useNavigate();
 
-  //Email error check (Commented out because impeding component render)
-  // if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
-  //   setError("Enter a valid email.");
-  // }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 

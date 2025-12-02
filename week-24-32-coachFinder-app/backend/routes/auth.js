@@ -5,8 +5,6 @@ const bcrypt = require("bcrypt");
 const upload = require("../middleware/upload");
 const crypto = require("crypto");
 const { validateSignup } = require("../utils/validator");
-const { sendEmail } = require("../utils/sendEmail");
-const { email_html } = require("../utils/htmlTemplate");
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -266,25 +264,30 @@ router.post("/request-password-reset", async (req, res) => {
     }
   );
 
-  //for development
-  const resetURL = `http://localhost:5173/reset-password?token=${rawToken}`;
+  // const resetURL = `https://touchpointapp.app/reset-password?token=${rawToken}`;
+  const resetURL = `${process.env.CLIENT_URL}/reset-password/?token=${rawToken}`;
 
-  //Integrate email service
-  // await sendEmail({
-  //   to: email,
-  //   subject: "Password Reset",
-  //   // html: email_html,
-  //   html: `<p>Click <a href="${resetURL}">here</a> to reset your password.</p>`,
-  // });
+  const msg = {
+    to: user.email,
+    from: process.env.FROM_EMAIL || "support@touchpointapp.app", // verified domain email
+    subject: "Reset Your Password - TouchPoint",
+    html: `
+    <p>Hello ${user.firstName},</p>
+    <p>We received a request to reset your password.</p>
+    <p>Click the link below to set a new password:</p>
+    <p><a href=${resetURL}>Reset Password</a></p>
+    <p>If you did not request this, you can ignore this email.</p>
+    <br/>
+    <p>TouchPoint Team</p>
+  `,
+  };
 
-  await sgMail.send({
-    to: "marehamza8@gmail.com", // must be verified
-    from: "marehamza8@gmail.com", // must be verified
-    subject: "Test email from TouchPoint",
-    html: "<h1>Hello world</h1>",
-  });
-
-  console.log("DEV Reset URL:", resetURL);
+  try {
+    await sgMail.send(msg);
+    console.log("Reset email sent");
+  } catch (err) {
+    console.error("SENDGRID ERROR", err.response?.body || err);
+  }
 
   res.json({ message: "Password reset link sent." });
 });

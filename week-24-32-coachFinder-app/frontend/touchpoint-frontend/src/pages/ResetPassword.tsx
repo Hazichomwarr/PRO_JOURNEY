@@ -13,22 +13,18 @@ const initialPwdValues: PasswordFormValues = {
 };
 
 export default function ResetPassword() {
-  // const params = new URLSearchParams(window.location.search);
-  // const token = params.get("token");
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
 
-  // if (!token) {
-  //   return (
-  //     <AlertMessage
-  //       textHeader=" Something went wrong."
-  //       redirectPath="/login"
-  //       text="to try again"
-  //     />
-  //   );
-  // }
-
-  //passing token manually for now
-  const token =
-    "8463d9635282bb12091c8ed5c052eee41a5f3cc1a137aea5eb8f5e5b68f7326a";
+  if (!token) {
+    return (
+      <AlertMessage
+        textHeader=" Something went wrong."
+        redirectPath="/login"
+        text="to try again"
+      />
+    );
+  }
 
   const [values, setValues] = useState<PasswordFormValues>(initialPwdValues);
   const [errors, setErrors] = useState<Partial<PasswordFormValues>>({});

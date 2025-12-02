@@ -39,7 +39,7 @@ router.get("/:id", async (req, res) => {
     res.status(400).json({ error: "Invalid User ID" });
   }
 });
-//change password route
+//change password
 router.patch("/change-password/:id", authWithToken(), async (req, res) => {
   const db = req.app.locals.db;
   const { id } = req.params;
