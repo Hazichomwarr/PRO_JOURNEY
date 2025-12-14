@@ -9,8 +9,15 @@ const conversations = [
 export default function MessageList() {
   return (
     <ul>
+      <Link
+        href="/messages/compose"
+        className="mb-4 inline-block rounded bg-black px-3 py-2 text-sm text-white"
+      >
+        Compose
+      </Link>
+
       {conversations.map((c) => (
-        <li key={c.id} className="ml-1.5 hover:underline">
+        <li key={c.id}>
           <Link href={`/messages/${c.id}`}>{c.name}</Link>
         </li>
       ))}

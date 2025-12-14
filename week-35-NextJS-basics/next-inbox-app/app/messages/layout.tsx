@@ -1,11 +1,15 @@
+import React from "react";
+
 export default function MessagesLayout({
   children,
   list,
   conversation,
+  modal,
 }: {
   children: React.ReactNode;
   list: React.ReactNode;
   conversation: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   return (
     <div style={{ display: "flex", height: "100vh" }}>
@@ -14,6 +18,7 @@ export default function MessagesLayout({
       </aside>
 
       <main style={{ flex: 1, padding: "16px" }}>
+        {modal}
         {conversation || children}
       </main>
     </div>
