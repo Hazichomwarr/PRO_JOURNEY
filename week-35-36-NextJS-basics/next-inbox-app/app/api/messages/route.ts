@@ -1,25 +1,75 @@
+//app/api/messages/route.ts
 export const runtime = "nodejs";
 
-import { prisma } from "../../lib/db";
+import { prisma } from "@/app/lib/db";
+import { createMessage } from "@/app/lib/messages";
+import { CreateMessageSchema } from "@/app/schemas/message";
+import { PaginationSchema } from "@/app/schemas/pagination";
+// import { getSession } from "@/app/lib/auth";
 
-export async function GET() {
+export async function GET(req: Request) {
+  // const session = await getSession();
+
+  // if (!session) {
+  //   return Response.json({ error: "Unauthorized" }, { status: 401 });
+  // }
+
+  const { searchParams } = new URL(req.url);
+
+  const query = {
+    limit: searchParams.get("limit") ?? undefined,
+    cursor: searchParams.get("cursor") ?? undefined,
+  };
+
+  const result = PaginationSchema.safeParse(query);
+  console.log("result->", result);
+  if (!result.success) {
+    return Response.json(
+      {
+        error: "Invalid query parameters",
+        details: result.error.flatten(),
+      },
+      { status: 400 }
+    );
+  }
+
+  const { limit, cursor } = result.data;
+
   const messages = await prisma.message.findMany({
-    orderBy: { createdAt: "desc" },
+    take: limit + 1,
+    ...(cursor && { cursor: { id: cursor }, skip: 1 }),
+    orderBy: { id: "desc" },
   });
 
-  return Response.json(messages);
+  const hasMore = messages.length > limit;
+  const data = hasMore ? messages.slice(0, -1) : messages;
+
+  return Response.json({
+    data,
+    nextCursor: hasMore ? data[data.length - 1].id : null,
+  });
 }
 
 export async function POST(req: Request) {
+  // const session = await getSession();
+
+  // if (!session) {
+  //   return Response.json({ error: "Unauthorized" }, { status: 401 });
+  // }
+
   const body = await req.json();
 
-  if (!body.content || body.content.length < 2) {
-    return Response.json({ error: "Message too short" }, { status: 400 });
+  const result = CreateMessageSchema.safeParse(body);
+  if (!result.success) {
+    return Response.json(
+      {
+        error: "invalid input",
+        details: result.error.flatten(),
+      },
+      { status: 400 }
+    );
   }
 
-  const message = await prisma.message.create({
-    data: { content: body.content },
-  });
-
+  const message = await createMessage(body.content);
   return Response.json(message, { status: 201 });
 }

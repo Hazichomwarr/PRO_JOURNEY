@@ -1,37 +1,37 @@
-// app/dashboard/compose/page.tsx
-import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+"use client";
+
+import { useCreateMessage } from "@/app/hooks/useCreateMessage";
 
 export default function ComposePage() {
-  async function create(formData: FormData) {
-    "use server";
+  const { createMessage, loading, error } = useCreateMessage();
 
-    const text = formData.get("text");
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
 
-    // 🔐 Validation
-    if (!text || typeof text !== "string" || text.length < 3) {
-      throw new Error("Message must be at least 3 characters");
-    }
+    const form = new FormData(e.currentTarget);
+    const content = form.get("content")?.toString();
 
-    // // 🔁 Mutation
-    // addMessage(text);
+    if (!content) return;
 
-    // ♻️ Revalidate
-    revalidatePath("/dashboard");
-
-    // ➡️ Redirect
-    redirect("/dashboard");
+    createMessage(content);
   }
 
   return (
-    <form action={create} className="mx-auto mt-20 max-w-sm space-y-4">
+    <form onSubmit={handleSubmit} className="mx-auto mt-20 max-w-sm space-y-4">
       <textarea
-        name="text"
-        placeholder="Type a message…"
+        name="content"
+        required
         className="w-full border p-2"
+        placeholder="Type a message…"
       />
-      <button className="w-full rounded bg-blue-600 p-2 text-white cursor-pointer">
-        Send
+
+      {error && <p className="text-sm text-red-600">{error}</p>}
+
+      <button
+        disabled={loading}
+        className="w-full rounded bg-blue-600 p-2 text-white"
+      >
+        {loading ? "Sending..." : "Send"}
       </button>
     </form>
   );

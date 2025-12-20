@@ -1,6 +1,8 @@
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
+import { Message } from "@prisma/client";
+
 async function getMessages() {
   const res = await fetch("http://localhost:3000/api/messages", {
     cache: "no-store",
@@ -15,7 +17,7 @@ export default async function MessagesPage() {
 
   return (
     <ul className="space-y-2">
-      {messages.map((m: any) => (
+      {messages.map((m: Message) => (
         <li key={m.id} className="border p-2">
           {m.content}
         </li>

@@ -1,9 +1,10 @@
 export default async function ConversationPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
+  const resolvedParams = await params;
+  const id = resolvedParams.id;
   return (
     <div>
       <h2>Conversation {id}</h2>

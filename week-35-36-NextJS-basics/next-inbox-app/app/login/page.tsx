@@ -16,7 +16,10 @@ export default function LoginPage() {
   return (
     <form action={login} className="mx-auto mt-20 max-w-sm space-y-4">
       <input name="email" placeholder="Email" className="w-full border p-2" />
-      <button className="w-full bg-gray-600 p-2 text-white cursor-pointer rounded">
+      <button
+        className="w-full bg-gray-600 p-2 text-white cursor-pointer rounded"
+        type="submit"
+      >
         Login
       </button>
     </form>
