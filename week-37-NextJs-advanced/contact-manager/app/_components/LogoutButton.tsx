@@ -1,4 +1,5 @@
 "use client";
+
 interface Props {
   onLogout: () => void;
 }

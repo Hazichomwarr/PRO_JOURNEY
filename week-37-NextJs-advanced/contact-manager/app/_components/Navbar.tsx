@@ -1,21 +1,20 @@
-"use client";
-
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import LogoutButton from "./LogoutButton";
+import { logoutAction } from "../actions/auth";
+import { getSession } from "../_lib/session";
 
-let session = true; //fake manual session for now
+export default async function Navbar() {
+  const session = await getSession();
 
-export default function Navbar() {
-  const router = useRouter();
-
-  function handleLogout() {
-    session = false;
-    router.push("/");
-  }
+  const handleLogout = async () => {
+    await logoutAction();
+  };
   return (
-    <nav className="flex justify-between items-center max-w-full px-6 py-2 text-xl font-bold ">
-      <Link href="/" className="text-blue-600 bg-amber-50 p-4 rounded-full">
+    <nav className="flex justify-between items-center max-w-full px-6 py-2 text-xl font-bold shadow-lg">
+      <Link
+        href="/"
+        className="text-blue-600 bg-amber-50 p-4 rounded-full border-black border text-sm"
+      >
         Contact Manager
       </Link>
       <ul className="flex gap-4 items-center">
@@ -27,7 +26,7 @@ export default function Navbar() {
             >
               Contacts
             </Link>
-            <LogoutButton onLogout={handleLogout} />
+            <LogoutButton onLogout={logoutAction} />
           </>
         ) : (
           <>
