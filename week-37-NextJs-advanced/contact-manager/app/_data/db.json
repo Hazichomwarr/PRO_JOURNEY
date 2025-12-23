@@ -1,0 +1,11 @@
+{
+  "contacts": [
+    { "id": "1", "name": "john Doe", "email": "john@test.com", "userId": "1" },
+    { "id": "2", "name": "jane Doe", "email": "jane@test.com", "userId": "2" }
+  ],
+
+  "users": [
+    { "id": "1", "username": "user1", "password": "user11234" },
+    { "id": "2", "username": "user2", "password": "user21234" }
+  ]
+}
