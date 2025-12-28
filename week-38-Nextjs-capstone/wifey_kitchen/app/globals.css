@@ -1,26 +1,34 @@
+/* app/globla.css */
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  font-family: var(--font-inter), system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ---------- INPUT ---------- */
+@utility ui-input {
+  @apply w-full rounded-md border border-gray-300 px-3 py-2 text-lg bg-white text-black;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@utility ui-input-focus {
+  @apply ring-2 ring-black;
+}
+@utility ui-input-disabled {
+  @apply opacity-50 cursor-not-allowed;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ---------- BUTTON ---------- */
+@utility ui-button {
+  @apply inline-flex items-center justify-center cursor-pointer rounded-md px-4 py-2 text-lg font-medium bg-black text-white transition;
+}
+@utility ui-button-hover {
+  @apply opacity-90;
+}
+
+@utility ui-button-active {
+  @apply scale-x-95;
+}
+
+@utility ui-button-disabled {
+  @apply opacity-50 cursor-not-allowed;
 }
