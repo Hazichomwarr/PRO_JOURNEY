@@ -1,27 +1,31 @@
 //_components/MenuItem.tsx
 "use client";
 
-import { MinusCircle, PlusCircle } from "lucide-react";
+import { DollarSign, MinusCircle, PlusCircle } from "lucide-react";
 import Button from "./ui/Button";
 import { useState } from "react";
 
 interface Props {
   item: string;
   label: string;
+  price: number;
 }
 
-export default function MenuItem({ item, label }: Props) {
+export default function MenuItem({ item, label, price }: Props) {
   const [numSelected, setNumSelected] = useState<number>(0);
 
   function handleMinus() {
     if (numSelected === 0) setNumSelected(0);
-    else setNumSelected((prev) => prev - 1);
+    setNumSelected((prev) => prev - 1);
   }
 
   return (
     <div className="w-full flex items-center justify-between">
-      <label htmlFor={item} className="flex items-center gap-2">
-        <span>{numSelected >= 1 && numSelected}</span>
+      <label htmlFor={item} className="flex gap-3 items-center">
+        <span className="flex items-center">
+          <DollarSign size={15} />
+          {price}
+        </span>
         {label}
       </label>
       <div className="flex gap-2 items-center">
@@ -31,17 +35,27 @@ export default function MenuItem({ item, label }: Props) {
           id={item}
           value={`${numSelected}`}
         />
-
+        <span className="mr-2 text-xl">
+          {numSelected >= 1 ? numSelected : 0}
+        </span>
         {numSelected >= 1 && (
-          <Button variant="secondary" type="button" onClick={handleMinus}>
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={handleMinus}
+            className="flex gap-2"
+          >
+            <span>Remove</span>
             <MinusCircle />
           </Button>
         )}
         <Button
           variant="secondary"
+          className="flex gap-2"
           type="button"
           onClick={() => setNumSelected((prev) => prev + 1)}
         >
+          <span>Add</span>
           <PlusCircle />
         </Button>
       </div>

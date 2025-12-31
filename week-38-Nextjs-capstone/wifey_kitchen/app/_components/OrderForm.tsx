@@ -1,13 +1,16 @@
 //_components/OrderForm.tsx
 import { submitOrder } from "../order/action";
+import { FormOrderItem } from "./_models/order";
 import MenuItem from "./MenuItem";
 import Button from "./ui/Button";
 import { Input } from "./ui/Input";
 
-export const orderItems = [
-  { name: "dibi", label: "Grilled Goat (DIBI)" },
-  { name: "chicken", label: "Grilled Chicken (Pintade)" },
-  { name: "jollof-rice", label: "Jollof Rice (Riz gras)" },
+export const orderItems: FormOrderItem[] = [
+  { name: "dibi", label: "Grilled Goat (DIBI)", price: 14 },
+  { name: "chicken", label: "Grilled Chicken (Pintade)", price: 14 },
+  { name: "jollof-rice", label: "Jollof Rice (Riz gras)", price: 5.99 },
+  { name: "jollof-chicken", label: "Jollof Rice + Chicken", price: 14 },
+  { name: "jollof-dibi", label: "Jollof Rice + Goat", price: 14 },
 ];
 
 export default function OrderForm() {
@@ -23,12 +26,14 @@ export default function OrderForm() {
           name="name"
           placeholder="Enter your Name"
           className="ui-input focus:ui-input-focus"
+          required
         />
         <Input
           type="tel"
           name="phone"
           placeholder="Phone number"
           className="ui-input focus:ui-input-focus"
+          required
         />
       </div>
 
@@ -39,7 +44,12 @@ export default function OrderForm() {
         </h3>
 
         {orderItems.map((item) => (
-          <MenuItem key={item.name} item={item.name} label={item.label} />
+          <MenuItem
+            key={item.name}
+            item={item.name}
+            label={item.label}
+            price={item.price}
+          />
         ))}
       </div>
 
@@ -59,7 +69,7 @@ export default function OrderForm() {
             <Input
               type="text"
               name="address"
-              placeholder="Enter delivery Address here"
+              placeholder="Delivery Address here"
               className="ui-input focus:ui-input-focus"
             />
           </div>
