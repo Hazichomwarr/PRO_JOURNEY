@@ -2,7 +2,7 @@
 import React from "react";
 import clsx from "clsx";
 
-type ButtonProps = React.ButtonHTMLAttributes<HTMLElement> & {
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "primary" | "secondary";
 };
 

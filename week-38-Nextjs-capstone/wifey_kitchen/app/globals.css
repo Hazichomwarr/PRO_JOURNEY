@@ -6,29 +6,32 @@
 }
 
 /* ---------- INPUT ---------- */
-@utility ui-input {
-  @apply w-full rounded-md border border-gray-300 px-3 py-2 text-lg bg-white text-black;
-}
-
-@utility ui-input-focus {
-  @apply ring-2 ring-black;
-}
-@utility ui-input-disabled {
-  @apply opacity-50 cursor-not-allowed;
+@layer components { 
+  .ui-input {
+    @apply w-full rounded-md border-b border-gray-300 px-3 py-2 text-lg bg-white text-black;
+  } 
+  .ui-input-focus {
+    @apply ring-2 ring-green-500;
+  }
+  .ui-input-disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
 }
 
 /* ---------- BUTTON ---------- */
-@utility ui-button {
-  @apply inline-flex items-center justify-center cursor-pointer rounded-md px-4 py-2 text-lg font-medium bg-black text-white transition;
-}
-@utility ui-button-hover {
-  @apply opacity-90;
-}
+@layer components{ 
+  .ui-button {
+    @apply inline-flex items-center justify-center cursor-pointer rounded-md px-4 py-2 text-lg font-medium bg-black text-white transition;
+  }
+ .ui-button-hover {
+    @apply opacity-90;
+  } 
 
-@utility ui-button-active {
-  @apply scale-x-95;
-}
+ .ui-button-active {
+    @apply scale-x-90;
+  } 
 
-@utility ui-button-disabled {
-  @apply opacity-50 cursor-not-allowed;
+ .ui-button-disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
 }

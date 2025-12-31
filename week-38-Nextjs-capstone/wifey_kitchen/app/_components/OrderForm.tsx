@@ -1,20 +1,36 @@
 //_components/OrderForm.tsx
+import { submitOrder } from "../order/action";
+import MenuItem from "./MenuItem";
 import Button from "./ui/Button";
 import { Input } from "./ui/Input";
-import PlusMinus from "./ui/PlusMinus";
+
+export const orderItems = [
+  { name: "dibi", label: "Grilled Goat (DIBI)" },
+  { name: "chicken", label: "Grilled Chicken (Pintade)" },
+  { name: "jollof-rice", label: "Jollof Rice (Riz gras)" },
+];
 
 export default function OrderForm() {
   return (
     <form
-      action=""
+      action={submitOrder}
       className="w-full max-w-2xl mx-auto space-y-6 bg-white p-6 rounded-2xl shadow-md"
     >
-      <Input
-        type="text"
-        name="name"
-        placeholder="Enter your Name"
-        className="ui-input focus:ui-input-focus"
-      />
+      {/* Name + Phone Number */}
+      <div className="grid grid-cols-2 items-start gap-3 p-2 border rounded-md border-gray-300">
+        <Input
+          type="text"
+          name="name"
+          placeholder="Enter your Name"
+          className="ui-input focus:ui-input-focus"
+        />
+        <Input
+          type="tel"
+          name="phone"
+          placeholder="Phone number"
+          className="ui-input focus:ui-input-focus"
+        />
+      </div>
 
       {/* MENU ITEMS */}
       <div className="flex flex-col items-start gap-2 border p-2 rounded-md border-gray-300">
@@ -22,29 +38,9 @@ export default function OrderForm() {
           Select dishes
         </h3>
 
-        <div className="w-full flex items-center justify-between">
-          <label htmlFor="dibi" className="flex items-center gap-2">
-            Grilled Goat (DIBI)
-            <input type="checkbox" name="order" value="dibi" />
-          </label>
-          <PlusMinus />
-        </div>
-
-        <div className="w-full flex items-center justify-between">
-          <label htmlFor="chicken" className="flex items-center gap-2">
-            Grilled Chicken
-            <input type="checkbox" name="order" value="chicken" />
-          </label>
-          <PlusMinus />
-        </div>
-
-        <div className="w-full flex items-center justify-between">
-          <label htmlFor="jollof-rice" className="flex items-center gap-2">
-            Jollof Rice (Riz gras)
-            <input type="checkbox" name="order" value="jollof-rice" />
-          </label>
-          <PlusMinus />
-        </div>
+        {orderItems.map((item) => (
+          <MenuItem key={item.name} item={item.name} label={item.label} />
+        ))}
       </div>
 
       {/* Delivery Option */}
@@ -54,11 +50,19 @@ export default function OrderForm() {
         </h3>
         <label className="flex items-center gap-2">
           Pickup
-          <Input type="radio" name="delivery-option" value="pickup" />
+          <input type="radio" name="delivery-option" value="pickup" />
         </label>
         <label className="flex items-center gap-2">
           Delivery
-          <Input type="radio" name="delivery-option" value="delivery" />
+          <div className="flex items-center gap-6">
+            <input type="radio" name="delivery-option" value="delivery" />
+            <Input
+              type="text"
+              name="address"
+              placeholder="Enter delivery Address here"
+              className="ui-input focus:ui-input-focus"
+            />
+          </div>
         </label>
       </div>
 
@@ -73,7 +77,9 @@ export default function OrderForm() {
         className="border w-full p-2 text-md"
       ></textarea>
 
-      <Button className="w-full">Submit Order</Button>
+      <Button className="w-full" variant="secondary" type="submit">
+        Submit Order
+      </Button>
     </form>
   );
 }
