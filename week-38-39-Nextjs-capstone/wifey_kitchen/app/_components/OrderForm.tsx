@@ -1,21 +1,21 @@
 //_components/OrderForm.tsx
 
-"use client"
+"use client";
 
 import { useActionState } from "react";
 import { submitOrder } from "../order/action";
-import { FormOrderItem, UserInfoSanitized } from "../_models/order";
-import {ORDER_ITEMS} from "../_utils/formConfig"
+import { ORDER_ITEMS } from "../_utils/formConfig";
 import MenuItem from "./MenuItem";
 import Button from "./ui/Button";
 import { Input } from "./ui/Input";
+import { InitialStateType } from "../order/page";
 
+type Props = { initialState: InitialStateType };
 
-export default function OrderForm({initialState}) {
+export default function OrderForm({ initialState }: Props) {
   const [state, action] = useActionState(submitOrder, initialState);
 
-  const {errors, values} = state;
-  
+  const { errors, values } = state;
 
   return (
     <form
@@ -34,7 +34,7 @@ export default function OrderForm({initialState}) {
           error={Boolean(errors.name)}
           required
         />
-        
+
         <Input
           type="tel"
           name="phone"
@@ -45,7 +45,6 @@ export default function OrderForm({initialState}) {
           error={Boolean(errors.phone)}
           required
         />
-         
       </div>
 
       {/* MENU ITEMS */}
@@ -60,14 +59,14 @@ export default function OrderForm({initialState}) {
             item={item.name}
             label={item.label}
             price={item.price}
-            defaultQty={values.menuItems.find((i)=> i.productId === item.name)?.quantity ?? 0}
+            defaultQty={
+              values.menuItems.find((i) => i.productId === item.name)
+                ?.quantity ?? 0
+            }
           />
         ))}
-        {errors.menuItems && (
-        <p className="text-red-600">{errors.menuItems}</p>
-      )}
+        {errors.menuItems && <p className="text-red-600">{errors.menuItems}</p>}
       </div>
-      
 
       {/* Delivery Option */}
       <div className="flex flex-col items-start gap-2 border p-2 rounded-md border-gray-300">
@@ -76,12 +75,22 @@ export default function OrderForm({initialState}) {
         </h3>
         <label className="flex items-center gap-2">
           Pickup
-          <input type="radio" name="deliveryOption" value="pickup" defaultChecked={values.userInfos.deliveryOption === "pickup"} />
+          <input
+            type="radio"
+            name="deliveryOption"
+            value="pickup"
+            defaultChecked={values.userInfos.deliveryOption === "pickup"}
+          />
         </label>
         <label className="flex items-center gap-2">
           Delivery
           <div className="flex items-center gap-6">
-            <input type="radio" name="deliveryOption" value="delivery" defaultChecked={values.userInfos.deliveryOption === "delivery"} />
+            <input
+              type="radio"
+              name="deliveryOption"
+              value="delivery"
+              defaultChecked={values.userInfos.deliveryOption === "delivery"}
+            />
             <Input
               type="text"
               name="address"
@@ -93,9 +102,7 @@ export default function OrderForm({initialState}) {
             />
           </div>
         </label>
-       
       </div>
-      
 
       <div className="text-2xl text-green-800">
         Special instructions or notes ? (optional)

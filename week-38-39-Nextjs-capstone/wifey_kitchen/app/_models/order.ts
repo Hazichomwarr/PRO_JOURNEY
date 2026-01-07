@@ -1,8 +1,8 @@
+//app/_models/order.ts
 export interface FormOrderItem {
   name: MenuType;
   label: string;
   price: number;
- 
 }
 
 export type MenuType =
@@ -20,9 +20,9 @@ export type SanitizedOrderItem = {
 export type UserInfoSanitized = {
   name: string;
   phone: string;
-  deliveryOption: "pickup" | "delivery"
-  address?: string;
-  notes?: string;
+  deliveryOption: "pickup" | "delivery";
+  address: string;
+  notes: string;
 };
 
 export type OrderDraftType = {
