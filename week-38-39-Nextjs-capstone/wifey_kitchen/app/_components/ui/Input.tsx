@@ -3,10 +3,12 @@ import clsx from "clsx";
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   error?: boolean;
+  inputError?: string;
 };
 
-export function Input({ error, className, ...props }: InputProps) {
+export function Input({ inputError, error, className, ...props }: InputProps) {
   return (
+    <div>
     <input
       className={clsx(
         "ui-input focus:ui-input-focus disabled:ui-input-disabled",
@@ -15,5 +17,7 @@ export function Input({ error, className, ...props }: InputProps) {
       )}
       {...props}
     />
+    {inputError && <p className="text-red-600 ml-2">{inputError}</p>}
+    </div>
   );
 }

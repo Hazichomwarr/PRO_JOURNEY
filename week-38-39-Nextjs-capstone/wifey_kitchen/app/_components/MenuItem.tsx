@@ -9,10 +9,11 @@ interface Props {
   item: string;
   label: string;
   price: number;
+  defaultQty: number;
 }
 
-export default function MenuItem({ item, label, price }: Props) {
-  const [numSelected, setNumSelected] = useState<number>(0);
+export default function MenuItem({ item, label, price, defaultQty }: Props) {
+  const [numSelected, setNumSelected] = useState<number>(defaultQty);
 
   function handleMinus() {
     if (numSelected === 0) setNumSelected(0);

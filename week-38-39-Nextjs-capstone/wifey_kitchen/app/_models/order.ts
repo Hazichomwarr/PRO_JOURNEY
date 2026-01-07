@@ -2,6 +2,7 @@ export interface FormOrderItem {
   name: MenuType;
   label: string;
   price: number;
+ 
 }
 
 export type MenuType =
@@ -15,4 +16,17 @@ export type SanitizedOrderItem = {
   productId: string | undefined;
   quantity: number;
 };
-export type OrderDraftType = { items: SanitizedOrderItem[]; createdAt: number };
+
+export type UserInfoSanitized = {
+  name: string;
+  phone: string;
+  deliveryOption: "pickup" | "delivery"
+  address?: string;
+  notes?: string;
+};
+
+export type OrderDraftType = {
+  userInfos: UserInfoSanitized;
+  menuItems: SanitizedOrderItem[];
+  createdAt: number;
+};
