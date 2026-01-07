@@ -48,11 +48,14 @@ export default function OrderForm({ initialState }: Props) {
       </div>
 
       {/* MENU ITEMS */}
-      <div className="flex flex-col items-start gap-2 border p-2 rounded-md border-gray-300">
+      <div
+        className={`flex flex-col items-start gap-2 border p-2 rounded-md border-gray-300 ${
+          Boolean(errors.menuItems) && "border-red-800"
+        }`}
+      >
         <h3 className="text-center mb-4 text-2xl text-green-700">
           Select dishes
         </h3>
-
         {ORDER_ITEMS.map((item) => (
           <MenuItem
             key={item.name}

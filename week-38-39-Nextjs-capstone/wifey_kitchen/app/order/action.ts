@@ -3,6 +3,8 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { UserInfoSanitized } from "../_models/order";
+import { InitialStateType } from "./page";
 
 type OrderErrors = {
   name?: string;
@@ -12,11 +14,12 @@ type OrderErrors = {
   menuItems?: string;
 };
 
-export async function submitOrder(prevState:any, formData: FormData) {
+export async function submitOrder(
+  prevState: InitialStateType,
+  formData: FormData
+) {
   const raw = Object.fromEntries(formData.entries());
   console.log("raw:", raw);
-
-  
 
   const menuItems = Object.entries(raw)
     .filter(([key]) => key.startsWith("items["))
@@ -30,33 +33,33 @@ export async function submitOrder(prevState:any, formData: FormData) {
   const userInfos: UserInfoSanitized = {
     name: raw.name?.toString().trim(),
     phone: raw.phone?.toString().trim(),
-    deliveryOption: raw.deliveryOption,
+    deliveryOption: raw.deliveryOption?.toString().trim(),
     address: raw.address?.toString().trim(),
-    notes: raw.notes?.toString().trim()
-  }
+    notes: raw.notes?.toString().trim(),
+  };
 
   console.log("userInfos:", userInfos);
   console.log("items selected:", menuItems);
 
-  
   //Error Array
-  let missingInputs:OrderErrors = {};
+  const missingInputs: OrderErrors = {};
 
-  if (menuItems.length === 0) missingInputs.menuItems = "Select at least one menu item."
-  if (userInfos.name.length < 3) missingInputs.name = "Valid name required."
-  if (userInfos.phone.length !== 10) missingInputs.phone = "Invalid phone number."
-  if (!userInfos.deliveryOption) missingInputs.deliveryOption = "Delivery option is missi."
-  if (userInfos.deliveryOption === "delivery" && userInfos.address === "") { 
-    missingInputs.address = "Address is required for delivery."
+  if (menuItems.length === 0)
+    missingInputs.menuItems = "Select at least one menu item.";
+  if (userInfos.name.length < 3) missingInputs.name = "Valid name required.";
+  if (userInfos.phone.length !== 10)
+    missingInputs.phone = "Invalid phone number.";
+  if (!userInfos.deliveryOption)
+    missingInputs.deliveryOption = "Delivery option is missi.";
+  if (userInfos.deliveryOption === "delivery" && userInfos.address === "") {
+    missingInputs.address = "Address is required for delivery.";
   }
 
   if (Object.keys(missingInputs).length > 0) {
-
     console.log("missings:", missingInputs);
-    return {errors: missingInputs, values: {userInfos, menuItems}}
+    return { errors: missingInputs, values: { userInfos, menuItems } };
   }
-  
- 
+
   //create OrderDraft
   const orderDraft = {
     userInfos,

@@ -20,7 +20,7 @@ export type SanitizedOrderItem = {
 export type UserInfoSanitized = {
   name: string;
   phone: string;
-  deliveryOption: "pickup" | "delivery";
+  deliveryOption: string;
   address: string;
   notes: string;
 };
