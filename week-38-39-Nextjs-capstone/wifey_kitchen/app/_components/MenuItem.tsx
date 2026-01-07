@@ -21,13 +21,13 @@ export default function MenuItem({ item, label, price, defaultQty }: Props) {
   }
 
   return (
-    <div className="w-full flex items-center justify-between">
-      <label htmlFor={item} className="flex gap-3 items-center">
+    <div className="w-full grid grid-cols-3 mb-3 items-center border-b border-gray-300 p-2">
+      <label htmlFor={item} className="flex flex-col md:col-span-2">
+        {label}
         <span className="flex items-center">
           <DollarSign size={15} />
           {price}
         </span>
-        {label}
       </label>
       <div className="flex gap-2 items-center">
         <input
@@ -40,19 +40,13 @@ export default function MenuItem({ item, label, price, defaultQty }: Props) {
           {numSelected >= 1 ? numSelected : 0}
         </span>
         {numSelected >= 1 && (
-          <Button
-            variant="secondary"
-            type="button"
-            onClick={handleMinus}
-            className="flex gap-2"
-          >
-            <span>Remove</span>
+          <Button variant="secondary" type="button" onClick={handleMinus}>
             <MinusCircle />
           </Button>
         )}
         <Button
           variant="secondary"
-          className="flex gap-2"
+          className="flex gap-1"
           type="button"
           onClick={() => setNumSelected((prev) => prev + 1)}
         >

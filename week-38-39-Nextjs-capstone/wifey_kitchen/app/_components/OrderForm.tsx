@@ -23,7 +23,7 @@ export default function OrderForm({ initialState }: Props) {
       className="w-full max-w-2xl mx-auto space-y-6 bg-white p-6 rounded-2xl shadow-md"
     >
       {/* Name + Phone Number */}
-      <div className="grid grid-cols-2 items-start gap-3 p-2 border rounded-md border-gray-300">
+      <div className="grid grid-rows-2 items-start gap-3 p-2 border rounded-md border-gray-300">
         <Input
           type="text"
           name="name"
@@ -77,34 +77,34 @@ export default function OrderForm({ initialState }: Props) {
           Delivery Options
         </h3>
         <label className="flex items-center gap-2">
-          Pickup
           <input
             type="radio"
             name="deliveryOption"
             value="pickup"
             defaultChecked={values.userInfos.deliveryOption === "pickup"}
           />
+          Pickup
         </label>
         <label className="flex items-center gap-2">
+          <input
+            type="radio"
+            name="deliveryOption"
+            value="delivery"
+            defaultChecked={values.userInfos.deliveryOption === "delivery"}
+          />
           Delivery
-          <div className="flex items-center gap-6">
-            <input
-              type="radio"
-              name="deliveryOption"
-              value="delivery"
-              defaultChecked={values.userInfos.deliveryOption === "delivery"}
-            />
-            <Input
-              type="text"
-              name="address"
-              defaultValue={values.userInfos.address}
-              placeholder="Delivery Address here"
-              className="ui-input focus:ui-input-focus"
-              inputError={errors.address}
-              error={Boolean(errors.address)}
-            />
-          </div>
         </label>
+        <div className="">
+          <Input
+            type="text"
+            name="address"
+            defaultValue={values.userInfos.address}
+            placeholder="Enter Delivery Address.."
+            className="ui-input focus:ui-input-focus"
+            inputError={errors.address}
+            error={Boolean(errors.address)}
+          />
+        </div>
       </div>
 
       <div className="text-2xl text-green-800">
@@ -116,7 +116,7 @@ export default function OrderForm({ initialState }: Props) {
         placeholder="Type any Instructions or food notes here..."
         rows={4}
         cols={24}
-        className="border w-full p-2 text-md"
+        className="border w-full p-2 text-md rounded"
       ></textarea>
 
       <Button className="w-full" variant="secondary" type="submit">
