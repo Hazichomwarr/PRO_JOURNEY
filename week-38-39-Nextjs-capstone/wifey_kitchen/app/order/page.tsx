@@ -23,11 +23,12 @@ export default async function OrderPage() {
           userInfos: {
             name: "",
             phone: "",
-            deliveryOption: "delivery",
+            deliveryOption: "pickup",
             address: "",
             notes: "",
           },
           menuItems: [],
+          total: 0,
         },
       };
 

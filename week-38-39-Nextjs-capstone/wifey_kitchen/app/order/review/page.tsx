@@ -3,11 +3,11 @@ import { OrderDraftType } from "@/app/_models/order";
 import Button from "@/app/_components/ui/Button";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import OrderPriceDetails from "@/app/_components/OrderPriceDetails";
 
 export default async function ReviewPage() {
   //Get OrderDraft from cookies
   const cookieStore = await cookies();
-
   const cookie = cookieStore.get("order_draft");
   if (!cookie) redirect("/order");
 
@@ -29,7 +29,10 @@ export default async function ReviewPage() {
           </li>
         ))}
       </ul>
-
+      <OrderPriceDetails
+        total={orderDraft.total}
+        delivery={orderDraft.userInfos.deliveryOption === "delivery"}
+      />
       <div className="grid grid-cols-2">
         <a
           href="/order"

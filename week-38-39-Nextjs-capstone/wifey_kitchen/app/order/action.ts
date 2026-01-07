@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { UserInfoSanitized } from "../_models/order";
 import { InitialStateType } from "./page";
+import { orderTotalPrice } from "../_utils/formConfig";
 
 type OrderErrors = {
   name?: string;
@@ -57,13 +58,19 @@ export async function submitOrder(
 
   if (Object.keys(missingInputs).length > 0) {
     console.log("missings:", missingInputs);
-    return { errors: missingInputs, values: { userInfos, menuItems } };
+    const total = 0;
+    return { errors: missingInputs, values: { userInfos, menuItems, total } };
   }
+
+  //Order Total Price
+  const total = orderTotalPrice(menuItems);
+  console.log("orderTotal price:", total);
 
   //create OrderDraft
   const orderDraft = {
     userInfos,
     menuItems,
+    total,
     createdAt: Date.now(),
   };
   console.log("order-draft:", orderDraft);

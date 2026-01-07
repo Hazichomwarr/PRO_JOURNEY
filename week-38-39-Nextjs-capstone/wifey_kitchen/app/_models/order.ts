@@ -10,7 +10,8 @@ export type MenuType =
   | "chicken"
   | "jollof-rice"
   | "jollof-chicken"
-  | "jollof-dibi";
+  | "jollof-dibi"
+  | "alloco";
 
 export type SanitizedOrderItem = {
   productId: string | undefined;
@@ -28,5 +29,6 @@ export type UserInfoSanitized = {
 export type OrderDraftType = {
   userInfos: UserInfoSanitized;
   menuItems: SanitizedOrderItem[];
+  total: number;
   createdAt: number;
 };
