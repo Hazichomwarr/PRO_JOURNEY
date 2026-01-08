@@ -28,7 +28,7 @@
   }
 
   .ui-button-active {
-    @apply scale-x-90;
+    @apply scale-95;
   }
 
   .ui-button-disabled {

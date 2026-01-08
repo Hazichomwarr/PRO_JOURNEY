@@ -6,6 +6,10 @@ import { redirect } from "next/navigation";
 import { UserInfoSanitized } from "../_models/order";
 import { InitialStateType } from "./page";
 import { orderTotalPrice } from "../_utils/formConfig";
+import {
+  parsePhoneNumberFromString,
+  isValidPhoneNumber,
+} from "libphonenumber-js";
 
 type OrderErrors = {
   name?: string;
@@ -33,27 +37,38 @@ export async function submitOrder(
   //default values for name, phone, delivery options and notes
   const userInfos: UserInfoSanitized = {
     name: raw.name?.toString().trim(),
-    phone: raw.phone?.toString().trim(),
+
+    phone: parsePhoneNumberFromString(
+      raw.phone?.toString().trim(),
+      "US"
+    )!.format("E.164"),
     deliveryOption: raw.deliveryOption?.toString().trim(),
     address: raw.address?.toString().trim(),
     notes: raw.notes?.toString().trim(),
   };
 
-  console.log("userInfos:", userInfos);
-  console.log("items selected:", menuItems);
+  // console.log("phone-number:", userInfos.phone);
+  // console.log("userInfos:", userInfos);
+  // console.log("items selected:", menuItems);
 
   //Error Array
   const missingInputs: OrderErrors = {};
+  const ADDRESS_REGEX =
+    /^\s*\d+\s+[A-Za-z0-9.\-'\s]+\s+[A-Za-z.\-'\s]+\s+[A-Za-z]{2}\s*$/;
 
   if (menuItems.length === 0)
     missingInputs.menuItems = "Select at least one menu item.";
   if (userInfos.name.length < 3) missingInputs.name = "Valid name required.";
-  if (userInfos.phone.length !== 10)
-    missingInputs.phone = "Invalid phone number.";
+  if (!isValidPhoneNumber(userInfos.phone, "US"))
+    missingInputs.phone = "Invalid Phone Number";
   if (!userInfos.deliveryOption)
     missingInputs.deliveryOption = "Delivery option is missi.";
-  if (userInfos.deliveryOption === "delivery" && userInfos.address === "") {
-    missingInputs.address = "Address is required for delivery.";
+  if (
+    userInfos.deliveryOption === "delivery" &&
+    !ADDRESS_REGEX.test(userInfos.address)
+  ) {
+    missingInputs.address =
+      'Valid Address is required for delivery. (Ex: "123 Main street, City, State")';
   }
 
   if (Object.keys(missingInputs).length > 0) {

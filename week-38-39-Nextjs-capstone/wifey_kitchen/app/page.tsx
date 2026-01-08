@@ -5,6 +5,9 @@ export default function Home() {
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-betweens bg-white dark:bg-black sm:items-start">
         Home Page (Noting yet. i want a way to add fr.json for french people)
       </main>
+      <a href="/order" className="ui-button">
+        Place your order here
+      </a>
     </div>
   );
 }

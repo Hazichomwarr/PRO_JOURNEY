@@ -9,6 +9,7 @@ import MenuItem from "./MenuItem";
 import Button from "./ui/Button";
 import { Input } from "./ui/Input";
 import { InitialStateType } from "../order/page";
+import PhoneInput from "./PhoneInput";
 
 type Props = { initialState: InitialStateType };
 
@@ -34,16 +35,10 @@ export default function OrderForm({ initialState }: Props) {
           error={Boolean(errors.name)}
           required
         />
-
-        <Input
-          type="tel"
-          name="phone"
+        <PhoneInput
           defaultValue={values.userInfos.phone}
-          placeholder="Phone number"
-          className="ui-input focus:ui-input-focus"
           inputError={errors.phone}
           error={Boolean(errors.phone)}
-          required
         />
       </div>
 
@@ -94,7 +89,7 @@ export default function OrderForm({ initialState }: Props) {
           />
           Delivery
         </label>
-        <div className="">
+        <div>
           <Input
             type="text"
             name="address"
@@ -119,9 +114,17 @@ export default function OrderForm({ initialState }: Props) {
         className="border w-full p-2 text-md rounded"
       ></textarea>
 
-      <Button className="w-full" variant="secondary" type="submit">
-        Submit Order
-      </Button>
+      <div className="flex flex-col items-center gap-2 w-full">
+        <Button className="w-full" variant="tertiary" type="submit">
+          Submit Order
+        </Button>
+        <a
+          href="/"
+          className="ui-button hover:bg-gray-200 active:scale-95 w-full bg-gray-300 text-black"
+        >
+          Cancel
+        </a>
+      </div>
     </form>
   );
 }
