@@ -30,10 +30,10 @@ export const ORDER_ITEMS: FormOrderItem[] = [
   },
   {
     name: "jollof-dibi",
-    label: "Jollof Rice + Goat",
+    label: "Jollof Rice + Goat (DIBI)",
     price: 15,
   },
-  { name: "alloco", label: "Sauteed Plantain (Alloco)", price: 4.99 },
+  { name: "alloco", label: "Fried Plantain (Alloco)", price: 4.99 },
 ];
 
 //app/_utils/formConfig.ts
@@ -59,5 +59,5 @@ export function orderTotalPrice(selected: SanitizedOrderItem[]): number {
     if (productId === "alloco") total += quantity * price.alloco;
   }
 
-  return total;
+  return Math.round(total * 100) / 100;
 }

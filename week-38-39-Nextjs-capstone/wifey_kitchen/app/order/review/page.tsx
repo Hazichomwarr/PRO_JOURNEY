@@ -4,6 +4,7 @@ import Button from "@/app/_components/ui/Button";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import OrderPriceDetails from "@/app/_components/OrderPriceDetails";
+import reviewOrder from "./action";
 
 export default async function ReviewPage() {
   //Get OrderDraft from cookies
@@ -36,12 +37,12 @@ export default async function ReviewPage() {
       <div className="grid grid-cols-2">
         <a
           href="/order"
-          className="bg-blue-700 px-3 py-2 text-lg rounded-md text-white hover:bg-blue-600 w-[40%]"
+          className="bg-blue-700 px-3 w-fit py-2 text-lg rounded-md text-white hover:bg-blue-600"
         >
           Edit Order
         </a>
 
-        <form action="/order/confirm" method="post">
+        <form action={reviewOrder}>
           <Button variant="tertiary">Send Order</Button>
         </form>
       </div>
