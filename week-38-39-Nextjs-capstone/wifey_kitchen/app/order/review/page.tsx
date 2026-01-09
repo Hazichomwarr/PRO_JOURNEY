@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import OrderPriceDetails from "@/app/_components/OrderPriceDetails";
 import reviewOrder from "./action";
+import { MENU } from "@/app/_menuConfig/menu";
 
 export default async function ReviewPage() {
   //Get OrderDraft from cookies
@@ -20,15 +21,19 @@ export default async function ReviewPage() {
       <h1 className="text-2xl font-bold">Review Your Order</h1>
 
       <ul className="space-y-2">
-        {orderDraft.menuItems.map((item) => (
-          <li
-            key={item.productId}
-            className=" grid grid-cols-2 border-b border-gray-300 p-4"
-          >
-            <span>{item.productId?.toUpperCase()}</span>
-            <span className="font-bold">QTY: {item.quantity}</span>
-          </li>
-        ))}
+        {orderDraft.menuItems.map((item) => {
+          const { productId, quantity } = item;
+          const label = MENU[productId].label; //you said you label should be used
+          return (
+            <li
+              key={productId}
+              className=" grid grid-cols-2 border-b border-gray-300 p-4"
+            >
+              <span>{label}</span>
+              <span className="font-bold">QTY: {quantity}</span>
+            </li>
+          );
+        })}
       </ul>
       <OrderPriceDetails
         total={orderDraft.total}

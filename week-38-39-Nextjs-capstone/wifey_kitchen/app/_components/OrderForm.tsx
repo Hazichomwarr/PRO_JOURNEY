@@ -4,12 +4,13 @@
 
 import { useActionState } from "react";
 import { submitOrder } from "../order/action";
-import { ORDER_ITEMS } from "../_utils/formConfig";
+import { MENU } from "../_menuConfig/menu";
 import MenuItem from "./MenuItem";
 import Button from "./ui/Button";
 import { Input } from "./ui/Input";
 import { InitialStateType } from "../order/page";
 import PhoneInput from "./PhoneInput";
+import { MenuItemType, MenuKEY } from "../_models/order";
 
 type Props = { initialState: InitialStateType };
 
@@ -17,6 +18,7 @@ export default function OrderForm({ initialState }: Props) {
   const [state, action] = useActionState(submitOrder, initialState);
 
   const { errors, values } = state;
+  const MenuKeys = Object.keys(MENU) as MenuKEY[];
 
   return (
     <form
@@ -51,18 +53,20 @@ export default function OrderForm({ initialState }: Props) {
         <h3 className="text-center mb-4 text-2xl text-green-700">
           Select dishes
         </h3>
-        {ORDER_ITEMS.map((item) => (
-          <MenuItem
-            key={item.name}
-            item={item.name}
-            label={item.label}
-            price={item.price}
-            defaultQty={
-              values.menuItems.find((i) => i.productId === item.name)
-                ?.quantity ?? 0
-            }
-          />
-        ))}
+        {MenuKeys.map((key) => {
+          const { id, label, price } = MENU[key] as MenuItemType;
+          return (
+            <MenuItem
+              key={id}
+              item={id}
+              label={label}
+              price={price}
+              defaultQty={
+                values.menuItems.find((i) => i.productId === id)?.quantity ?? 0
+              }
+            />
+          );
+        })}
         {errors.menuItems && <p className="text-red-600">{errors.menuItems}</p>}
       </div>
 

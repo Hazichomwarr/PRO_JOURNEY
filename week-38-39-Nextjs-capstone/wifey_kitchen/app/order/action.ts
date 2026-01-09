@@ -3,13 +3,18 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { UserInfoSanitized } from "../_models/order";
+import {
+  MenuKEY,
+  SanitizedOrderItem,
+  UserInfoSanitized,
+} from "../_models/order";
 import { InitialStateType } from "./page";
 import { orderTotalPrice } from "../_utils/formConfig";
 import {
   parsePhoneNumberFromString,
   isValidPhoneNumber,
 } from "libphonenumber-js";
+import { MENU } from "../_menuConfig/menu";
 
 type OrderErrors = {
   name?: string;
@@ -30,7 +35,7 @@ export async function submitOrder(
     .filter(([key]) => key.startsWith("items["))
     .map(([key, value]) => {
       const productId = key.match(/items\[(.*)\]/)?.[1];
-      return { productId, quantity: Number(value) };
+      return { productId: productId as MenuKEY, quantity: Number(value) };
     })
     .filter((item) => item.quantity > 0);
 
@@ -62,7 +67,7 @@ export async function submitOrder(
   if (!isValidPhoneNumber(userInfos.phone, "US"))
     missingInputs.phone = "Invalid Phone Number";
   if (!userInfos.deliveryOption)
-    missingInputs.deliveryOption = "Delivery option is missi.";
+    missingInputs.deliveryOption = "Delivery option is missing.";
   if (
     userInfos.deliveryOption === "delivery" &&
     !ADDRESS_REGEX.test(userInfos.address)
@@ -78,7 +83,7 @@ export async function submitOrder(
   }
 
   //Order Total Price
-  const total = orderTotalPrice(menuItems);
+  const total = orderTotalPrice(menuItems, MENU);
   console.log("orderTotal price:", total);
 
   //create OrderDraft

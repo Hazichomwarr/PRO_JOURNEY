@@ -1,11 +1,5 @@
 //app/_models/order.ts
-export interface FormOrderItem {
-  name: MenuType;
-  label: string;
-  price: number;
-}
-
-export type MenuType =
+export type MenuKEY =
   | "dibi"
   | "chicken"
   | "jollof-rice"
@@ -13,8 +7,16 @@ export type MenuType =
   | "jollof-dibi"
   | "alloco";
 
+export interface MenuItemType {
+  id: MenuKEY;
+  label: string;
+  price: number;
+}
+
+export type Menu = Record<MenuKEY, MenuItemType>;
+
 export type SanitizedOrderItem = {
-  productId: string | undefined;
+  productId: MenuKEY;
   quantity: number;
 };
 
