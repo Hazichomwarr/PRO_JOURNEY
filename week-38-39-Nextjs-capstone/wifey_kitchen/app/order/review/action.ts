@@ -4,6 +4,9 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { OrderDraftType } from "@/app/_models/order";
 import { MENU } from "@/app/_menuConfig/menu";
+import { sendSMS } from "@/app/_lib/twilio";
+
+const BUSINESS_PHONE = "+19294537790";
 
 export default async function reviewOrder() {
   const cookieStore = await cookies();
@@ -46,23 +49,25 @@ export default async function reviewOrder() {
   ${notes ? `📝 NOTES: ${notes}` : ""}
 
   💰 Subtotal: ${orderDraft.total}
-  ${isDelivery ? `🚚 Delivery: +5.00` : "\t\t------------"}
+  ${isDelivery ? `🚚 Delivery: +5.00` : "\t------------"}
   💵 Total: ${isDelivery ? orderDraft.total + 5 : orderDraft.total}
   
   Thank you for your order 🙏`;
 
   console.log("Receipt:", receipt);
 
-  //TODO: encodeURI
-  const encodedMessage = encodeURIComponent(receipt);
+  // (option 1)Send it via whatsAPP
+  // const encodedMessage = encodeURIComponent(receipt);
+  // redirect(`https://wa.me/${phone}?text=${encodedMessage}`);
 
-  //Delete the cookie
-  cookieStore.delete("order_draft");
-
-  //TODO: Send it via whatsAPP
-  const BUSINESS_PHONE = "19294537790";
-  redirect(`https://wa.me/${BUSINESS_PHONE}?text=${encodedMessage}`);
-
-  //confirm user that his order has been sent
-  //edirect("/order/confirm");
+  //(option 2)Send via Twilio SMS API
+  const res = await sendSMS(BUSINESS_PHONE, receipt);
+  if (res) {
+    console.log("SMS sent successfully!");
+    cookieStore.delete("order_draft"); //Delete the cookie
+    redirect("/order/confirm");
+  } else {
+    console.error("Failed to send SMS. Try again");
+    redirect("/order/review");
+  }
 }
