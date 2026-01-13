@@ -2,6 +2,7 @@
 import { cookies } from "next/headers";
 import OrderForm from "../_components/OrderForm";
 import { OrderDraftType } from "../_models/order";
+import PageTransition from "../_components/ui/PageTransition";
 
 export type InitialStateType = {
   errors: Record<string, string>;
@@ -35,9 +36,11 @@ export default async function OrderPage() {
   const headerString = cookie ? "Edit Order" : "Enter your Order";
 
   return (
-    <div className="space-y-2 flex flex-col items-center p-4 max-w-3xl">
-      <h3 className="text-3xl">{headerString}</h3>
-      <OrderForm initialState={initialState} />
-    </div>
+    <PageTransition>
+      <div className="space-y-2 flex flex-col items-center p-4 max-w-3xl">
+        <h3 className="text-3xl">{headerString}</h3>
+        <OrderForm initialState={initialState} />
+      </div>
+    </PageTransition>
   );
 }

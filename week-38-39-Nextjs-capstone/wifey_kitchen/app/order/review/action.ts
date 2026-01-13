@@ -65,7 +65,7 @@ export default async function reviewOrder() {
   if (res) {
     console.log("SMS sent successfully!");
     cookieStore.delete("order_draft"); //Delete the cookie
-    redirect("/order/confirm");
+    redirect("/order/confirm"); //can't use useRouter here bc it's client
   } else {
     console.error("Failed to send SMS. Try again");
     redirect("/order/review");
