@@ -12,7 +12,7 @@ export default function HomePage() {
         <section className="relative isolate overflow-hidden">
           {/* Background Image */}
           <Image
-            src="/foodImages/chickenAvocado.jpeg"
+            src="/foodImages/gnoo.jpeg"
             alt="Wifey Kitchen signature dishes"
             fill
             priority
@@ -121,6 +121,11 @@ export default function HomePage() {
             </Link>
           </div>
         </section>
+        <footer className="mt-2 p-2 text-end text-xs text-stone-200 border border-amber-300">
+          Created&Designed By{" "}
+          <span className="text-yellow-400">Hamza Mare</span>. &copy; 2026 All
+          rights reserved.
+        </footer>
       </main>
     </PageTransition>
   );
@@ -158,9 +163,9 @@ function Dish({
   else if (id === "jollof-rice") imgScr = "/foodImages/jollof-rice.jpeg";
 
   return (
-    <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-8 flex flex-col items-center gap-2">
+    <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-8 flex flex-col items-center justify-between">
       <h4 className="text-xl font-semibold">{label}</h4>
-      <img src={imgScr} alt={label} className="rounded flex-1 p-2" />
+      <img src={imgScr} alt={label} className="rounded-lg p-2 w-cover" />
       <p className="mt-2 text-neutral-400">{note}</p>
     </div>
   );
