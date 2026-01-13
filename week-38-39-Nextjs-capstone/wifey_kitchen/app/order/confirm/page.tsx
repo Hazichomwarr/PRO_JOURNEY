@@ -5,18 +5,21 @@ import PageTransition from "@/app/_components/ui/PageTransition";
 export default function ConfirmPage() {
   return (
     <PageTransition>
-      <div className="min-h-screen bg-gray-800 text-green-500 space-y-2">
-        <div className="flex flex-col items-center gap-2">
-          <h2 className="mt-2 font-semibold mb-4 text-3xl">
+      <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4">
+        <div className="w-full max-w-md rounded-2xl bg-white shadow-xl p-6 text-center space-y-4">
+          <h2 className="text-3xl font-semibold text-green-700">
             Order Confirmed 🎉
           </h2>
-          <p className="p-2 w-fit mx-auto my-4 text-2xl">
-            Your order has been sent. You'll receive an e-receipt on your phone
-            soon.
+
+          <p className="text-gray-700 text-base leading-relaxed">
+            Your order has been sent successfully.
+            <br />
+            You’ll receive an e-receipt on your phone shortly.
           </p>
+
           <a
             href="/"
-            className="w-fit rounded bg-blue-800 text-gray-200 py-1 px-3"
+            className="inline-block mt-4 rounded-xl bg-green-700 text-white px-6 py-3 hover:bg-green-800 active:scale-95 transition"
           >
             Close
           </a>
