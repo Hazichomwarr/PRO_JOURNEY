@@ -22,20 +22,6 @@ model User {
   posts     Post[]
 }
 
-model Post {
-  id        String    @id @default(uuid())
-  title     String
-  content   String
-  createdAt DateTime  @default(now())
-
-  comments  Comment[]
-
-  author    User      @relation(fields: [authorId], references: [id])
-  authorId  String
-
-  
-}
-
 model Comment {
   id        String    @id @default(uuid())
   text      String
@@ -43,4 +29,45 @@ model Comment {
 
   post      Post      @relation(fields: [postId], references: [id])
   postId    String
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model Post {
+  id        String     @id @default(uuid())
+  title     String
+  content   String
+  status    PostStatus  @default (DRAFT) 
+  createdAt DateTime    @default(now())
+
+  comments  Comment[]
+  tags      PostTag[]
+
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  String
+}
+
+model Tag {
+  id        String    @id             @default(uuid())
+  tagName   String
+  slug      String    @db.VarChar(100)
+  createdAt DateTime  @default(now())
+
+  posts     PostTag[]     
+}
+
+model PostTag {
+  tag       Tag       @relation(fields: [tagId], references: [id])
+  tagId     String
+
+  post      Post      @relation(fields: [postId], references: [id])
+  postId    String
+
+  createdAt DateTime  @default(now()) 
+
+  @@id([tagId, postId])
 }
