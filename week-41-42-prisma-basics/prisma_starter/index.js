@@ -136,12 +136,67 @@ async function main() {
 
   // console.dir(post_status2, { depth: null });
 
-  //Query Published posts
+  //lesson-4 tasks
+  // A. Query Published posts
   const published_posts = await prisma.post.findMany({
     where: { status: "PUBLISHED" },
+    orderBy: { createdAt: "desc" },
+    include: {
+      author: {
+        select: { name: true },
+      },
+      tags: {
+        select: {
+          tag: {
+            select: {
+              tagName: true,
+            },
+          },
+        },
+      },
+      _count: { select: { comments: true } },
+    },
   });
 
-  console.log(published_posts);
+  console.dir(published_posts, { depth: null });
+
+  //B.at least one post where at least one post is published
+  // const usersWith_onePost = await prisma.user.findMany({
+  //   where: {
+  //     _count: {
+  //       posts: { gte: 1 },
+  //     },
+  //     posts: { some: { PUBLISHED: true } },
+  //   },
+  // });
+  // console.log("B1 ->", usersWith_onePost);
+
+  //B
+  const usersWithPublishedPost = await prisma.user.findMany({
+    where: {
+      posts: {
+        some: { status: "PUBLISHED" },
+      },
+    },
+    include: {
+      posts: {
+        where: { status: "PUBLISHED" },
+      },
+    },
+  });
+  console.dir(usersWithPublishedPost, { depth: null });
+
+  //Pagination
+  const lastId = undefined;
+  const next10PublishedPosts = await prisma.post.findMany({
+    where: { status: "PUBLISHED" },
+    take: 10,
+    cursor: lastId ? { id: lastId } : undefined, //why explicitly undefined
+    skip: lastId ? 1 : 0,
+    orderBy: { createdAt: "desc" },
+  });
+
+  console.dir(next10PublishedPosts, { depth: null });
 }
 
 main();
