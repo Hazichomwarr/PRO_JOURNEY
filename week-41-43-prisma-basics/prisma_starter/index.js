@@ -138,27 +138,27 @@ async function main() {
 
   //lesson-4 tasks
   // A. Query Published posts
-  const published_posts = await prisma.post.findMany({
-    where: { status: "PUBLISHED" },
-    orderBy: { createdAt: "desc" },
-    include: {
-      author: {
-        select: { name: true },
-      },
-      tags: {
-        select: {
-          tag: {
-            select: {
-              tagName: true,
-            },
-          },
-        },
-      },
-      _count: { select: { comments: true } },
-    },
-  });
+  // const published_posts = await prisma.post.findMany({
+  //   where: { status: "PUBLISHED" },
+  //   orderBy: { createdAt: "desc" },
+  //   include: {
+  //     author: {
+  //       select: { name: true },
+  //     },
+  //     tags: {
+  //       select: {
+  //         tag: {
+  //           select: {
+  //             tagName: true,
+  //           },
+  //         },
+  //       },
+  //     },
+  //     _count: { select: { comments: true } },
+  //   },
+  // });
 
-  console.dir(published_posts, { depth: null });
+  // console.dir(published_posts, { depth: null });
 
   //B.at least one post where at least one post is published
   // const usersWith_onePost = await prisma.user.findMany({
@@ -172,31 +172,88 @@ async function main() {
   // console.log("B1 ->", usersWith_onePost);
 
   //B
-  const usersWithPublishedPost = await prisma.user.findMany({
-    where: {
-      posts: {
-        some: { status: "PUBLISHED" },
-      },
-    },
-    include: {
-      posts: {
-        where: { status: "PUBLISHED" },
-      },
-    },
-  });
-  console.dir(usersWithPublishedPost, { depth: null });
+  // const usersWithPublishedPost = await prisma.user.findMany({
+  //   where: {
+  //     posts: {
+  //       some: { status: "PUBLISHED" },
+  //     },
+  //   },
+  //   include: {
+  //     posts: {
+  //       where: { status: "PUBLISHED" },
+  //     },
+  //   },
+  // });
+  // console.dir(usersWithPublishedPost, { depth: null });
 
   //Pagination
-  const lastId = undefined;
-  const next10PublishedPosts = await prisma.post.findMany({
-    where: { status: "PUBLISHED" },
-    take: 10,
-    cursor: lastId ? { id: lastId } : undefined, //why explicitly undefined
-    skip: lastId ? 1 : 0,
-    orderBy: { createdAt: "desc" },
-  });
+  // const lastId = undefined;
+  // const next10PublishedPosts = await prisma.post.findMany({
+  //   where: { status: "PUBLISHED" },
+  //   take: 10,
+  //   cursor: lastId ? { id: lastId } : undefined, //why explicitly undefined
+  //   skip: lastId ? 1 : 0,
+  //   orderBy: { createdAt: "desc" },
+  // });
 
-  console.dir(next10PublishedPosts, { depth: null });
+  // console.dir(next10PublishedPosts, { depth: null });
+
+  //Lesson-5 tasks
+
+  //A:connectOrCreate
+  const connectCreateTag = await prisma.post.create({
+    data: {
+      title: "C++",
+      content: "I learned C++ before learning JS.",
+      tags: {
+        connectOrCreate: {
+          where: { slug: "c++" },
+          create: {
+            tag: {
+              create: { tagName: "C plus plus", slug: "c++" },
+            },
+          },
+        },
+      },
+      authorId: "e4cba333-0148-406b-94bb-3b1ec0204961",
+    },
+  });
+  console.dir(connectCreateTag, { depth: null });
+
+  //B: upsert
+  const upsertPost = await prisma.post.upsert({
+    update: { status: "PUBLISHED" },
+    where: { id: "e74f45d5-ce2c-496c-97c3-97eda8931688" },
+    create: {
+      title: "go for go language",
+      content: "I'm tempted to learning GO...",
+      authorId: "4a7a73b8-c1d9-4533-ad28-d6846ab15622",
+    },
+  });
+  console.dir(upsertPost, { depth: null });
+
+  //C: transaction
+  await prisma.$transaction(async (tx) => {
+    const postWithTransaction = await tx.post.create({
+      data: {
+        title: "Swift",
+        content: "Is Swift, swift to learn ?",
+        status: "PUBLISHED",
+        authorId: "5bcb311b-c272-45ea-9618-6a5720c5b47e",
+      },
+    });
+
+    await tx.comment.create({
+      data: {
+        text: "Trust me, it's a breeze!!!",
+        postId: postWithTransaction.id,
+      },
+    });
+
+    await tx.tag.create({
+      data: { tagName: "Swift", slug: "swift" },
+    });
+  });
 }
 
 main();
