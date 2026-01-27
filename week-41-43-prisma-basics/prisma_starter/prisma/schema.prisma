@@ -56,7 +56,6 @@ model Tag {
   tagName   String
   slug      String    @db.VarChar(100)
   createdAt DateTime  @default(now())
-
   posts     PostTag[]     
 }
 
