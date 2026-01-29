@@ -41,3 +41,17 @@ Every algorithm:
 ## Personal Insight
 
 Algorithms are predictable patterns built on careful boundaries and conditions — not magic.
+
+# Day 3 & 4 - Decision Problem and Planning discipline
+
+## Key Concepts Learned
+
+### 1. Decision Tree:
+
+- Check overlapping characterictics first, then continue until uniqueness
+
+### 2. Problem planning discipline:
+
+- 1. Answer the 5 planning questions: I-O-DATS-OC-NG
+- 2. if OC, Write the condition order in plain English
+- 3. Then Code it.
