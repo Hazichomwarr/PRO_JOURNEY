@@ -54,4 +54,15 @@ Algorithms are predictable patterns built on careful boundaries and conditions â
 
 - 1. Answer the 5 planning questions: I-O-DATS-OC-NG
 - 2. if OC, Write the condition order in plain English
-- 3. Then Code it.
+- 3. Identify if the output represents maximum authority or current/session result
+- 4. Then Code it.
+
+### Core Insight
+
+- Most bugs come from solving the wrong problem correctly
+- Condition order is determined by the system model, not by syntax
+
+## Algorithms Implemented
+
+- fizzBuzz(str) -> 0(1)
+- getAccess(str) -> 0(1)
