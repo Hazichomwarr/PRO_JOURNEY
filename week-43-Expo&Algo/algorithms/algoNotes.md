@@ -66,3 +66,102 @@ Algorithms are predictable patterns built on careful boundaries and conditions �
 
 - fizzBuzz(str) -> 0(1)
 - getAccess(str) -> 0(1)
+
+# Day 5 — Loops & Early Exit Discipline
+
+## Core Idea
+
+Loops have different contracts. Most bugs happen when the wrong contract is used.
+
+---
+
+## Planning Checklist for Loops
+
+Before writing a loop:
+
+1. Am I searching or accumulating?
+2. Can the answer be known before reaching the end?
+3. Would stopping early still produce a correct result?
+
+If YES → Search loop → early exit allowed  
+If NO → Accumulation loop → full traversal required
+
+---
+
+## Key Insight
+
+- “All X are valid” problems are usually:
+  → Searches for a single counterexample
+- Reframe:
+  - “Are all positive?” → “Is there any non-positive?”
+
+---
+
+## Core Rule
+
+Early exit is a feature only when the loop’s goal is to decide, not to build.
+
+---
+
+## Common Bug Pattern
+
+- Using early return in accumulation loops
+- Returning inside a loop unintentionally
+- Mixing search helpers with element-level accumulation
+
+---
+
+## The Two Loop Contracts
+
+### 1. Search Loop
+
+Goal: decide or find something.
+
+Characteristics:
+
+- Looks for a condition or violation
+- Can stop early
+- Uses `return` or `break` inside the loop
+- Optimized for speed
+
+Examples:
+
+- Check if a value exists
+- Validate conditions
+- Authorization checks
+- “Any” / “All” type problems
+
+Rule:
+
+- Early exit is correct and encouraged
+
+---
+
+### 2. Accumulation Loop
+
+Goal: build or compute a result.
+
+Characteristics:
+
+- Must process all elements
+- Early exit causes incorrect results
+- Uses a running total, count, or structure
+
+Examples:
+
+- Sum
+- Count
+- Average
+- Frequency tables
+- Transformations
+
+Rule:
+
+- Full traversal is mandatory
+
+---
+
+## Algorithms implemented
+
+hasEvenNumber -> 0(n)
+sumOfAllEvenNumber -> 0(1)
