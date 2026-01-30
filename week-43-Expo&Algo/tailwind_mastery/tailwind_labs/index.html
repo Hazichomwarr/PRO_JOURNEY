@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tailwind Practice</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="min-h-screen bg-gray-100">
+    <!-- CARD skeleton -->
+    <div
+      class="flex flex-col gap-4 p-3 max-w-sm mx-auto rounded-lg border border-gray-200 bg-white text-gray-900"
+    >
+      <h3>Title</h3>
+      <p>Description</p>
+      <button class="self-start px-4 py-2 rounded bg-gray-900 text-white">
+        Action
+      </button>
+    </div>
+
+    <!-- Form skeleton -->
+    <form class="flex flex-col gap-4 max-w-sm mx-auto">
+      <!-- Name -->
+      <label for="name" class="flex flex-col gap-1"
+        >Name:
+        <input type="text" id="name" class="w-full border rounded px-3 py-2"
+      /></label>
+      <!-- Email -->
+      <label for="email" class="flex flex-col gap-1"
+        >Email
+        <input type="text" id="email" class="w-full border rounded px-3 py-2" />
+      </label>
+    </form>
+
+    <!-- modal skeleton -->
+    <div class="fixed inset-0 bg-black/50 flex items-center justify-center">
+      <div class="bg-white w-full max-w-md p-6 rounded-lg">
+        <div id="modal" class="max-w w-full p-3">modal</div>
+      </div>
+    </div>
+  </body>
+</html>
