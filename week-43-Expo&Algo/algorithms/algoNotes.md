@@ -42,6 +42,8 @@ Every algorithm:
 
 Algorithms are predictable patterns built on careful boundaries and conditions — not magic.
 
+---
+
 # Day 3 & 4 - Decision Problem and Planning discipline
 
 ## Key Concepts Learned
@@ -67,13 +69,13 @@ Algorithms are predictable patterns built on careful boundaries and conditions �
 - fizzBuzz(str) -> 0(1)
 - getAccess(str) -> 0(1)
 
+---
+
 # Day 5 — Loops & Early Exit Discipline
 
 ## Core Idea
 
 Loops have different contracts. Most bugs happen when the wrong contract is used.
-
----
 
 ## Planning Checklist for Loops
 
@@ -213,7 +215,7 @@ Examples:
 
 Mental model:
 
-- “The data is nested, so the loops must be nested”
+- “The data (structure) is nested, so the loops must be nested”
 
 ---
 
@@ -261,3 +263,41 @@ Nested loops appear when a single pass cannot express the relationship the probl
 
 arrayHasDuplicate -> 0(n2)
 pairSum10 -> 0(n2)
+
+---
+
+# Day 7 — State Tracking & Consecutive Logic
+
+## Core Ideas Learned
+
+### 1. State Variables
+
+Some problems require remembering past information while moving forward.
+These are called **state variables** (e.g. smallestSoFar, currentStreak).
+
+### 2. Consecutive ≠ Pairwise
+
+- “Consecutive / in a row / adjacent” problems only require **neighbor comparison**.
+- This collapses the problem to a **single loop**.
+- Nested loops are not just inefficient — they are logically unnecessary.
+
+### 3. When NOT to Use Nested Loops
+
+Ask:
+
+> Am I comparing each item with many others, or just its neighbor?
+
+- Neighbor only → single loop
+- Many-to-many → nested loops
+
+### 4. Order Guarantees Meaning
+
+Iteration order already enforces consecutiveness.
+The loop itself proves adjacency — no need to re-check distance.
+
+### 5. Explicit Decisions Beat Helpers
+
+Avoid hiding logic behind helpers when learning.
+Write comparisons explicitly to train algorithmic thinking.
+
+If you are tracking a running state, compare with the past, not the future.
