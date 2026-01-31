@@ -165,3 +165,99 @@ Rule:
 
 hasEvenNumber -> 0(n)
 sumOfAllEvenNumber -> 0(1)
+
+---
+
+# Day 6 — Nested Loops & Time Complexity (Intuition)
+
+## Core Idea
+
+Nested loops are not bad by default.
+They are required when a problem involves relationships that cannot be expressed in a single pass.
+
+---
+
+## Legitimate Reasons for Nested Loops
+
+### 1. Pairwise Comparison
+
+Used when each element must be compared with other elements.
+
+Examples:
+
+- Detect duplicates
+- Count value pairs (e.g., sum to 10)
+- Match items between two arrays
+
+Mental model:
+
+- “Every item must be compared with others”
+
+Optimization:
+
+- Start inner loop at `j = i + 1` to avoid redundant comparisons
+- Early exit allowed only for search problems
+
+---
+
+### 2. Structural Nesting (Grids / Matrices)
+
+Used when data itself is nested.
+
+Examples:
+
+- 2D arrays
+- Game boards
+- Tables
+- Image pixels
+
+Mental model:
+
+- “The data is nested, so the loops must be nested”
+
+---
+
+### 3. Containment Relationships
+
+Used when each item contains its own collection.
+
+Examples:
+
+- Users → permissions
+- Orders → items
+- Sentences → words
+
+Mental model:
+
+- “For each X, process its Y”
+
+---
+
+## Index vs Value Rule
+
+- Index variables (`i`, `j`) control traversal
+- Value variables (`arr[i]`, `arr[j]`) answer the problem
+
+Best practice:
+
+- Assign values to named variables (`a`, `b`, `current`, `candidate`)
+- Reduces cognitive load and prevents index/value bugs
+
+---
+
+## Performance Insight
+
+- O(n²) is acceptable when the problem requires pairwise comparison
+- Correctness always comes before optimization
+- You cannot optimize a wrong solution
+
+---
+
+## Core Rule
+
+Nested loops appear when a single pass cannot express the relationship the problem asks about.
+
+## Algorithms implemented
+
+arrayHasDuplicate -> 0(n2)
+pairSum10 -> 0(n2)
