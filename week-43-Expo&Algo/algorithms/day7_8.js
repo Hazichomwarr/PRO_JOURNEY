@@ -21,3 +21,42 @@ function longestCharacter(str) {
 }
 
 console.log(longestCharacter("aaabbcaaa"));
+
+// Day - 8
+
+// Print a rectangle (width & height)
+function printRectangle(w, h) {
+  for (let i = 0; i < w; i++) {
+    let solder = "";
+    for (let j = 0; j < h; j++) {
+      solder += "*";
+    }
+    console.log(solder);
+  }
+}
+printRectangle(3, 4); //Result below:
+//undefined (?)
+//****
+//****
+//****
+
+// Pair generation
+function pairGeneration(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    let a = arr[i];
+    for (let j = i + 1; j < arr.length; j++) {
+      let b = arr[j];
+      //console.log(`comparing ${a} with ${b}`);
+      if (a !== b) console.log(`(${a}, ${b})`);
+    }
+  }
+}
+pairGeneration(["a", "b", "c"]);
+
+// Print triangle symetry
+function printTriangle(n) {
+  for (let i = 1; i <= n; i++) console.log("*".repeat(i));
+
+  for (let j = n - 1; j > 0; j--) console.log("*".repeat(j));
+}
+//printTriangle(4);

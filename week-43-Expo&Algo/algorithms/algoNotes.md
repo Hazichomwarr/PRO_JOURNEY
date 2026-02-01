@@ -301,3 +301,47 @@ Avoid hiding logic behind helpers when learning.
 Write comparisons explicitly to train algorithmic thinking.
 
 If you are tracking a running state, compare with the past, not the future.
+
+---
+
+# Day 8 — Nested Loops & 2D Thinking
+
+## Core Insights
+
+### 1. What Nested Loops Mean
+
+Nested loops model **two dimensions**:
+
+- outer loop → high-level structure (rows, base element, phase)
+- inner loop → detailed work inside each unit
+
+They are required when:
+
+- each element must interact with multiple others
+- a problem has rows × columns, pairs, or combinations
+
+### 2. Nested Loops Are Not “Slow by Default”
+
+They are correct when the problem space itself is 2D.
+Using a single loop in a 2D problem adds unnecessary complexity.
+
+### 3. Pairwise vs Adjacent Comparison
+
+- Pairwise (nested): compare many-to-many (e.g. generating all pairs)
+- Adjacent (single): compare neighbors only (e.g. consecutive characters)
+
+### 4. Loop Invariants Matter
+
+Each loop counter must have **one clear meaning**.
+If progression rules change (grow → shrink), use separate loops or phases.
+
+### 5. Printing vs Returning
+
+- Functions that print usually don’t return values
+- `undefined` is returned by default if nothing is returned
+
+## Algorithms implemented
+
+- printRectangele(w,h) -> 0(n2)
+- printTriangleSymetry(n) -> 0(n+n)
+- pairGeneration(arr) -> 0(n2)
