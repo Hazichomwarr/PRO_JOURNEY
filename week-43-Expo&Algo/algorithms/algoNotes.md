@@ -432,3 +432,54 @@ Your examples:
 - Word occurrence ✔️
 
 These are **canonical forEach use-cases**.
+
+---
+
+# Day 11 — Reduce (The Universal Builder)
+
+## Core Idea
+
+`reduce` walks through an array once and **builds a final value** (number, array, object).
+
+## Mental Model
+
+Reduce answers 3 questions:
+
+1. What am I building? → number | array | object
+2. What’s the starting value? → 0 | [] | {}
+3. How does ONE element update it?
+
+## Canonical Shape
+
+arr.reduce((acc, curr) => {
+// update acc
+return acc;
+}, initialValue);
+
+Returning the accumulator is mandatory.
+
+## Reduce Re-derives Everything
+
+- Sum → number accumulator
+- Map → array accumulator + push
+- Filter → array accumulator + conditional push
+- Frequency count → object accumulator
+
+## Key Rules
+
+- Mutation of the accumulator is allowed (and idiomatic).
+- Reduce is NOT default — use when final shape is custom.
+- Clarity > cleverness.
+
+## Red Flag
+
+If you can’t answer “what am I building?” → don’t use reduce.
+
+## Algorithms implemented
+
+- sumAll
+- countNumbers
+- squareAll
+- longWords
+
+---
