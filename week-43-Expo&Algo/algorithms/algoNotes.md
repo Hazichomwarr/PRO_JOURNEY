@@ -342,6 +342,93 @@ If progression rules change (grow → shrink), use separate loops or phases.
 
 ## Algorithms implemented
 
-- printRectangele(w,h) -> 0(n2)
+- printRectangle(w,h) -> 0(n2)
 - printTriangleSymetry(n) -> 0(n+n)
 - pairGeneration(arr) -> 0(n2)
+
+---
+
+# Day 9 — map & filter (Manual Implementations)
+
+## map — Transformation Contract
+
+- Input array → output array
+- Output length === input length
+- Purpose: transform values, not structure
+
+Manual map pattern:
+
+- create new array
+- loop
+- push transformed value
+- return new array
+
+## filter — Selection Contract
+
+- Output length ≤ input length
+- Purpose: keep elements that pass a condition
+
+Manual filter pattern:
+
+- create new array
+- loop
+- conditionally push
+- return new array
+
+## Key Distinction
+
+- map answers: "What should this become?"
+- filter answers: "Should this stay?"
+
+## Loop Insight
+
+Both map and filter:
+
+- are single-pass loops
+- do NOT depend on future elements
+- are deterministic per element
+
+This makes them predictable and optimizable.
+
+---
+
+# Day 10 — forEach: The Side-Effect Loop
+
+## Core Idea
+
+`forEach` is not about producing values.
+It is about **executing intent** on each element.
+
+If `map` transforms and `filter` selects,
+`forEach` **acts**.
+
+## Mental Model
+
+- Input: array
+- Output: ❌ nothing (`undefined`)
+- Purpose: mutate external state or trigger effects
+
+## When to Use
+
+- Counting / frequency maps
+- Logging
+- Accumulating into objects
+- Mutating existing data structures
+
+## When NOT to Use
+
+- When you need a returned array → use `map`
+- When you need selection → use `filter`
+- When you need early exit → use `for` / `some` / `every`
+
+## Key Insight
+
+`forEach` is a _controlled loop with intention_.
+It replaces boilerplate, not logic.
+
+Your examples:
+
+- Frequency counting ✔️
+- Word occurrence ✔️
+
+These are **canonical forEach use-cases**.
