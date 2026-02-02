@@ -483,3 +483,20 @@ If you can’t answer “what am I building?” → don’t use reduce.
 - longWords
 
 ---
+
+# Day 12 — Choosing the Right Tool
+
+## Decision Rules
+
+- Transform every element → map
+- Select some elements → filter
+- Build non-array result → reduce
+- Need early exit / max clarity → loop
+
+## Reduce is NOT default
+
+Use reduce only when output shape is custom.
+
+## Senior Signal
+
+Correct tool choice > clever syntax.
