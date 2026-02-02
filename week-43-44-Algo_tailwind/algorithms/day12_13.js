@@ -16,3 +16,45 @@ B)
 4.Return true if all numbers are positive -> early exit (For loop)
 
 */
+
+//DAY - 13
+
+// What repeats?
+for (let i = 0; i < n; i++) {
+  console.log(i);
+} //  loop repeats N times
+
+for (let i = 0; i < n; i++) {
+  for (let j = 0; j < 3; j++) {
+    console.log(i, j);
+  }
+} // outer loop repeats N times; inner loop repeats 3 times
+
+for (let i = 0; i < n; i++) {
+  if (arr[i] === 5) break;
+} // worse-case: loop repeats N times; best-case: early exit
+
+for (let i = 0; i < n; i++) {
+  for (let j = i + 1; j < n; j++) {
+    console.log(arr[i], arr[j]);
+  }
+} //inner loop repeats ~N times per outer loop(pairwise comparaison).
+
+// DAY - 14
+
+//Big-O
+for (let i = 0; i < arr.length; i++) {
+  if (arr[i] === target) return true;
+} // O(n) -> Worst case -> scans entire array → linear growth
+
+for (let i = 0; i < n; i++) {
+  for (let j = 0; j < i; j++) {
+    console.log(i, j);
+  }
+} // O(n2) -> inner loop repeats ~N times per outer loop
+
+for (let i = 0; i < n; i++) {
+  console.log("hi");
+}
+
+console.log("done"); // O(n) + O(1) → O(n)

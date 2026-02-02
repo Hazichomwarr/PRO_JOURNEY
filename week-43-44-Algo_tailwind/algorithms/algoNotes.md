@@ -491,7 +491,7 @@ If you can’t answer “what am I building?” → don’t use reduce.
 - Transform every element → map
 - Select some elements → filter
 - Build non-array result → reduce
-- Need early exit / max clarity → loop
+- Need early exit / max clarity / complex control → loop
 
 ## Reduce is NOT default
 
@@ -500,3 +500,47 @@ Use reduce only when output shape is custom.
 ## Senior Signal
 
 Correct tool choice > clever syntax.
+
+---
+
+# Day 15 — Visual Big-O Intuition
+
+## Core Insight
+
+Big-O answers one question only:
+
+> As input grows, what grows with it?
+
+## O(n) — Linear Growth
+
+- One loop over input
+- Work increases proportionally with input size
+- Example: printing each element of an array
+
+Visual:
+n = 3 → 3 steps  
+n = 6 → 6 steps  
+n = 12 → 12 steps
+
+## O(n²) — Quadratic Growth
+
+- Nested loops dependent on the same input
+- Often appears in pairwise comparisons
+- Total work grows rapidly (triangle pattern)
+
+Visual:
+n = 3 → 3 comparisons  
+n = 6 → 15 comparisons  
+n = 12 → 66 comparisons
+
+## Key Rules
+
+- Constants don’t matter (O(3n) → O(n))
+- Worst case is what counts
+- Inner loop dependent on outer loop → think O(n²)
+- Inner loop with fixed size → still O(n)
+
+## Mental Model
+
+Don’t calculate Big-O.
+Name the repetition pattern.
