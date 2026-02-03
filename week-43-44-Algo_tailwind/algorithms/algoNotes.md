@@ -544,3 +544,44 @@ n = 12 → 66 comparisons
 
 Don’t calculate Big-O.
 Name the repetition pattern.
+
+---
+
+# Day 17 — Factorials, Loops & Boundary Awareness
+
+## Core Idea
+
+The most important part of an algorithm is often **not the loop**, but the **boundary condition**.
+
+For factorial:
+
+- `n! = n × (n-1) × ... × 1`
+- **Special case**: `0! = 1`
+
+Failing to handle boundaries leads to incorrect results or infinite loops.
+
+---
+
+# Day 18 — Recursion (Factorial & Sum)
+
+## Core Idea
+
+Recursion is a function calling itself to solve a smaller version of the same problem, **until it reaches a base case**.
+
+Every recursive function must have:
+
+- Base case → stops recursion
+- Recursive case → reduces the problem
+- Progress toward base case → avoids infinite calls
+
+## Key Insight
+
+The base case must match the operator used during the unwind
+
+## Recursion Reality Check
+
+Elegant, expressive, But:
+
+- Uses stack memory
+- Can be slower than loops
+- Dangerous without correct base case
