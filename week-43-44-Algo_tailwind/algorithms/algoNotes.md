@@ -585,3 +585,9 @@ Elegant, expressive, But:
 - Uses stack memory
 - Can be slower than loops
 - Dangerous without correct base case
+
+---
+
+# Day 20 takeaway (this is the money line)
+
+Fibonacci recursion explodes because it recomputes the same subproblems, not because recursion is bad.
