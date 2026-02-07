@@ -591,3 +591,18 @@ Elegant, expressive, But:
 # Day 20 takeaway (this is the money line)
 
 Fibonacci recursion explodes because it recomputes the same subproblems, not because recursion is bad.
+
+---
+
+# Day 21 - 24
+
+Dynamic Programming exists because recursion without memory is wasteful, and DP is the act of remembering answers to well-defined subproblems.
+
+## Ask yourself this before any DP problem:
+
+“If I pause time right now, what single variable fully describes where I am?”
+(If you can answer that, DP is already working).
+
+Dynamic Programming works because it replaces an exponentially large set of concrete solutions with a small set of counted states whose transitions preserve exact equivalence.
+
+---
