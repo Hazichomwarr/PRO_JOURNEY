@@ -606,3 +606,46 @@ Dynamic Programming exists because recursion without memory is wasteful, and DP 
 Dynamic Programming works because it replaces an exponentially large set of concrete solutions with a small set of counted states whose transitions preserve exact equivalence.
 
 ---
+
+# Day 24 & 25 — Dynamic Programming: Counting vs Optimization
+
+## Core Idea
+
+Dynamic Programming exists to avoid recomputing the same subproblems.
+It applies when:
+
+- subproblems overlap
+- the problem can be described by a clear state
+- answers to subproblems do not change
+
+---
+
+## Two Families of DP
+
+### 1) Counting DP
+
+Question form:
+
+> "How many ways...?"
+
+Characteristics:
+
+- dp[x] = number of ways
+- Base case usually: dp[0] = 1
+- Transition uses addition (+)
+
+Example: Coin Change (counting)
+
+### 2) Optimization DP
+
+Question form:
+
+> "What is the minimum / maximum...?"
+
+Characteristics:
+
+- dp[x] = best (min / max) value
+- Base case usually: dp[0] = 0
+- Impossible states initialized with Infinity or -Infinity
+- Transition uses min / max
+- Example: Coin Change (minimum coins)
