@@ -1,130 +1,290 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Hamza Mare's developer portfolio — showcasing front-end projects, HTML/CSS skills, and creative web design with a passion for clean, responsive layouts.">
-    <meta property="og:title" content="Hamza Mare | Front-End Developer Portfolio">
-    <meta property="og:description" content="Creative, responsive websites built with HTML, CSS, JavaScript, and React.">
-    <meta property="og:type" content="website">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Hamza Mare's developer portfolio — showcasing front-end projects, HTML/CSS skills, and creative web design with a passion for clean, responsive layouts."
+    />
+    <meta
+      property="og:title"
+      content="Hamza Mare | Front-End Developer Portfolio"
+    />
+    <meta
+      property="og:description"
+      content="Creative, responsive websites built with HTML, CSS, JavaScript, and React."
+    />
+    <meta property="og:type" content="website" />
 
     <!-- don't have the below <meta>s yet -->
-    <meta property="og:image" content="https://yourdomain.com/images/og-preview.jpg">
-    <meta property="og:url" content="https://yourdomain.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta
+      property="og:image"
+      content="https://yourdomain.com/images/og-preview.jpg"
+    />
+    <meta property="og:url" content="https://yourdomain.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <title>Hamza Mare | Front-End Developer Portfolio</title>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <nav class="navbar">
-          <img src="./images/logo.svg" alt="Logo" class="logo" />
-           <!-- Hamburger icon (visible only on small screens) -->
-            <div class="hamburger" id="hamburger" aria-label="Toggle navigation menu">☰</div>
+      <nav class="navbar">
+        <img src="./images/logo.svg" alt="Logo" class="logo" />
+        <!-- Hamburger icon (visible only on small screens) -->
+        <div
+          class="hamburger"
+          id="hamburger"
+          aria-label="Toggle navigation menu"
+        >
+          ☰
+        </div>
 
-            <!-- Nav links -->
-            <ul id="nav-links">
-                <li class="navbar-item"><a href="#hero">Hero</a></li>
-                <li class="navbar-item"><a href="#about">About</a></li>
-                <li class="navbar-item"><a href="#projects">Projects</a></li>
-                <li class="navbar-item"><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
+        <!-- Nav links -->
+        <ul id="nav-links">
+          <li class="navbar-item"><a href="#hero">Hero</a></li>
+          <li class="navbar-item"><a href="#about">About</a></li>
+          <li class="navbar-item"><a href="#projects">Projects</a></li>
+          <li class="navbar-item"><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
     </header>
     <main>
-        <section id="hero">
-            <img class="hero-imag zoom-in" src="./images/me&kids.jpg" alt="Hamza smiling with children">
-            <div class="hero-name">
-                <h1 >Hey, I am Hamza</h1>
-                <p class="hero-title">a web developer</p>
-            </div>
-        </section>
-        <hr class="section-delimiter">
-        <section id="about">
-            <h2 class="about-header">A brief intro about me..</h2>
-            <p class="about-text">I’m a self-taught developer who finds joy in nature, reading, and exploring the human mind—I also hold a bachelor’s degree in psychology. What excites me most, is designing beautiful, meaningful websites that connect people from different backgrounds and help them in practical ways.</p>
-            <div class="skills">
-                <h3>Technologies I work with</h3>
-                <div class="skills-container">
-                <div class="skill">Html</div>
-                <div class="skill">CSS</div>
-                <div class="skill">JAVASCRIPT</div>
-                <div class="skill">REACT</div>
-                <div class="skill">EXPRESS</div>
-                <div class="skill">PYTHON</div>
-                <div class="skill">FLASK</div>
-                <div class="skill">MONGO_DB</div>
-                <div class="skill">SQL</div>
-                </div>
-            </div>
-        </section>
-        <section id="projects">
-            <h3>Projects</h3>
-            <div class="projects-cards">
-                <!-- will add projects later -->
-                <div class="project-card">
-                    <h4 class="project-title">Coach Finder App. TouchPoint</h4>
-                    <p>TouchPoint connects people who need guidance with coaches ready to empower them — anytime, anywhere.</p>
-                    <p>Built with React Zustand Express MongoDB Tailwind </p>
-                    <a href=www.touchpointapp.app" target="_blank" rel="noopener noreferrer">View Project</a>
-                </div>
-                <div class="project-card">
-                    <h4 class="project-title">Restautrant Website. DIDI-CUSINE</h4>
-                    <img src="./images/Screenshot-quiz.png" alt="project screenshot">
-                    <p>Home-style • Slow-marinated • Made with love Food That Tastes Like Home</p>
-                    <p>Built with Next.js Prisma PostgreSQL Tailwind</p>
-                    <a href="www.didi-cuisine.com" target="_blank" rel="noopener noreferrer">View Project</a>
-                </div>
-                <div class="project-card">
-                    <h4 class="project-title">Organization website - Wonder Woman</h4>
-                    <img src="./images/Screenshot3.png" alt="project Screenshot">
-                    <p>In this freelance gig, I built and designed an NGO's website for my clients. Their missions are: Empowering Women - Celebrating Culture - Building Community.</p>
-                    <p>Built with Next.js - Tailwind. First Architectural engeneering and layout.</p>
-                    <a href="https://wonder-woman.vercel.app/" target="_blank" rel="noopener noreferrer">View Project</a>
-                </div>
-                <div class="project-card">
-                    <h4 class="project-title">Organization website - Tianuni</h4>
-                    <img src="./images/Screenshot-pressPage.png" alt="Project Screenshot">
-                    <p>In this freelance gig, I built and designed an NGO's website for my clients based in Quebec. Their missions are: Promoting Afro-descendant cultures and building connections in Quebec</p>
-                    <p>Built with Next.js - Tailwind. Architectural engeneering and layout.</p>
-                    <a href="https://tianuni-beta.vercel.app/" target="_blank" rel="noopener noreferrer">View Project</a>
-                </div>
-                
-            </div>
-        </section>
-        <section id="contact">
-            <h3>Contact me</h3>
-            <form class="contact-form">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
+      <section id="hero">
+        <img
+          class="hero-imag zoom-in"
+          src="./images/me&kids.jpg"
+          alt="Hamza smiling with children"
+        />
+        <div class="hero-name">
+          <h1>Hamza Mare</h1>
+          <p class="hero-title">Full-Stack Developer</p>
+          <p class="hero-sub">
+            I build clean websites and web apps (React/TS, Node, DBs).
+          </p>
 
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+          <div class="hero-cta">
+            <a class="btn" href="#projects">View Projects</a>
+            <a class="btn btn-outline" href="#contact">Contact</a>
+          </div>
+        </div>
+      </section>
+      <hr class="section-delimiter" />
+      <section id="about">
+        <h2 class="about-header">A brief intro about me..</h2>
+        <p class="about-text">
+          I’m a self-taught developer who finds joy in nature, reading, and
+          exploring the human mind—I also hold a bachelor’s degree in
+          psychology. What excites me most, is designing beautiful, meaningful
+          websites that connect people from different backgrounds and help them
+          in practical ways.
+        </p>
+        <!-- <div class="skills">
+          <h3>Technologies I work with</h3>
+          <div class="skills-container">
+            <div class="skill">Html</div>
+            <div class="skill">CSS</div>
+            <div class="skill">TAILWIND CSS</div>
+            <div class="skill">JAVASCRIPT</div>
+            <div class="skill">REACT</div>
+            <div class="skill">ZUSTAND</div>
+            <div class="skill">Next.JS</div>
+            <div class="skill">EXPRESS</div>
+            <div class="skill">PYTHON</div>
+            <div class="skill">FLASK</div>
+            <div class="skill">PRISMA</div>
+            <div class="skill">MONGO_DB</div>
+            <div class="skill">POSTGRESQL</div>
+            <div class="skill">SQL</div>
+          </div>
+        </div> -->
+        <div class="skills">
+          <h3>Tech I use</h3>
 
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" rows="6" cols="14" required></textarea>
+          <div class="skills-group">
+            <h4>Frontend</h4>
+            <div class="skills-container">
+              <div class="skill">HTML</div>
+              <div class="skill">CSS</div>
+              <div class="skill">JavaScript</div>
+              <div class="skill">React</div>
+              <div class="skill">TypeScript</div>
+              <div class="skill">Tailwind</div>
+              <div class="skill">Next.JS</div>
+            </div>
+          </div>
 
-                <button type="submit">Send</button>
-            </form>
-        </section>
+          <div class="skills-group">
+            <h4>Backend</h4>
+            <div class="skills-container">
+              <div class="skill">Node</div>
+              <div class="skill">Express</div>
+              <div class="skill">MongoDB</div>
+              <div class="skill">PostgreSQL</div>
+              <div class="skill">Prisma</div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="projects">
+        <h3>Projects</h3>
+        <div class="projects-cards">
+          <!-- will add projects later -->
+          <div class="project-card">
+            <h4 class="project-title">TouchPoint — Community Help Platform</h4>
+            <img src="./images/touchpoint.jpeg" alt="project screenshot" />
+            <p class="muted">
+              Connects people who need help with those ready to provide it —
+              instantly.
+            </p>
+
+            <ul class="bullets">
+              <li>Authentication + protected routes</li>
+              <li>State management + real-time UX logic</li>
+            </ul>
+
+            <div class="chips">
+              <span>React</span><span>TypeScript</span><span>Zustand</span>
+              <span>Express</span><span>MongoDB</span>
+            </div>
+
+            <div class="links">
+              <a href="https://touchpointapp.app" target="_blank">Live</a>
+              <a href="https://github.com/YOUR_REPO" target="_blank">Code</a>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <h4 class="project-title">Didi’s Cuisine — Restaurant Platform</h4>
+            <img src="./images/cuisine.jpeg" alt="project screenshot" />
+            <p class="muted">
+              Full restaurant website with menu, branding, and ordering flow.
+            </p>
+
+            <ul class="bullets">
+              <li>Production-ready architecture</li>
+              <li>Database + backend integration</li>
+            </ul>
+
+            <div class="chips">
+              <span>Next.js</span><span>Prisma</span> <span>PostgreSQL</span
+              ><span>Tailwind</span>
+            </div>
+
+            <div class="links">
+              <a href="https://didi-cuisine.com" target="_blank">Live</a>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <h4 class="project-title">Wonder Woman — NGO Website</h4>
+            <img src="./images/wonder.jpeg" alt="project screenshot" />
+            <p class="muted">
+              Client website promoting culture, empowerment, and community
+              events.
+            </p>
+
+            <ul class="bullets">
+              <li>Custom layout architecture</li>
+              <li>Fully responsive design</li>
+            </ul>
+
+            <div class="chips"><span>Next.js</span><span>Tailwind</span></div>
+
+            <div class="links">
+              <a href="https://wonder-woman.vercel.app" target="_blank">Live</a>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <h4 class="project-title">Tianuni — Cultural Organization</h4>
+            <img src="./images/tianuni.jpeg" alt="project screenshot" />
+            <p class="muted">
+              Website for a Quebec-based association promoting Afro cultures.
+            </p>
+
+            <ul class="bullets">
+              <li>Bilingual UX design</li>
+              <li>Information architecture planning</li>
+            </ul>
+
+            <div class="chips"><span>Next.js</span><span>Tailwind</span></div>
+
+            <div class="links">
+              <a href="https://tianuni-beta.vercel.app" target="_blank">Live</a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="contact">
+        <h3>Contact me</h3>
+        <!-- <p class="muted">Have a project in mind? Send me a message below.</p>
+        <form class="contact-form">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required />
+
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required />
+
+          <label for="message">Message:</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="6"
+            cols="14"
+            required
+          ></textarea>
+
+          <button type="submit">Send</button>
+        </form> -->
+        <p class="muted" style="text-align: center; margin-top: 0.5rem">
+          Have a project in mind?
+          <a
+            href="mailto:marehamza8@gmail.com"
+            style="text-decoration: underline"
+            >Email Me</a
+          >
+        </p>
+      </section>
     </main>
     <footer>
-        <div class="icons">
-            <a href="https://www.facebook.com/haz.leloup" target="_blank" rel="noopener noreferrer"><i class="fa fa-facebook-official" style="font-size:36px"></i></a>
-            <a href="https://github.com/Hazichomwarr" target="_blank" rel="noopener noreferrer"><i class="fa fa-github" style="font-size:36px"></i></a>
-            <a href="https://www.linkedin.com/in/hamza-mare-430baa223/" target="_blank" rel="noopener noreferrer"><i class="fa fa-linkedin-square" style="font-size:36px"></i></a>
-        </div>
-        <small>Hamza Mare 2025 &copy; all rights reserved</small>
-        <a href="#" class="mobile-only"><small>Back Home</small></a>
+      <div class="icons">
+        <a
+          href="https://www.facebook.com/haz.leloup"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><i class="fa fa-facebook-official" style="font-size: 36px"></i
+        ></a>
+        <a
+          href="https://github.com/Hazichomwarr"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><i class="fa fa-github" style="font-size: 36px"></i
+        ></a>
+        <a
+          href="https://www.linkedin.com/in/hamza-mare-430baa223/"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><i class="fa fa-linkedin-square" style="font-size: 36px"></i
+        ></a>
+      </div>
+      <small>Hamza Mare 2026 &copy; All rights reserved</small>
+      <a href="#" class="mobile-only"><small>Back Home</small></a>
     </footer>
     <script>
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('nav-links');
+      const hamburger = document.getElementById("hamburger");
+      const navLinks = document.getElementById("nav-links");
 
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        })
+      hamburger.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+      });
     </script>
-</body>
+  </body>
 </html>
