@@ -38,3 +38,93 @@ Section
 └── Grid (mt-12 gap-6 md:grid-cols-3)
 
 This is the base marketing layout primitive.
+
+---
+
+# Week 1 – Day 2
+
+## 2-Column Split Section (Geometry Control)
+
+---
+
+## Core Concepts Reinforced
+
+---
+
+## 1️⃣ Section = Vertical Container
+
+- `<section>` controls vertical stacking.
+- It does NOT control horizontal layout.
+- Grid lives inside the section.
+
+---
+
+## 2️⃣ Split Layout Pattern
+
+Structure:
+
+Section
+└── Grid (md:grid-cols-2)
+├── TextGroup
+└── MediaGroup
+
+Rules:
+
+- Mobile: stacked (1 column)
+- md+: 2 columns
+- items-center to vertically align both sides
+
+---
+
+## 3️⃣ Column Gap Discipline
+
+Card grids:
+
+---
+
+Split sections:
+
+Reason:
+Two large columns require more breathing room than compact cards.
+
+Spacing scales with structural weight.
+
+---
+
+## 4️⃣ Reading Width Inside Columns
+
+Even inside a column, text width must be constrained.
+
+Use: max-w-xl
+
+Reason:
+Constraints must remain meaningful within layout context.
+
+If the column is narrower than `max-w-2xl`, that constraint does nothing.
+
+---
+
+## 5️⃣ Media Placeholder Geometry
+
+Right column uses:
+
+- fixed height (h-48 or larger)
+- rounded-xl
+- border
+- bg-white
+
+Purpose:
+Visualize box model clearly during training.
+
+---
+
+## Final Pattern
+
+<section>
+  Grid (gap-10 md:grid-cols-2)
+    Left: max-w-xl text group
+    Right: fixed-height media box
+
+This is the base split-section primitive.
+
+---
