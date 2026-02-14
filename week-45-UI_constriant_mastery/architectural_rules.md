@@ -17,15 +17,15 @@ Spacing must scale based on structural weight.
 
 Minor separation:
 
-- mt-4
+- mt-4 (continuation of same conceptual block: Text → text)
 
 Medium separation:
 
-- mt-6
+- mt-6 (transition to a new interactive element: Text → action = medium spacing)
 
 Major boundary:
 
-- mt-12
+- mt-12 (Block → new block = large spacing (mt-12+) )
 
 Spacing signals structural weight.
 
@@ -126,5 +126,44 @@ Visualize box model clearly during training.
     Right: fixed-height media box
 
 This is the base split-section primitive.
+
+---
+
+# Week 1 – Day 3
+
+## Centered Text Block Section
+
+---
+
+## Purpose
+
+Used for:
+
+- Mission statements
+- Value propositions
+- CTAs
+- Trust messaging
+
+This is a core marketing primitive.
+
+---
+
+## Structure Pattern
+
+Section
+└── CenteredTextGroup (max-w-3xl mx-auto text-center)
+├── Title
+├── Paragraph
+└── Button
+
+---
+
+## Constraints
+
+Section spacing: Centered container
+
+Spacing hierarchy:
+Title → Paragraph: mt-4
+Paragraph → CTA: mt-6
 
 ---
