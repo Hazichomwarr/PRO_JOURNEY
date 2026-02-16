@@ -167,3 +167,65 @@ Title → Paragraph: mt-4
 Paragraph → CTA: mt-6
 
 ---
+
+# Week-1 Day-4: The Core Principle: Structure first, style second
+
+Geometry defines structural hierarchy, while fonts and colors define stylistic hierarchy — structure must be correct before style is applied
+
+## Geometry answers:
+
+- What is primary vs secondary
+- What attracts attention first
+- What occupies more visual weight
+- How the layout flows
+
+## Style answers:
+
+- How it looks emotionally
+- Brand identity
+- Tone
+
+> If structure is wrong, no amount of styling fixes it.
+
+## Example:
+
+- Bad geometry + fancy style = still bad UI
+- Good geometry + plain style = already good UI
+
+> That’s why most professional sites look good even in grayscale.
+> **Because their geometry is correct.**
+
+## Summary
+
+Geometry = architecture
+Style = paint
+
+You don’t paint before building the structure.
+
+> Area > position > contrast > typography.
+
+---
+
+# Week-1 Day-5: 4-Card Grid Section (Expanded Grid Primitive)
+
+---
+
+## Objective
+
+Section
+├── HeaderGroup
+└── GridGroup
+
+    ├── Card
+    ├── Card
+    ├── Card
+    └── Card
+
+## Pattern learned
+
+- md:grid-cols-2
+- lg:grid-cols-4
+
+**items-center is for split sections (text + media) not for card grids**
+
+---
