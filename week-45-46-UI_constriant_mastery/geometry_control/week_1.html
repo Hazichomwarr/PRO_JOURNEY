@@ -8,8 +8,39 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-    <!-- Day-1: Build 3-card grid section -->
     <main class="max-w-6xl mx-auto px-4">
+      <!-- Day-6: Hero Section -->
+      <section class="py-24">
+        <div class="grid gap-10 items-center md:grid-cols-2">
+          <div class="max-w-xl">
+            <h1
+              class="text-4xl font-bold tracking-tight text-neutral-900 md:text-5xl"
+            >
+              Hero - header text
+            </h1>
+            <p class="mt-6 text-base text-neutral-700">
+              Hero text description goes here. Keep it short.
+            </p>
+            <div class="mt-8 flex gap-4 items-center">
+              <button
+                class="px-4 py-2 bg-black text-white rounded-md hover:bg-black/80"
+              >
+                CTA-primary
+              </button>
+              <button
+                class="px-3 py-2 border border-black rounded-md hover:bg-neutral-200"
+              >
+                CTA-secondary
+              </button>
+            </div>
+          </div>
+          <div
+            class="h-72 border border-neutral-200 bg-white p-6 rounded-xl md:h-96"
+          ></div>
+        </div>
+      </section>
+
+      <!-- Day-1: Build 3-card grid section -->
       <section class="py-16">
         <!-- Header group -->
         <div class="max-w-2xl">
@@ -68,7 +99,7 @@
         <div class="grid gap-10 items-center md:grid-cols-2">
           <!-- Left: media block placeholder -->
           <div
-            class="p-6 h-72 border rounded-xl border-neutral-200 bg-white"
+            class="p-6 h-72 border border-neutral-200 bg-white rounded-xl"
           ></div>
           <!-- Right: Text block -->
           <div class="max-w-xl">

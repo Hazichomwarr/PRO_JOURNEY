@@ -38,10 +38,18 @@ Focus: Spacing intelligence
 
 Rules:
 
+- > Area > position > contrast > typography.
 - Title → Paragraph: mt-4
 - Paragraph → Button: mt-6 or mt-8
 - Limit text width: max-w-2xl or 3xl
 - Section stacking must breathe
+- 2-column text group → max-w-xl (text inside a column)
+- Section header (full-width context) → max-w-2xl
+- max-w-3xl = centered statements / manifesto blocks.
+- CTA button rows should be wrap-safe unless you intentionally want full-width stacked buttons.
+- items-center is for split sections (text + media) not for card grids
+- Use mt-\* for structural spacing hierarchy.
+- Use flex flex-col gap-\* when elements are same structural level.
 
 Daily:
 Rebuild one section per day.

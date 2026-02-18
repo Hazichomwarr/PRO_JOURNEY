@@ -152,9 +152,10 @@ This is a core marketing primitive.
 
 Section
 └── CenteredTextGroup (max-w-3xl mx-auto text-center)
-├── Title
-├── Paragraph
-└── Button
+
+    ├── Title
+    ├── Paragraph
+    └── Button
 
 ---
 
@@ -227,5 +228,47 @@ Section
 - lg:grid-cols-4
 
 **items-center is for split sections (text + media) not for card grids**
+
+---
+
+# Week-1 Day-6: Hero Section
+
+Hero is structurally different from normal sections. It has two special properties:
+
+1. It occupies dominant vertical space
+2. It anchors the page entry point
+
+---
+
+## Hero Structure
+
+Section (Hero)
+└── Grid
+
+    |── TextGroup
+
+        ├── Title
+
+        ├── Paragraph
+
+        └── CTA group
+
+    |
+    └── MediaBlock
+
+## Patter learned
+
+- Use mt-\* for structural spacing hierarchy.
+- Use flex flex-col gap-\* when elements are same structural level.
+
+In hero text group:
+
+Title
+
+Paragraph
+
+CTA group
+
+These are different hierarchy levels, so individual mt-\* preserves intentional spacing differences.
 
 ---
