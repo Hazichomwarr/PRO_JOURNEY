@@ -256,7 +256,7 @@ Section (Hero)
     |
     └── MediaBlock
 
-## Patter learned
+## Pattern learned
 
 - Use mt-\* for structural spacing hierarchy.
 - Use flex flex-col gap-\* when elements are same structural level.
@@ -270,5 +270,36 @@ Paragraph
 CTA group
 
 These are different hierarchy levels, so individual mt-\* preserves intentional spacing differences.
+
+---
+
+# Week-3: Typography
+
+Eyebrow provides category context to reduce headline ambiguity.
+
+It answers: “What domain is this headline about?”
+
+---
+
+h1 → text-4xl / text-5xl → page authority
+
+h2 → text-3xl → section authority
+
+h3 → text-lg → card authority
+
+p → text-base neutral-700 → explanation layer
+
+eyebrow → text-sm neutral-500 → context layer
+
+---
+
+## Layout container (page width)
+
+- max-w-6xl → main site container (almost always)
+- Column text → max-w-xl
+- Section header → max-w-2xl
+- Centered statement → max-w-3xl
+
+That’s enough to build 90% of pages.
 
 ---

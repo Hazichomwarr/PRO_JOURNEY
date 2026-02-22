@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Hero Typography Hierarchy</title>
+  </head>
+  <body>
+    <section class="bg-white">
+      <div class="max-w-6xl mx-auto px-4 py-24">
+        <header class="max-w-xl">
+          <p class="text-sm font-medium text-neutral-500">WONDER WOMAN</p>
+          <h1
+            class="mt-2 text-4xl font-bold text-neutral-900 tracking-tight md:text-5xl"
+          >
+            Empowering women through culture and opportunity.
+          </h1>
+          <p class="mt-6 text-base text-neutral-700">
+            Join our programs, discover resources, and participate in our annual
+            cultural festival.
+          </p>
+          <div class="mt-8 flex gap-4">
+            <button
+              class="bg-black py-2 px-4 rounded text-white hover:bg-black/80 active:scale-95"
+            >
+              Join us
+            </button>
+            <button
+              class="border border-black py-2 px-4 rounded bg-neutral-100 hover:bg-neutral-200 active:scale-95"
+            >
+              View festival
+            </button>
+          </div>
+        </header>
+      </div>
+    </section>
+
+    <section class="bg-neutral-50">
+      <div class="max-w-6xl mx-auto px-4 py-16">
+        <header class="max-w-2xl">
+          <h2 class="text-3xl font-bold text-neutral-900 tracking-tight">
+            Header - Title
+          </h2>
+          <p class="mt-4 text-base text-neutral-700">
+            Supporting header text goes here.
+          </p>
+        </header>
+        <div class="mt-12 grid gap-6 md:grid-cols-3">
+          <article
+            class="p-6 border border-neutral-200 bg-white rounded-xl shadow-sm"
+          >
+            <h3 class="text-lg font-semibold pl-5 text-neutral-800">
+              Card header
+            </h3>
+            <ul class="mt-4 list-disc pl-5 marker:text-neutral-300">
+              <li class="mt-2 text-sm text-neutral-600">argument - item</li>
+              <li class="mt-2 text-sm text-neutral-600">argument - item</li>
+              <li class="mt-2 text-sm text-neutral-600">argument - item</li>
+            </ul>
+          </article>
+          <article
+            class="p-6 border border-neutral-200 bg-white rounded-xl shadow-sm"
+          >
+            <h3 class="text-lg font-semibold text-neutral-800">Card header</h3>
+            <ul class="mt-4 list-disc pl-5 marker:text-neutral-300">
+              <li class="mt-2 text-sm text-neutral-600">argument - item</li>
+              <li class="mt-2 text-sm text-neutral-600">argument - item</li>
+              <li class="mt-2 text-sm text-neutral-600">argument - item</li>
+            </ul>
+          </article>
+          <article
+            class="p-6 border border-neutral-200 bg-white rounded-xl shadow-sm"
+          >
+            <h3 class="text-lg font-semibold text-neutral-800">Card header</h3>
+            <ul class="mt-4 list-disc marker:text-neutral-300">
+              <li class="mt-2 text-sm text-neutral-600">argument - item</li>
+              <li class="mt-2 text-sm text-neutral-600">argument - item</li>
+              <li class="mt-2 text-sm text-neutral-600">argument - item</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-neutral-50">
+      <div class="max-w-6xl mx-auto px-4 py-16">
+        <div class="grid items-center gap-10 md:grid-cols-2">
+          <!-- Left: Header -->
+          <header class="max-w-xl">
+            <p class="text-sm font-medium text-neutral-500">CATEGORY LABEL</p>
+            <h2 class="mt-2 text-3xl font-bold tracking-tight text-neutral-900">
+              Section - Header
+            </h2>
+            <p class="mt-4 text-base text-neutral-700">
+              Supporting section header text goes here.
+            </p>
+            <ul class="mt-6 list-disc pl-5 marker:text-neutral-300">
+              <li class="mt-2 text-sm text-neutral-600">Bullet Item</li>
+              <li class="mt-2 text-sm text-neutral-600">Bullet Item</li>
+              <li class="mt-2 text-sm text-neutral-600">Bullet Item</li>
+            </ul>
+          </header>
+
+          <!-- Right: Media -->
+          <article
+            class="h-72 border border-neutral-200 bg-white p-6 rounded-xl shadow-sm md:h-96"
+          ></article>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
