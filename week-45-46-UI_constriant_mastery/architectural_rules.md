@@ -303,3 +303,150 @@ eyebrow → text-sm neutral-500 → context layer
 That’s enough to build 90% of pages.
 
 ---
+
+# week-3.md — Typography Hierarchy System
+
+## Core Principle
+
+Typography encodes **authority hierarchy**, not aesthetics.
+
+Users scan authority instantly using:
+
+- size
+- weight
+- contrast
+- spacing
+
+Typography must follow a deterministic ladder.
+
+---
+
+# Authority Ladder (Highest → Lowest)
+
+```txt
+h1 → text-4xl md:text-5xl font-bold text-neutral-900
+h2 → text-3xl font-bold text-neutral-900
+h3 → text-lg font-semibold text-neutral-900
+p  → text-base text-neutral-700
+eyebrow → text-sm font-medium text-neutral-500
+legal/meta → text-xs text-neutral-500
+```
+
+Each level must strictly decrease in authority.
+
+Never skip hierarchy levels.
+
+---
+
+# Eyebrow Label Rule
+
+Purpose: provide **context**, not dominance.
+
+Use when headline needs domain clarification.
+
+Structure:
+
+```html
+<p class="text-sm font-medium text-neutral-500">CATEGORY</p>
+<h2 class="mt-2 text-3xl font-bold tracking-tight text-neutral-900"></h2>
+```
+
+Spacing: eyebrow → headline uses `mt-2`.
+
+---
+
+# Spacing Ladder (Typography Rhythm)
+
+```txt
+mt-2 → eyebrow → headline
+mt-4 → headline → paragraph
+mt-6 → paragraph → list / CTA
+mt-8 → paragraph → CTA group
+mt-12 → section header → content group
+```
+
+Spacing encodes semantic distance.
+
+---
+
+# Section Text Width Constraints
+
+```txt
+max-w-xl  → split-section text blocks / hero columns
+max-w-2xl → section headers above grids
+max-w-3xl → centered statement sections
+max-w-6xl → overall content container
+```
+
+Layout width ≠ reading width.
+
+---
+
+# Card Typography Hierarchy
+
+```html
+<h3 class="text-lg font-semibold text-neutral-900">
+  <p class="mt-2 text-sm text-neutral-600"></p>
+</h3>
+```
+
+Card headline authority must remain below section authority.
+
+---
+
+# Navbar Typography Hierarchy
+
+```html
+Logo → text-lg font-semibold text-neutral-900 Nav → text-sm font-medium
+text-neutral-700 CTA → text-sm font-medium bg-black text-white
+```
+
+CTA gains authority through contrast, not font size.
+
+---
+
+# Footer Typography Hierarchy
+
+```html
+Brand → text-lg font-semibold text-neutral-900 Links → text-sm font-medium
+text-neutral-700 Legal → text-xs text-neutral-500
+```
+
+Legal text always lowest authority.
+
+---
+
+# Split Section Typography Pattern
+
+```html
+eyebrow h2 section headline paragraph explanation bullet list support
+```
+
+Authority flows top → down.
+
+---
+
+# Structural Rule
+
+Typography hierarchy must mirror structural hierarchy.
+
+Structure defines authority.
+Typography reinforces authority.
+
+Never reverse this relationship.
+
+---
+
+# Result After Week-3
+
+You can now construct professional typography systems for:
+
+- landing pages
+- hero sections
+- feature sections
+- split layouts
+- navbars
+- footers
+- card systems
+
+without guesswork.
