@@ -65,8 +65,9 @@ Structure:
 
 Section
 └── Grid (md:grid-cols-2)
-├── TextGroup
-└── MediaGroup
+
+        ├── TextGroup
+        └── MediaGroup
 
 Rules:
 
@@ -82,7 +83,7 @@ Card grids:
 
 ---
 
-Split sections:
+Split sections: gap-10
 
 Reason:
 Two large columns require more breathing room than compact cards.
@@ -304,7 +305,9 @@ That’s enough to build 90% of pages.
 
 ---
 
-# week-3.md — Typography Hierarchy System
+## Typography Hierarchy System
+
+---
 
 ## Core Principle
 
