@@ -453,3 +453,238 @@ You can now construct professional typography systems for:
 - card systems
 
 without guesswork.
+
+---
+
+# Week 4 — Landing Page Composition Patterns
+
+## Core Principle
+
+Professional pages are not designed from scratch every time.
+
+They are assembled from **reusable section patterns** that follow a predictable persuasion sequence.
+
+Layout knowledge from Weeks 1–3 becomes **page architecture**.
+
+---
+
+# Universal Landing Page Flow
+
+```
+Hero
+Trust
+Feature Grid
+Split Feature
+CTA Band
+Footer
+```
+
+Each section answers a specific psychological question.
+
+---
+
+# 1. Hero Section — Attention
+
+**Purpose:** capture attention and communicate the core value.
+
+Structure:
+
+```
+Hero
+  Eyebrow (optional)
+  H1 headline
+  Supporting paragraph
+  CTA buttons
+```
+
+Spacing ladder:
+
+```
+mt-2 → eyebrow → headline
+mt-6 → headline → paragraph
+mt-8 → paragraph → CTA group
+```
+
+Hero vertical rhythm:
+
+```
+py-24
+```
+
+---
+
+# 2. Trust Section — Credibility
+
+**Purpose:** provide social proof and legitimacy.
+
+Structure:
+
+```
+Header (centered)
+Stat Grid
+  Stat Block
+    Number
+    Label
+```
+
+Stat typography:
+
+```
+number → text-2xl font-semibold
+label → text-sm text-neutral-600
+```
+
+Typical layout:
+
+```
+grid grid-cols-2 md:grid-cols-4
+```
+
+---
+
+# 3. Feature Grid — Explanation
+
+**Purpose:** explain key capabilities.
+
+Structure:
+
+```
+HeaderGroup
+Feature Grid
+  Feature Card
+    Title
+    Description
+```
+
+Card typography:
+
+```
+title → text-lg font-semibold text-neutral-900
+description → text-sm text-neutral-600
+```
+
+Grid layout:
+
+```
+grid gap-6 md:grid-cols-3
+```
+
+---
+
+# 4. Split Feature — Deep Explanation
+
+**Purpose:** explain _how_ something works.
+
+Structure:
+
+```
+Text Column
+  Eyebrow
+  H2 headline
+  Paragraph
+  Bullet list
+
+Media Column
+  Image / illustration / video
+```
+
+Layout:
+
+```
+grid md:grid-cols-2
+```
+
+List typography:
+
+```
+list-disc
+pl-5
+text-sm text-neutral-600
+```
+
+---
+
+# 5. CTA Band — Conversion
+
+**Purpose:** convert user interest into action.
+
+Structure:
+
+```
+Headline
+Supporting paragraph
+Primary CTA
+Secondary CTA
+```
+
+Visual style:
+
+```
+bg-neutral-900
+text-white
+text-white/80
+```
+
+Primary button:
+
+```
+bg-white text-neutral-900
+```
+
+Secondary button:
+
+```
+border border-white/30 text-white
+```
+
+---
+
+# 6. Footer — Closure
+
+**Purpose:** provide navigation, brand context, and legal information.
+
+Structure:
+
+```
+Brand block
+Navigation links
+Legal/meta line
+```
+
+Typography hierarchy:
+
+```
+brand → text-lg font-semibold
+links → text-sm font-medium
+legal → text-xs text-neutral-500
+```
+
+---
+
+# Persuasion Sequence
+
+Landing pages follow a **trust funnel**:
+
+```
+Hero → Attention
+Trust → Credibility
+Features → Understanding
+Split → Conviction
+CTA → Action
+```
+
+---
+
+# Result After Week 4
+
+You can now assemble complete landing pages using deterministic section patterns instead of guessing layouts.
+
+This structure is used across modern websites such as:
+
+- Stripe
+- Vercel
+- Linear
+- Notion
+- Apple product pages
+
+The blank canvas problem is eliminated by composing pages from known sections.
