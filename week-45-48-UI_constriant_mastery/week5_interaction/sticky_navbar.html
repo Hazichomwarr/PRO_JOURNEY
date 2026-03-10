@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Week-5 Interaction</title>
+  </head>
+  <body>
+    <!-- DAY-1: Sticky Navbar-->
+    <header
+      id="navbar"
+      class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-neutral-200"
+    >
+      <div class="max-w-6xl mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+          <div class="text-lg font-semibold text-neutral-900">LOGO</div>
+          <!-- image logo-->
+          <!-- <a href="/"
+            ><img src="logo.svg" alt="wonder woman logo" class="h-8 w-auto"
+          /></a> -->
+          <!-- DAY-2: Mobile Hamburger menu -->
+          <button id="hamburger" class="md:hidden text-lg cursor-pointer p-2">
+            ☰
+          </button>
+
+          <nav class="hidden md:flex gap-6 items-center">
+            <a
+              class="text-sm font-medium text-neutral-700 hover:text-neutral-900"
+              >navItem1</a
+            >
+
+            <a
+              class="text-sm font-medium text-neutral-700 hover:text-neutral-900"
+              >navItem1</a
+            >
+
+            <a
+              class="text-sm font-medium text-neutral-700 hover:text-neutral-900"
+              >navItem1</a
+            >
+
+            <div class="hidden md:flex items-center gap-4">
+              <button
+                class="rounded-md bg-black px-4 py-2 text-sm font-medium text-white hover:bg-black/80"
+              >
+                CTA-1
+              </button>
+              <button
+                class="rounded-md px-4 py-2 border border-neutral-900 text-sm font-medium hover:bg-neutral-100"
+              >
+                CTA-2
+              </button>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <!-- Mobile menu -->
+    <div
+      id="nav-links"
+      class="hidden flex flex-col items-center bg-neutral-900 py-6 gap-4 md:hidden"
+    >
+      <a
+        href="#"
+        class="a text-sm font-medium text-white px-4 py-2 rounded-md hover:text-neutral-100 hover:bg-white/10"
+        >navItem1</a
+      >
+      <a
+        href="#"
+        class="a text-sm font-medium text-white px-4 py-2 rounded-md hover:text-neutral-100 hover:bg-white/10"
+        >navItem1</a
+      >
+      <a
+        href="#"
+        class="a text-sm font-medium text-white px-4 py-2 rounded-md hover:text-neutral-100 hover:bg-white/10"
+        >navItem1</a
+      >
+    </div>
+    <script>
+      const hamburger = document.getElementById("hamburger");
+      const navLinks = document.getElementById("nav-links");
+      const navItems = document.getElementsByClassName("a");
+
+      hamburger.addEventListener("click", () => {
+        console.log("clicked!", navLinks);
+        navLinks.classList.toggle("hidden");
+      });
+
+      for (let item of navItems) {
+        item.addEventListener("click", () => {
+          navLinks.classList.toggle("hidden");
+        });
+      }
+
+      const navbar = document.getElementById("navbar");
+      if (window.scrollY > 10) navbar.classList.add("shadow-md");
+      else navbar.classList.remove("shadow-md");
+    </script>
+  </body>
+</html>
