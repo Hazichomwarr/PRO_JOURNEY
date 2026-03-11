@@ -1,17 +1,29 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+
     <title>Week-5 Interaction</title>
+    <style>
+      .open span:nth-child(1) {
+        transform: rotate(50deg) translateY(9px);
+      }
+      .open span:nth-child(2) {
+        opacity: 0;
+      }
+      .open span:nth-child(3) {
+        transform: rotate(-50deg) translateY(-9px);
+      }
+    </style>
   </head>
   <body>
     <!-- DAY-1: Sticky Navbar-->
     <header
-      id="navbar"
-      class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-neutral-200"
+      id="header"
+      class="relative sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-neutral-200"
     >
       <div class="max-w-6xl mx-auto px-4 py-4">
         <div class="flex items-center justify-between">
@@ -21,82 +33,272 @@
             ><img src="logo.svg" alt="wonder woman logo" class="h-8 w-auto"
           /></a> -->
           <!-- DAY-2: Mobile Hamburger menu -->
-          <button id="hamburger" class="md:hidden text-lg cursor-pointer p-2">
-            ☰
+          <button
+            id="hamburger"
+            class="md:hidden flex flex-col gap-1 cursor-pointer p-2"
+          >
+            <span class="bar w-6 h-0.5 bg-black transition duration-200"></span>
+            <span class="bar w-6 h-0.5 bg-black transition duration-200"></span>
+            <span class="bar w-6 h-0.5 bg-black transition duration-200"></span>
           </button>
 
-          <nav class="hidden md:flex gap-6 items-center">
+          <nav id="navbar" class="hidden md:flex gap-6 items-center">
             <a
-              class="text-sm font-medium text-neutral-700 hover:text-neutral-900"
-              >navItem1</a
+              href="#hero"
+              class="text-sm font-medium text-neutral-700 transition duration-300 hover:text-neutral-400"
+              >Hero</a
             >
 
             <a
-              class="text-sm font-medium text-neutral-700 hover:text-neutral-900"
-              >navItem1</a
+              href="#mission"
+              class="text-sm font-medium text-neutral-700 transition duration-300 hover:text-neutral-400"
+              >Mission</a
             >
 
             <a
-              class="text-sm font-medium text-neutral-700 hover:text-neutral-900"
-              >navItem1</a
+              href="#festival"
+              class="text-sm font-medium text-neutral-700 transition duration-300 hover:text-neutral-400"
+              >Festival</a
             >
 
             <div class="hidden md:flex items-center gap-4">
-              <button
+              <a
+                id="cta"
+                href="#contact"
                 class="rounded-md bg-black px-4 py-2 text-sm font-medium text-white hover:bg-black/80"
               >
-                CTA-1
-              </button>
-              <button
+                Contact
+              </a>
+              <!-- <button
                 class="rounded-md px-4 py-2 border border-neutral-900 text-sm font-medium hover:bg-neutral-100"
               >
                 CTA-2
-              </button>
+              </button> -->
             </div>
           </nav>
         </div>
       </div>
+
+      <!-- Mobile menu -->
+      <div
+        id="nav-links"
+        class="absolute top-full left-0 w-full bg-neutral-900 flex flex-col items-center bg-neutral-900 py-6 gap-4 opacity-0 -translate-y-2 pointer-events-none transition duration-200 ease-out md:hidden"
+      >
+        <a
+          href="#hero"
+          class="a text-sm font-medium text-white px-4 py-2 rounded-md hover:text-neutral-100 hover:bg-white/10"
+          >Hero</a
+        >
+        <a
+          href="#mission"
+          class="a text-sm font-medium text-white px-4 py-2 rounded-md hover:text-neutral-100 hover:bg-white/10"
+          >Mission</a
+        >
+        <a
+          href="#festival"
+          class="a text-sm font-medium text-white px-4 py-2 rounded-md hover:text-neutral-100 hover:bg-white/10"
+          >Festival</a
+        >
+        <a
+          href="#contact"
+          class="a text-sm font-medium text-white px-4 py-2 rounded-md hover:text-neutral-100 hover:bg-white/10"
+          >Contact</a
+        >
+      </div>
     </header>
-    <!-- Mobile menu -->
-    <div
-      id="nav-links"
-      class="hidden flex flex-col items-center bg-neutral-900 py-6 gap-4 md:hidden"
-    >
-      <a
-        href="#"
-        class="a text-sm font-medium text-white px-4 py-2 rounded-md hover:text-neutral-100 hover:bg-white/10"
-        >navItem1</a
-      >
-      <a
-        href="#"
-        class="a text-sm font-medium text-white px-4 py-2 rounded-md hover:text-neutral-100 hover:bg-white/10"
-        >navItem1</a
-      >
-      <a
-        href="#"
-        class="a text-sm font-medium text-white px-4 py-2 rounded-md hover:text-neutral-100 hover:bg-white/10"
-        >navItem1</a
-      >
-    </div>
+    <main>
+      <!-- HERO -->
+      <section id="hero" class="bg-neutral-50 scroll-mt-24">
+        <div class="max-w-6xl mx-auto px-4 py-24">
+          <header class="max-w-xl">
+            <p class="text-sm font-medium text-neutral-500">WONDER WOMAN</p>
+
+            <h1
+              class="mt-2 text-4xl font-bold tracking-tight text-neutral-900 md:text-5xl"
+            >
+              Empowering women through culture and opportunity
+            </h1>
+
+            <p class="mt-6 text-base text-neutral-700">
+              Join our programs, discover resources, and participate in our
+              annual cultural festival.
+            </p>
+
+            <div class="mt-8 flex gap-4">
+              <button
+                class="rounded-md bg-black px-4 py-2 text-white hover:bg-black/80"
+              >
+                Participate
+              </button>
+              <button
+                class="rounded-md border border-neutral-300 px-4 py-2 hover:bg-neutral-100"
+              >
+                View festival
+              </button>
+            </div>
+          </header>
+        </div>
+      </section>
+      <!-- TRUST INDICATORS -->
+      <section id="mission" class="bg-white scroll-mt-24">
+        <div class="max-w-6xl mx-auto px-4 py-16">
+          <!-- HEADER -->
+          <header class="max-w-2xl mx-auto text-center">
+            <p class="text-sm font-medium text-neutral-500">
+              TRUSTED BY OUR COMMUNITY
+            </p>
+            <h2 class="mt-2 text-3xl font-bold tracking-tight text-neutral-900">
+              Supporting women across education, culture, and leadership
+            </h2>
+          </header>
+
+          <div class="mt-12 grid grid-cols-2 gap-8 md:grid-cols-4">
+            <article class="text-center">
+              <div class="text-2xl font-semibold text-neutral-900">500+</div>
+              <p class="mt-1 text-sm text-neutral-600">Women trained</p>
+            </article>
+            <article class="text-center">
+              <div class="text-2xl font-semibold text-neutral-900">12</div>
+              <p class="mt-1 text-sm text-neutral-600">Annual festivals</p>
+            </article>
+            <article class="text-center">
+              <div class="text-2xl font-semibold text-neutral-900">35</div>
+              <p class="mt-1 text-sm text-neutral-600">Community partners</p>
+            </article>
+            <article class="text-center">
+              <div class="text-2xl font-semibold text-neutral-900">8</div>
+              <p class="mt-1 text-sm text-neutral-600">Years of impact</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Festival -->
+      <section id="festival" class="bg-neutral-50 scroll-mt-24">
+        <div class="max-w-6xl mx-auto px-4 py-16">
+          <div class="grid gap-10 items-center md:grid-cols-2">
+            <header class="max-w-xl">
+              <p class="text-sm font-medium text-neutral-500">
+                Our annual Festival
+              </p>
+              <h2
+                class="mt-2 text-3xl font-bold text-neutral-900 tracking-tight"
+              >
+                The Festival
+              </h2>
+              <p class="mt-4 text-base text-neutral-700">
+                Every year in Burkina Faso, we bring people together.
+              </p>
+
+              <ul class="mt-6 pl-5 list-disc marker:text-neutral-300">
+                <li class="mt-2 text-sm text-neutral-600">Togetherness</li>
+                <li class="mt-2 text-sm text-neutral-600">
+                  Cultural expansion
+                </li>
+                <li class="mt-2 text-sm text-neutral-600">Joy and trivia</li>
+              </ul>
+            </header>
+
+            <div
+              class="h-72 border border-neutral-200 p-6 rounded-2xl shadow-sm md:h-96"
+            ></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Band Pattern (Conversion Section) -->
+      <section id="contact" class="bg-neutral-900 scroll-mt-24">
+        <div class="max-w-6xl mx-auto px-4 py-16">
+          <div class="grid items-center gap-8 md:grid-cols-2">
+            <header class="max-w-xl">
+              <h2 class="text-3xl font-bold tracking-tight text-white">
+                Ready to participate
+              </h2>
+              <p class="mt-4 text-base text-white/80">
+                Join our community, access resources, and attend the upcoming
+                festival.
+              </p>
+            </header>
+            <div class="flex flex-wrap gap-4 md:justify-end">
+              <button
+                class="rounded-md px-4 py-2 bg-white text-neutral-900 text-sm font-medium cursor-pointer hover:bg-white/80"
+              >
+                Participate
+              </button>
+              <button
+                class="rounded-md px-4 py-2 border border-white/30 text-sm font-medium text-white cursor-pointer hover:bg-white/10"
+              >
+                Contact us
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
     <script>
       const hamburger = document.getElementById("hamburger");
       const navLinks = document.getElementById("nav-links");
-      const navItems = document.getElementsByClassName("a");
+      const navItems = document.querySelectorAll("nav a:not(#cta)");
 
       hamburger.addEventListener("click", () => {
-        console.log("clicked!", navLinks);
-        navLinks.classList.toggle("hidden");
+        navLinks.classList.toggle("opacity-0");
+        navLinks.classList.toggle("-translate-y-2");
+        navLinks.classList.toggle("pointer-events-none");
+
+        navLinks.classList.toggle("opacity-100");
+        navLinks.classList.toggle("translate-y-0");
+        navLinks.classList.toggle("pointer-events-auto");
+        hamburger.classList.toggle("open");
       });
 
       for (let item of navItems) {
         item.addEventListener("click", () => {
-          navLinks.classList.toggle("hidden");
+          navLinks.classList.toggle("opacity-0");
+          navLinks.classList.toggle("-translate-y-2");
+          navLinks.classList.toggle("pointer-events-none");
+          navLinks.classList.toggle("opacity-100");
+          navLinks.classList.toggle("translate-y-0");
+          navLinks.classList.toggle("pointer-events-auto");
+
+          hamburger.classList.remove("open");
         });
       }
 
-      const navbar = document.getElementById("navbar");
-      if (window.scrollY > 10) navbar.classList.add("shadow-md");
-      else navbar.classList.remove("shadow-md");
+      const header = document.getElementById("header");
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 10) header.classList.add("shadow-md");
+        else header.classList.remove("shadow-md");
+      });
+
+      // this part below isn't working when i scroll
+      const sections = document.querySelectorAll("section");
+      window.addEventListener("scroll", () => {
+        let current = "";
+        sections.forEach((section) => {
+          const sectionTop = section.offsetTop - 120;
+          const sectionHeight = section.clientHeight;
+
+          if (
+            window.scrollY >= sectionTop &&
+            window.scrollY < sectionTop + sectionHeight
+          ) {
+            current = section.getAttribute("id");
+          }
+        });
+
+        navItems.forEach((link) => {
+          link.classList.remove("bg-neutral-600");
+          link.classList.remove("p-2");
+          link.classList.remove("rounded-md");
+          link.classList.remove("text-white");
+          if (link.getAttribute("href") === "#" + current) {
+            link.classList.add("bg-neutral-600");
+            link.classList.add("p-2");
+            link.classList.add("rounded-md");
+            link.classList.add("text-white");
+          }
+        });
+      });
     </script>
   </body>
 </html>

@@ -688,3 +688,258 @@ This structure is used across modern websites such as:
 - Apple product pages
 
 The blank canvas problem is eliminated by composing pages from known sections.
+
+# Week 5 — Interaction & Navigation Patterns
+
+Week 5 introduced the behavioral layer of user interfaces.
+
+The focus was building a modern navigation system with responsive behavior,
+smooth scrolling, and UI micro-interactions.
+
+---
+
+# Navigation System Components
+
+A production navigation system includes:
+
+- Sticky navigation
+- Mobile hamburger menu
+- Smooth anchor scrolling
+- Scroll shadow feedback
+- Animated mobile dropdown menu
+- ScrollSpy section highlighting
+- Animated hamburger → close icon
+
+---
+
+# Sticky Navbar
+
+Sticky navigation keeps the navbar visible while the user scrolls.
+
+Key CSS utilities:
+
+```
+sticky
+top-0
+z-50
+bg-white/80
+backdrop-blur
+```
+
+Scroll shadow provides feedback when the user begins scrolling.
+
+Example behavior:
+
+```
+window.addEventListener("scroll")
+```
+
+---
+
+# Mobile Navigation Pattern
+
+Navigation structure:
+
+```
+Navbar
+ ├ Logo
+ ├ Desktop links
+ └ Hamburger button
+
+Mobile menu
+ └ Dropdown panel
+```
+
+Mobile navigation appears only on small screens.
+
+Desktop navigation remains visible on larger screens.
+
+---
+
+# Smooth Anchor Scrolling
+
+Smooth scrolling allows users to navigate to sections of a page without abrupt jumps.
+
+Enabled using:
+
+```
+scroll-smooth
+```
+
+Example navigation link:
+
+```
+<a href="#mission">
+```
+
+Section offset for sticky navbars:
+
+```
+scroll-mt-24
+```
+
+This prevents headings from being hidden behind the navbar.
+
+---
+
+# Animated Dropdown Menu
+
+The mobile menu uses motion primitives to create smooth transitions.
+
+Core animation properties:
+
+```
+opacity
+translateY
+transition
+duration
+```
+
+Example state change:
+
+```
+opacity-0 → opacity-100
+-translate-y-2 → translate-y-0
+```
+
+This creates a fade + slide animation.
+
+---
+
+# Hamburger Icon Animation
+
+The hamburger icon morphs into a close icon when the menu opens.
+
+This animation uses CSS transforms.
+
+Core transforms:
+
+```
+rotate
+translate
+opacity
+```
+
+Example transformation:
+
+```
+rotate(45deg)
+rotate(-45deg)
+```
+
+Three bars transform into an "X".
+
+---
+
+# ScrollSpy Navigation
+
+ScrollSpy highlights the navigation item corresponding to the section currently in view.
+
+Implementation steps:
+
+```
+detect visible section
+compare section id with nav link href
+apply active class to matching link
+remove active class from others
+```
+
+This provides visual feedback while scrolling.
+
+---
+
+# Motion Primitives
+
+Most modern UI animations rely on four CSS primitives:
+
+```
+opacity
+translate
+scale
+rotate
+```
+
+Combined with:
+
+```
+transition
+duration
+ease
+```
+
+These primitives power most modern UI interactions.
+
+---
+
+# Result After Week 5
+
+You can now build a modern navigation system with:
+
+- Sticky navigation
+- Responsive mobile menus
+- Smooth scrolling
+- Animated dropdown menus
+- Scroll-based UI feedback
+- Interactive hamburger animations
+
+This completes the interaction layer of the UI system.
+
+---
+
+# These five primitives allow you to build almost everything.
+
+Container
+└ HeroSection
+├ Stack
+│ ├ Heading
+│ ├ Text
+│ └ Button
+
+---
+
+# Typical Production Frontend Structure
+
+app/
+│
+├─ layout.tsx
+├─ page.tsx
+│
+├─ components/
+│ ├─ ui/ # primitives
+│ │ ├─ Button.tsx
+│ │ ├─ Card.tsx
+│ │ ├─ Container.tsx
+│ │ ├─ Input.tsx
+│ │ └─ Badge.tsx
+│ │
+│ ├─ navigation/
+│ │ ├─ Navbar.tsx
+│ │ ├─ MobileMenu.tsx
+│ │ └─ NavLink.tsx
+│ │
+│ ├─ sections/
+│ │ ├─ HeroSection.tsx
+│ │ ├─ TrustSection.tsx
+│ │ ├─ FeatureGrid.tsx
+│ │ ├─ FestivalSection.tsx
+│ │ └─ CTASection.tsx
+│ │
+│ └─ layout/
+│ ├─ Footer.tsx
+│ └─ PageWrapper.tsx
+│
+├─ lib/
+│ ├─ utils.ts
+│ ├─ constants.ts
+│ └─ hooks/
+│ ├─ useScrollSpy.ts
+│ └─ useMobileMenu.ts
+│
+├─ styles/
+│ └─ globals.css
+│
+└─ content/
+├─ site.ts
+└─ festival.ts
+
+---
