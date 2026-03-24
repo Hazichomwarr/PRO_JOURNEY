@@ -12,6 +12,8 @@ const gapMap: Record<number, string> = {
   4: "gap-4",
   6: "gap-6",
   8: "gap-8",
+  10: "gap-10",
+  12: "gap-12",
 };
 
 export function Stack({ children, gap = 4, className }: StackProps) {
