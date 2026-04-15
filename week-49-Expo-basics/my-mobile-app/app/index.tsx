@@ -5,10 +5,17 @@ export default function App() {
     <View style={styles.screen}>
       <Header />
       <View style={styles.content}>
-        <Text>
-          <main>TouchPoint Mobile</main>
-        </Text>
+        {/* CONTENT TOP */}
+        <View style={styles.contentTop}>
+          <Text>Top</Text>
+        </View>
+
+        {/* CONTENT BOTTOM */}
+        <View style={styles.contentBottom}>
+          <Text>BOTTOM</Text>
+        </View>
       </View>
+
       <Footer />
     </View>
   );
@@ -37,8 +44,16 @@ const styles = StyleSheet.create({
 
   content: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    // justifyContent: "center",
+    // alignItems: "stretch", //default bc 'center' changes cross-axis behavior
+  },
+  contentTop: {
+    flex: 7,
+    backgroundColor: "blue",
+  },
+  contentBottom: {
+    flex: 3,
+    backgroundColor: "green",
   },
 
   header: {
