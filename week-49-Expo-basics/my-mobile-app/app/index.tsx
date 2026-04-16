@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet } from "react-native";
+import { router } from "expo-router";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 
 export default function App() {
   return (
@@ -7,12 +8,18 @@ export default function App() {
       <View style={styles.content}>
         {/* CONTENT TOP */}
         <View style={styles.contentTop}>
-          <Text>Top</Text>
+          <Text>Top Content</Text>
+          <Pressable onPress={() => router.push("/profile")}>
+            <Text style={styles.footerButton}>Go to Profile</Text>
+          </Pressable>
         </View>
 
         {/* CONTENT BOTTOM */}
         <View style={styles.contentBottom}>
-          <Text>BOTTOM</Text>
+          <Text>BOTTOM Content</Text>
+          <Pressable onPress={() => router.push("/details")}>
+            <Text style={styles.footerButton}>Go to Details</Text>
+          </Pressable>
         </View>
       </View>
 
