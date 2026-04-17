@@ -1,7 +1,29 @@
+// app/(app)/index.tsx
+import { apiFetch } from "@/lib/api";
 import { router } from "expo-router";
+import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
 export default function App() {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [message, setMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await apiFetch("/api/test");
+        setMessage(res.message); // Property 'message' does not exist on type 'Response'.
+      } catch (e) {
+        console.log("error:", e);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
+
+  if (loading) return <Text>Loading...</Text>;
+
   return (
     <View style={styles.screen}>
       <Header />
@@ -9,6 +31,7 @@ export default function App() {
         {/* CONTENT TOP */}
         <View style={styles.contentTop}>
           <Text>Top Content</Text>
+          <Text>{message}</Text>
           <Pressable onPress={() => router.push("/profile")}>
             <Text style={styles.footerButton}>Go to Profile</Text>
           </Pressable>
@@ -28,6 +51,7 @@ export default function App() {
   );
 }
 
+// ------------------- HELPERS ------------------------
 function Header() {
   return (
     <View style={styles.header}>
@@ -44,6 +68,7 @@ function Footer() {
   );
 }
 
+// --------------------- STYLES ----------------------------
 const styles = StyleSheet.create({
   screen: {
     flex: 1, // MOST IMPORTANT LINE

@@ -1,31 +1,27 @@
-import { setToken } from "@/lib/auth";
+import { View, Text, Pressable } from "react-native";
 import { router } from "expo-router";
-import { Pressable, Text, View } from "react-native";
-
-const handleLogin = async () => {
-  //call Api and get token
-  const fakeToken = "abc123";
-
-  await setToken(fakeToken);
-  router.replace("/");
-};
+import { setToken } from "@/lib/auth";
+import { useState } from "react";
 
 export default function Login() {
+  // const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState<string | null>(null);
+
+  const handleLogin = async () => {
+    // later → call your Next.js API
+    const fakeToken = "abcd1234";
+    setToken(fakeToken);
+    router.replace("/");
+  };
+
+  // if (!loading) return <Text>Loading...</Text>;
+
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Login Screen</Text>
+    <View>
+      <Text>Login</Text>
 
       <Pressable onPress={handleLogin}>
-        <Text
-          style={{
-            marginTop: 20,
-            padding: 10,
-            backgroundColor: "black",
-            color: "white",
-          }}
-        >
-          Login
-        </Text>
+        <Text>Login</Text>
       </Pressable>
     </View>
   );
