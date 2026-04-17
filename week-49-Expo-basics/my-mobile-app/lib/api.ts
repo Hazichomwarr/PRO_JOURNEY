@@ -1,7 +1,7 @@
 // lib/api.ts
 import { getToken } from "./auth";
 
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "http://localhost:8081";
 
 export async function apiFetch(path: string, options: RequestInit = {}) {
   const token = await getToken();
@@ -19,7 +19,7 @@ export async function apiFetch(path: string, options: RequestInit = {}) {
       throw new Error("Api Error");
     }
 
-    return { message: "Hello from backend" }; //testing
+    return { message: "Hello from backend", token: "abcd1234" }; //testing
   } catch (err) {
     console.log("error:", err);
     throw new Error("Server Error");
