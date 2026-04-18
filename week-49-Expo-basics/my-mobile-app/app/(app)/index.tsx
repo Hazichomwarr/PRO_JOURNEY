@@ -63,7 +63,12 @@ function Footer() {
   return (
     <View style={styles.footer}>
       <Text style={styles.footerButton}>CTA-1</Text>
-      <Text style={styles.footerButton}>CTA-2</Text>
+      <Pressable
+        onPress={() => router.push("/requests")}
+        style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
+      >
+        <Text style={styles.footerButton}>Requests</Text>
+      </Pressable>
     </View>
   );
 }

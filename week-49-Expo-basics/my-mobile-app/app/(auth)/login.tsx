@@ -30,7 +30,6 @@ export default function Login() {
     if (!password || password.length < 6) {
       newErrors.password = "Required. Min 6 chars.";
     }
-
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
@@ -45,13 +44,19 @@ export default function Login() {
     try {
       setLoading(true);
 
-      const res = await apiFetch("/api/login", {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-      });
+      // const res = await apiFetch("/api/login", {
+      //   method: "POST",
+      //   body: JSON.stringify({ email, password }),
+      // });
 
-      await setToken(res.token);
-      router.replace("/");
+      //  await setToken(res.token);
+
+      //Fake token from api post call
+      const fakeToken = "abcd1234";
+      await setToken(fakeToken);
+
+      console.log("token:", fakeToken);
+      router.replace("/requests");
     } catch (e) {
       console.log("Error:", e);
       setErrors((prev) => ({ ...prev, message: "Something went wroing" }));
